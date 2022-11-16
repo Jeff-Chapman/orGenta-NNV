@@ -1,0 +1,318 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{91974CCB-E97B-42C1-9F8D-CC208C84B757}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>orGenta_NNv</RootNamespace>
+    <AssemblyName>orGenta_NNv</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>orGenta_NNv.Program</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>App.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="About.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AdvancedPrint.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CatAssignForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CatSupressForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CatSupressForm.Designer.cs">
+      <DependentUpon>CatSupressForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DBconxGet.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DBconxGet.designer.cs">
+      <DependentUpon>DBconxGet.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DelChoice.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DelChoice.Designer.cs">
+      <DependentUpon>DelChoice.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ErrorDisplayDetail.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ErrorDisplayDetail.Designer.cs">
+      <DependentUpon>ErrorDisplayDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmMain_DBstuff.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmMain_menuItems.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmMain_Trayed.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ImportStuff.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ImportStuff.Designer.cs">
+      <DependentUpon>ImportStuff.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ItemDelete.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Itemsform_Actions.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="localCacheDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>localCacheDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="MinimalIntface.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="mouseOps.cs" />
+    <Compile Include="RummageAttributes.cs" />
+    <Compile Include="SearchForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SearchForm.Designer.cs">
+      <DependentUpon>SearchForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SettingsForm.Designer.cs">
+      <DependentUpon>SettingsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SharedRoutines.cs" />
+    <Compile Include="frmMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmMain.Designer.cs">
+      <DependentUpon>frmMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ItemsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ItemsForm.Designer.cs">
+      <DependentUpon>ItemsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="NoteForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NoteForm.Designer.cs">
+      <DependentUpon>NoteForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="orGentaDBDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>orGentaDBDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SideUtilBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SideUtilBox.Designer.cs">
+      <DependentUpon>SideUtilBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TreeViewForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TreeViewForm.Designer.cs">
+      <DependentUpon>TreeViewForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TreeView_MenuItems.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WarnNewKDB.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WarnNewKDB.Designer.cs">
+      <DependentUpon>WarnNewKDB.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ZoomedItem.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <EmbeddedResource Include="About.resx">
+      <DependentUpon>About.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AdvancedPrint.resx">
+      <DependentUpon>AdvancedPrint.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CatAssignForm.resx">
+      <DependentUpon>CatAssignForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CatSupressForm.resx">
+      <DependentUpon>CatSupressForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DBconxGet.resx">
+      <DependentUpon>DBconxGet.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DelChoice.resx">
+      <DependentUpon>DelChoice.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ErrorDisplayDetail.resx">
+      <DependentUpon>ErrorDisplayDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmMain.resx">
+      <DependentUpon>frmMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ImportStuff.resx">
+      <DependentUpon>ImportStuff.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ItemDelete.resx">
+      <DependentUpon>ItemDelete.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ItemsForm.resx">
+      <DependentUpon>ItemsForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MinimalIntface.resx">
+      <DependentUpon>MinimalIntface.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NoteForm.resx">
+      <DependentUpon>NoteForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="SearchForm.resx">
+      <DependentUpon>SearchForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SettingsForm.resx">
+      <DependentUpon>SettingsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SideUtilBox.resx">
+      <DependentUpon>SideUtilBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TreeViewForm.resx">
+      <DependentUpon>TreeViewForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WarnNewKDB.resx">
+      <DependentUpon>WarnNewKDB.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ZoomedItem.resx">
+      <DependentUpon>ZoomedItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include=".editorconfig" />
+    <None Include="localCacheDataSet.xsc">
+      <DependentUpon>localCacheDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="localCacheDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>localCacheDataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="localCacheDataSet.xss">
+      <DependentUpon>localCacheDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="orGentaDBDataSet.xsc">
+      <DependentUpon>orGentaDBDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="orGentaDBDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>orGentaDBDataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="orGentaDBDataSet.xss">
+      <DependentUpon>orGentaDBDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App.ico" />
+    <Content Include="BuildNotes.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

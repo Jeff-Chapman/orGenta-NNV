@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="orGentaDBDataSet" targetNamespace="http://tempuri.org/orGentaDBDataSet.xsd" xmlns:mstns="http://tempuri.org/orGentaDBDataSet.xsd" xmlns="http://tempuri.org/orGentaDBDataSet.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+          <Connection AppSettingsObjectName="Settings" AppSettingsPropertyName="orGentaDBConnectionString" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="orGentaDBConnectionString (Settings)" ParameterPrefix="@" PropertyReference="ApplicationSettings.orGenta.Properties.Settings.GlobalReference.Default.orGentaDBConnectionString" Provider="System.Data.SqlClient" />
+        </Connections>
+        <Tables>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="vw_Get_ItemsTableAdapter" GeneratorDataComponentClassName="vw_Get_ItemsTableAdapter" Name="vw_Get_Items" UserDataComponentName="vw_Get_ItemsTableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="orGentaDBConnectionString (Settings)" DbObjectName="orGentaDB.dbo.vw_Get_Items" DbObjectType="View" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="true">
+                    <CommandText>SELECT hasNote, ItemDesc, DateCreated, ItemID, CategoryID
+FROM   vw_Get_Items</CommandText>
+                    <Parameters />
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="hasNote" DataSetColumn="hasNote" />
+              <Mapping SourceColumn="ItemDesc" DataSetColumn="ItemDesc" />
+              <Mapping SourceColumn="DateCreated" DataSetColumn="DateCreated" />
+              <Mapping SourceColumn="ItemID" DataSetColumn="ItemID" />
+              <Mapping SourceColumn="CategoryID" DataSetColumn="CategoryID" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
+        </Tables>
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="orGentaDBDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="True" msprop:Generator_DataSetName="orGentaDBDataSet" msprop:Generator_UserDSName="orGentaDBDataSet">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="vw_Get_Items" msprop:Generator_TableClassName="vw_Get_ItemsDataTable" msprop:Generator_TableVarName="tablevw_Get_Items" msprop:Generator_RowChangedName="vw_Get_ItemsRowChanged" msprop:Generator_TablePropName="vw_Get_Items" msprop:Generator_RowDeletingName="vw_Get_ItemsRowDeleting" msprop:Generator_RowChangingName="vw_Get_ItemsRowChanging" msprop:Generator_RowEvHandlerName="vw_Get_ItemsRowChangeEventHandler" msprop:Generator_RowDeletedName="vw_Get_ItemsRowDeleted" msprop:Generator_RowClassName="vw_Get_ItemsRow" msprop:Generator_UserTableName="vw_Get_Items" msprop:Generator_RowEvArgName="vw_Get_ItemsRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="hasNote" msprop:Generator_ColumnVarNameInTable="columnhasNote" msprop:Generator_ColumnPropNameInRow="hasNote" msprop:Generator_ColumnPropNameInTable="hasNoteColumn" msprop:Generator_UserColumnName="hasNote" type="xs:boolean" minOccurs="0" />
+              <xs:element name="ItemDesc" msprop:Generator_ColumnVarNameInTable="columnItemDesc" msprop:Generator_ColumnPropNameInRow="ItemDesc" msprop:Generator_ColumnPropNameInTable="ItemDescColumn" msprop:Generator_UserColumnName="ItemDesc">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="255" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="DateCreated" msprop:Generator_ColumnVarNameInTable="columnDateCreated" msprop:Generator_ColumnPropNameInRow="DateCreated" msprop:Generator_ColumnPropNameInTable="DateCreatedColumn" msprop:Generator_UserColumnName="DateCreated" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="ItemID" msprop:Generator_ColumnVarNameInTable="columnItemID" msprop:Generator_ColumnPropNameInRow="ItemID" msprop:Generator_ColumnPropNameInTable="ItemIDColumn" msprop:Generator_UserColumnName="ItemID" type="xs:int" />
+              <xs:element name="CategoryID" msprop:Generator_ColumnVarNameInTable="columnCategoryID" msprop:Generator_ColumnPropNameInRow="CategoryID" msprop:Generator_ColumnPropNameInTable="CategoryIDColumn" msprop:Generator_UserColumnName="CategoryID" type="xs:int" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+    <xs:unique name="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:vw_Get_Items" />
+      <xs:field xpath="mstns:ItemID" />
+    </xs:unique>
+  </xs:element>
+</xs:schema>

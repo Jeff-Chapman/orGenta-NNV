@@ -1,0 +1,60 @@
+ 1	Created Main Form and form for the Treeview
+	Imported database connection logic
+ 2	Imported most of the treeview context menu logic
+ 3	Created add and edit functions for the category treeview
+	Wrote logic for dealayed persisting of categories to backing DB
+ 4	Created form for items and persisting them to backing DB
+ 5	Created testing logic and logging
+	Imported software and DB version compare logic
+ 6	Imported the About form
+ 7	Persist Default DB info to the Registry
+ 8	Add functionality for creating and saving Notes
+ 9	Item to Category assignment routines
+10	Minimal interface "tray" processing
+	Imported Search processing
+11	Implemented connections to MS Access
+12	Added back the icon toolbar
+13	Recreated the item Delete logic
+14	Added some basic Print functions
+15	Rewrote the code for manual category assignments
+16	Recreated CSV Export routine
+==	vsn 2.0.1.16  ==  Released for User Guide Documentation
+17	Created utility sidebar logic
+18	Bug Fixes
+==	vsn 2.0.2.18  ==  Released for User Guide Documentation
+19	Coded logic for deleting category nodes
+	Created eMail template for Share menu item
+	Created Settings form and logic
+	Added localCache.mdb database for cached storage
+==	vsn 2.0.3.19  ==  Released for Alpha Testing
+20	Add "include item children" button functionality
+	Fix Item Note bugs
+	Refactored search functions to separate form
+==	vsn 2.0.4.20  ==  Released for User Guide Documentation
+21	Coded basic import routines
+	Added search item windows to utility sidebar listing
+	Fixed bug killing export on search items
+	Persist screen size to the Registry
+	Implement KB close routines
+==	vsn 2.0.5.21  ==  Released for User Guide Documentation
+22	Implement Cross-Db copy
+	Fixed bug when new Category assigns existing matched Items
+	Finished coding of import routines
+==	vsn 2.0.6.22  ==  Released for Public Beta testing
+23	Added functionality for drag-and-drop into Notes
+	Enhanced UI to cursor over OK btn after new item +note
+	Fixed bug that was multiply resizing Item window
+	Added a +Note button to minimal interface
+	Change the Items show-child button color when active
+	Fixed a bug causing duplicate Items on XDB copy
+==	vsn 2.0.7.23  ==  Released for Public Beta testing
+24	Fixed bug causing orphaned nodes on load
+25	Remove unused system module USING references
+	Implement import routine for Halna tabbed data
+==	vsn 2.1.1.25  ==  Released for Public Standalone Use
+26	Added functionality for eMailing items
+	Added import of OPML format
+	Enhanced minimal interface to create categories
+	Added menu item to create new MS Access knowledge base
+	Fixed bug on import of overly long items
+	Converted to Open Source
