@@ -69,7 +69,6 @@ namespace orGenta_NNv
         private void frmMain_Load(object sender, EventArgs e)
         {
             RestoreCoordinates();
-            // TODO: place user options in the registry or DB, get at startup
 
             if (Control.ModifierKeys == Keys.Shift)
             { 
@@ -280,8 +279,9 @@ namespace orGenta_NNv
                 NodeThatMatches = Match1Node(MatchNode, PathToFind, TagToMatch, PartialMatch, PreviousFoundNode);
                 if (FoundMatchNode)
                     { return NodeThatMatches; }
+                else 
+                    { return ActiveTopForm.tvCategories.Nodes[0]; }
             }
-            // TODO: when doing a findNext, need to return "Main" Node if node is earlier than prior
             return NodeThatMatches;
         }
 

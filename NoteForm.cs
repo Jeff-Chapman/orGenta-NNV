@@ -35,8 +35,6 @@ namespace orGenta_NNv
 
             if (tbNoteText.Text == "")
             { 
-                // TODO: warn if note had prior text, ask if deleting
-
                 this.Close();
                 return;
             }
