@@ -412,7 +412,6 @@
             this.Load += new System.EventHandler(this.ItemsForm_Load);
             this.ResizeBegin += new System.EventHandler(this.ItemsForm_ResizeBegin);
             this.ResizeEnd += new System.EventHandler(this.ItemsForm_ResizeEnd);
-            this.Resize += new System.EventHandler(this.ItemsForm_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.ItemGrid)).EndInit();
             this.menuItemsContext.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.vwGetItemsBindingSource)).EndInit();

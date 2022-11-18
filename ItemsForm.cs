@@ -136,8 +136,6 @@ namespace orGenta_NNv
                 myCacheRecord.crCategory = "Unassigned";
                 myCacheRecord.crParentID = "1";
                 localCacheTableBindingSource.Filter += " AND ItemDesc LIKE '%" + ItemToFind + "%'";
-
-                // TODO: modify query to also search for like-match in Notes simultaneously
             }
 
             myItemCleaner = new SharedRoutines();
@@ -195,8 +193,6 @@ namespace orGenta_NNv
             catch
             {
                 myParentForm.pbDBisDown.Visible = true;
-                // TODO: when debugging write the Exception, this is useful in case
-                //      of DB field type mismatches
             }
 
             localCacheTableTableAdapter.Fill(this.localCacheDataSet.localCacheTable);            
@@ -601,7 +597,6 @@ namespace orGenta_NNv
             {
                 if (CategoryNode.Text.ToLower() == (AssignWords[i]))
                 {
-                    // TODO: if item is already assigned to the parent, remove parent assignment
                     TreeViewForm.TagStruct CatTag = (TreeViewForm.TagStruct)CategoryNode.Tag;
                     if (CatTag.ManualAssign == "1") { continue; }
                     if (CatTag.CatID == categoryID) { continue; }
@@ -747,21 +742,6 @@ namespace orGenta_NNv
 
         }
 
-        public void BuildStopWords()
-        {
-            foreach (DataGridViewRow oneRow in ItemGrid.Rows)
-            {
-                newItemIDback = oneRow.Cells[3].Value.ToString();
-                AnalyzeStopwords(oneRow.Cells[1].Value.ToString());
-            }
-
-        }
-
-        private void AnalyzeStopwords(string inputLine)
-        {
-           // TODO: this is for a future release
-        }
-
         private void ItemsForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             // Alert user if they closed with unsaved new item typed in
@@ -777,8 +757,6 @@ namespace orGenta_NNv
                 if (btnPressed.ToString() == "Yes")
                     { btnOK_Click(this, null); }
             }
-
-            // TODO: default should be to autosave modified notes on existing items
 
             myParentForm.myParentForm.ActiveTopItems = null;
             sUtil = myParentForm.myParentForm.mySideUtils.lbOpenWindows;

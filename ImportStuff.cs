@@ -231,8 +231,6 @@ namespace orGenta_NNv
                 HalnaBuildItem = ""; HalnaBuildNote = "";
             }
 
-            // TODO: need to code for Halna when import target is existing open category
-
             return ItemCount;
         }
 
@@ -340,7 +338,7 @@ namespace orGenta_NNv
 
             // use existing path if exists, else create it
             string incomingCatID;
-            if (catFullPathList.IndexOf(categoryPath) >= 0)     // TODO: this is a bug, should be case insensitive
+            if (catFullPathList.IndexOf(categoryPath) >= 0)     // ERR: this is a bug, should be case insensitive
             {
                 TreeNode foundCat = myparent.FindNodeInTV(categoryPath, null, false, "");
                 TreeViewForm.TagStruct thisTag = (TreeViewForm.TagStruct)foundCat.Tag;

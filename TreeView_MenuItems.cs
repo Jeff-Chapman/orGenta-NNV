@@ -13,7 +13,6 @@ namespace orGenta_NNv
         private int tempCatID = 1;
         private bool deleteAfterPasteFlag;
         private Color FrozenColor = Color.BlueViolet;
-        private bool firstTimeHVDAfailure = true;
         private ArrayList origItemArray = new ArrayList();
         private ArrayList newAddedItems = new ArrayList();
 
@@ -48,7 +47,6 @@ namespace orGenta_NNv
 
             SetupNewNode(newNparent, tbNewNodeName.Text);
 
-            // TODO: also add node info to backing myCategoryTable, but likely in the timer event
             tmrTVdirty.Interval = 1000;
  
             pnlAddNode.Visible = false;
@@ -363,8 +361,6 @@ namespace orGenta_NNv
 
                 TreeIsDirty(myParentForm.copyingNode, false);
                 myParentForm.copyingNode = null;
-                
-                // TODO: check for rels to fix if items in new parent have duplicate parental assignments
             }
             else
             {

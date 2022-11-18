@@ -231,10 +231,7 @@ namespace orGenta_NNv
 			{
 				this.prtGridPrintDoc.Print();
 			}
-			catch {
-                bool debugstop = true;
-                // TODO: if in testing mode write out the error exception here and its stacktrace
-            }
+			catch {}
 		}
 
 		private void prtGridPrintDoc_BeginPrint(object sender, System.Drawing.Printing.PrintEventArgs e)
@@ -264,7 +261,6 @@ namespace orGenta_NNv
 				//	one column at a time
                 for (colCounter = 0; colCounter <= numOfPrintCols; colCounter++)
 				{
-                    // TODO: add setting to print entire category path on its own printline
 					if (colCounter == 0)			// category
 					{
                         PrintChangedCatHeader(ref PrintWorkLine, ref PrevPrintCateg, out TestCategArray, out RightMostCat);

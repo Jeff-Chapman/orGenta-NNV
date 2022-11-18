@@ -70,11 +70,6 @@ namespace orGenta_NNv
             }
         }
 
-        private void menuWorkOffline_Click(object sender, EventArgs e)
-        {
-            // TODO: disconnect from foreground DB
-        }
-
         private void menuFindCategory_Click(object sender, EventArgs e)
         {
             findReplaying = false;
@@ -481,7 +476,7 @@ namespace orGenta_NNv
             if (!myWarning.newKBokay) { return; }
 
             getDBconnxInfo(true);
-            if (myServerType != "MS Access") { return; }    // TODO: implement flavors for other DB types
+            if (myServerType != "MS Access") { return; }    
 
             if (myServerName == ".") { return; }
 

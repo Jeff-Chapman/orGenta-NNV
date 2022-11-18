@@ -34,7 +34,6 @@
             this.menuItem1 = new System.Windows.Forms.MenuItem();
             this.menuOpenKB = new System.Windows.Forms.MenuItem();
             this.menuCloseKB = new System.Windows.Forms.MenuItem();
-            this.menuWorkOffline = new System.Windows.Forms.MenuItem();
             this.menuItem41 = new System.Windows.Forms.MenuItem();
             this.menuItemPrint = new System.Windows.Forms.MenuItem();
             this.menuAdvPrint = new System.Windows.Forms.MenuItem();
@@ -107,7 +106,6 @@
             this.menuItem1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.menuOpenKB,
             this.menuCloseKB,
-            this.menuWorkOffline,
             this.menuItem41,
             this.menuItemPrint,
             this.menuAdvPrint,
@@ -131,58 +129,50 @@
             this.menuCloseKB.Text = "Close....";
             this.menuCloseKB.Click += new System.EventHandler(this.menuCloseKB_Click);
             // 
-            // menuWorkOffline
-            // 
-            this.menuWorkOffline.Enabled = false;
-            this.menuWorkOffline.Index = 2;
-            this.menuWorkOffline.Text = "Work Offline";
-            this.menuWorkOffline.Visible = false;
-            this.menuWorkOffline.Click += new System.EventHandler(this.menuWorkOffline_Click);
-            // 
             // menuItem41
             // 
-            this.menuItem41.Index = 3;
+            this.menuItem41.Index = 2;
             this.menuItem41.Text = "-";
             // 
             // menuItemPrint
             // 
             this.menuItemPrint.Enabled = false;
-            this.menuItemPrint.Index = 4;
+            this.menuItemPrint.Index = 3;
             this.menuItemPrint.Text = "Print Items";
             this.menuItemPrint.Click += new System.EventHandler(this.menuItemPrint_Click);
             // 
             // menuAdvPrint
             // 
             this.menuAdvPrint.Enabled = false;
-            this.menuAdvPrint.Index = 5;
+            this.menuAdvPrint.Index = 4;
             this.menuAdvPrint.Text = "Print Preview...";
             this.menuAdvPrint.Click += new System.EventHandler(this.menuAdvPrint_Click);
             // 
             // menuPrinterSetup
             // 
-            this.menuPrinterSetup.Index = 6;
+            this.menuPrinterSetup.Index = 5;
             this.menuPrinterSetup.Text = "Printer Setup...";
             this.menuPrinterSetup.Click += new System.EventHandler(this.menuPrinterSetup_Click);
             // 
             // menuItem6
             // 
-            this.menuItem6.Index = 7;
+            this.menuItem6.Index = 6;
             this.menuItem6.Text = "-";
             // 
             // menuTrayed
             // 
-            this.menuTrayed.Index = 8;
+            this.menuTrayed.Index = 7;
             this.menuTrayed.Text = "Trayed Mode";
             this.menuTrayed.Click += new System.EventHandler(this.menuTrayed_Click);
             // 
             // menuItem8
             // 
-            this.menuItem8.Index = 9;
+            this.menuItem8.Index = 8;
             this.menuItem8.Text = "-";
             // 
             // menuExit
             // 
-            this.menuExit.Index = 10;
+            this.menuExit.Index = 9;
             this.menuExit.Shortcut = System.Windows.Forms.Shortcut.CtrlQ;
             this.menuExit.Text = "Exit";
             this.menuExit.Click += new System.EventHandler(this.menuExit_Click);
@@ -584,7 +574,6 @@
         private System.Windows.Forms.MenuItem menuCloseKB;
         private System.Windows.Forms.MenuItem menuItem41;
         private System.Windows.Forms.MenuItem menuSettings;
-        private System.Windows.Forms.MenuItem menuWorkOffline;
         private System.Windows.Forms.CheckBox cbTesting;
         private System.Windows.Forms.NotifyIcon trayIconTrayed;
         private System.Windows.Forms.ToolBar tBarQuickBtns;

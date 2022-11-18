@@ -12,9 +12,7 @@ namespace orGenta_NNv
     {
         public void LogRTerror(string RoutineName, Exception ex)
         {
-            // TODO: if exception is a database type of error display an icon on Main Form
- 
-            using (StreamWriter sw = File.AppendText("ErrorLog.txt"))
+             using (StreamWriter sw = File.AppendText("ErrorLog.txt"))
             {
                 string td = DateTime.Now.ToShortDateString();
                 sw.WriteLine(td + " " + DateTime.Now.ToLongTimeString());

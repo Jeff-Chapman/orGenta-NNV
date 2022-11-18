@@ -188,17 +188,8 @@ namespace orGenta_NNv
             RowsDeleting = myDG.SelectedRows;
             try
             { foreach (DataGridViewRow DeleteRow in RowsDeleting) { DeleteOneRow(DeleteRow); } }
-            catch
-            {
-                // TODO: pop up error warning of failed deletes and refresh the grid
-            }
+            catch { }
             AlreadyDeleted = true;
-        }
-
-        private void ItemsForm_Resize(object sender, EventArgs e)
-        {
-            // TODO: This needs to resize the itemdesc column on the grid
-            //      so that it still fits entirely within the window
         }
 
         private void ItemGrid_SelectionChanged(object sender, EventArgs e)

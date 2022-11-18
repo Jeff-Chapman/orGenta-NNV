@@ -221,7 +221,7 @@ namespace orGenta_NNv
             editNodeToolStripMenuItem.Enabled = true;
             deleteNodeToolStripMenuItem.Enabled = true;
             demoteToolStripMenuItem.Enabled = true;
-            copyToolStripMenuItem.Enabled = true;      // TODO: crossDB copy: enable in future release
+            copyToolStripMenuItem.Enabled = true;      
             pasteToolStripMenuItem.Enabled = true;
             moveToolStripMenuItem.Enabled = true;
             freezeClosedToolStripMenuItem.Enabled = true;
@@ -293,7 +293,7 @@ namespace orGenta_NNv
             int myYloc = e.Y;
             int myRightBorder = this.Left + this.Width;
 
-            // TODO: don't reload form if already shown, just give it focus
+            // ERR: don't reload form if already shown, just give it focus
 
             ItemsForm myItemForm = new ItemsForm(this);
             myItemForm.MdiParent = myParentForm;
@@ -420,7 +420,6 @@ namespace orGenta_NNv
             catch
             {
                 AlertDBisDown();
-                PersistNodeToCache(ExaminingNode);
                 return;
             }
 
@@ -438,12 +437,6 @@ namespace orGenta_NNv
 
             checkTag.isDirty = "0";
             ExaminingNode.Tag = checkTag;
-        }
-
-        private void PersistNodeToCache(TreeNode ExaminingNode)
-        {
-            // TODO: cache node info to a file
-            return;
         }
 
         private void AlertDBisDown()
@@ -536,7 +529,7 @@ namespace orGenta_NNv
             matchingItems.Clear();
 
             SharedRoutines DataGrabber = new SharedRoutines();
-            // TODO: this needs a try-catch if DB goes down
+
             DataSet myDS = DataGrabber.GetDataFor(DataProvider, myDBconx, getItemsSQL);
             matchingItems = myDS.Tables[0];
 
@@ -697,9 +690,6 @@ namespace orGenta_NNv
 
             while (catUpdatesActive)
                 { System.Threading.Thread.Sleep(500);}
-
-            // TODO: if any dirty nodes manually trigger one more persist call, then 
-            // persist any still dirty nodes to local cache
 
             tmrTVdirty_Tick(this, null);
             this.Cursor = Cursors.Arrow;
