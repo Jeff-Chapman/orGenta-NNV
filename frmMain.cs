@@ -56,7 +56,7 @@ namespace orGenta_NNv
         public bool endOfUserSearch = false;
 
         // NOTICE: This software is Copyright (c) 2006, 2021 by Jeff D. Chapman
-        // Non-networked version licensed as Open Source under [TODO: fill this in]
+        // Non-networked version licensed as Open Source under GNU Lesser General Public License v3.0
 
         public frmMain()
         {
