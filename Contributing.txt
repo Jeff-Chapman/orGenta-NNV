@@ -1,0 +1,12 @@
+Are you interested in being a contributor to the development of orGenta? We welcome the participation of developers based in the United States with U.S. citizenship, who are experienced C# programmers. If you would like to contribute code, please send an eMail to the product manager, JeffC@Izard-LLC.com, and include a link to your LinkedIn profile or Resume. The product manager will return you a Contributor License Agreement (CLA) which you must read, sign and return. 
+
+We can only accept contributions that have a CLA executed from each copyright holder. If you work for another organization and plan to include some code you have developed while under their work-for-hire agreement, an officer of your company (typically the CIO or President) must also executes a CLA that clearly delineates the portion of code they are allowing you to contribute. If the copyright in your code is shared in whole or in part via assignment, each assignee must also execute a CLA.
+
+Once we receive all relevant CLAs we will provide you editing access to the Github code repository and create a branch with your initials beneath the branch of the current build number. Please place your code changes in the branch with your initials. We would prefer that contributors work on coding features listed in the "Enh Requests NNV.rtf" document (grayed out items are either already completed or being worked on by somebody else). 
+
+We aim to release a new build every quarter. About three weeks before a scheduled release we will send you an eMail giving you warning of code freeze. The code stays frozen for two weeks while we run regression tests (we may ask you to push bug fixes to your code during this period of time).
+
+Please review some of the existing code to get a sense of the style before developing new work. We prefer declarative SQL strings for accessing the backing databases. As much as possible, we should avoid deprecating old versions of either the software or the database structure. We target coding to a minimum set of languages and tools, we prefer you use Microsoft Visual Studio for development work.
+
+Please contact the product manager, JeffC@Izard-LLC.com if you have any additional questions or suggestions.
+
