@@ -64,21 +64,21 @@ namespace orGenta_NNv
             this.textBox1.BackColor = System.Drawing.SystemColors.Control;
             this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox1.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox1.Location = new System.Drawing.Point(77, 48);
+            this.textBox1.Location = new System.Drawing.Point(77, 28);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(371, 70);
+            this.textBox1.Size = new System.Drawing.Size(371, 117);
             this.textBox1.TabIndex = 0;
             this.textBox1.TabStop = false;
             this.textBox1.Text = "Copyright (c) 2006, 2021 J.D. Chapman\r\n\r\nDistribution Licensed to Izard Explorato" +
-    "ry LLC";
+    "ry LLC\r\n\r\nReleased under the GNU LGPL v3.0";
             this.textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // btnOK
             // 
             this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOK.Location = new System.Drawing.Point(167, 286);
+            this.btnOK.Location = new System.Drawing.Point(167, 298);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(120, 33);
             this.btnOK.TabIndex = 2;
@@ -90,7 +90,7 @@ namespace orGenta_NNv
             this.txtBuildNumber.BackColor = System.Drawing.SystemColors.Control;
             this.txtBuildNumber.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtBuildNumber.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtBuildNumber.Location = new System.Drawing.Point(255, 217);
+            this.txtBuildNumber.Location = new System.Drawing.Point(255, 229);
             this.txtBuildNumber.Name = "txtBuildNumber";
             this.txtBuildNumber.ReadOnly = true;
             this.txtBuildNumber.Size = new System.Drawing.Size(193, 24);
@@ -105,7 +105,7 @@ namespace orGenta_NNv
             this.txtVersionNumber.BackColor = System.Drawing.SystemColors.Control;
             this.txtVersionNumber.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtVersionNumber.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtVersionNumber.Location = new System.Drawing.Point(167, 187);
+            this.txtVersionNumber.Location = new System.Drawing.Point(167, 199);
             this.txtVersionNumber.Name = "txtVersionNumber";
             this.txtVersionNumber.ReadOnly = true;
             this.txtVersionNumber.Size = new System.Drawing.Size(281, 24);
@@ -117,7 +117,7 @@ namespace orGenta_NNv
             // label1
             // 
             this.label1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.label1.Location = new System.Drawing.Point(13, 136);
+            this.label1.Location = new System.Drawing.Point(13, 148);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(435, 4);
             this.label1.TabIndex = 5;
@@ -128,7 +128,7 @@ namespace orGenta_NNv
             this.txtDotNetVsn.BackColor = System.Drawing.SystemColors.Control;
             this.txtDotNetVsn.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtDotNetVsn.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtDotNetVsn.Location = new System.Drawing.Point(12, 187);
+            this.txtDotNetVsn.Location = new System.Drawing.Point(12, 199);
             this.txtDotNetVsn.Name = "txtDotNetVsn";
             this.txtDotNetVsn.ReadOnly = true;
             this.txtDotNetVsn.Size = new System.Drawing.Size(210, 24);
@@ -139,7 +139,7 @@ namespace orGenta_NNv
             // pictureBox1
             // 
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(19, 53);
+            this.pictureBox1.Location = new System.Drawing.Point(19, 44);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(51, 47);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -149,7 +149,7 @@ namespace orGenta_NNv
             // label2
             // 
             this.label2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.label2.Location = new System.Drawing.Point(14, 167);
+            this.label2.Location = new System.Drawing.Point(14, 179);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(436, 4);
             this.label2.TabIndex = 8;
@@ -157,7 +157,7 @@ namespace orGenta_NNv
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(131, 142);
+            this.label3.Location = new System.Drawing.Point(131, 154);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(202, 20);
             this.label3.TabIndex = 9;
@@ -166,7 +166,7 @@ namespace orGenta_NNv
             // btnCheckUpdates
             // 
             this.btnCheckUpdates.AutoSize = true;
-            this.btnCheckUpdates.Location = new System.Drawing.Point(11, 221);
+            this.btnCheckUpdates.Location = new System.Drawing.Point(11, 233);
             this.btnCheckUpdates.Name = "btnCheckUpdates";
             this.btnCheckUpdates.Size = new System.Drawing.Size(159, 20);
             this.btnCheckUpdates.TabIndex = 11;
@@ -177,7 +177,7 @@ namespace orGenta_NNv
             // tbIntialized
             // 
             this.tbIntialized.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.tbIntialized.Location = new System.Drawing.Point(185, 253);
+            this.tbIntialized.Location = new System.Drawing.Point(185, 265);
             this.tbIntialized.Name = "tbIntialized";
             this.tbIntialized.Size = new System.Drawing.Size(262, 19);
             this.tbIntialized.TabIndex = 12;
@@ -188,7 +188,7 @@ namespace orGenta_NNv
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(8, 19);
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(469, 333);
+            this.ClientSize = new System.Drawing.Size(469, 355);
             this.ControlBox = false;
             this.Controls.Add(this.tbIntialized);
             this.Controls.Add(this.btnCheckUpdates);

@@ -698,7 +698,7 @@ namespace orGenta_NNv
             foreach (Form chkForm in myItemForms)
             {
                 string thisFormType = chkForm.GetType().ToString();
-                if (thisFormType != "orGenta.ItemsForm") { continue; }
+                if (thisFormType != "orGenta_NNv.ItemsForm") { continue; }
                 ItemsForm chkIp = (ItemsForm)chkForm;
                 if (chkIp.myParentForm == this)
                     { chkForm.Close(); }
