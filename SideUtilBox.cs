@@ -37,11 +37,11 @@ namespace orGenta_NNv
             int chkForKB = winForFocus.IndexOf("(KB)");
             if (chkForKB > 0)
             { 
-                tgtType = "orGenta.TreeViewForm";
+                tgtType = "orGenta_NNv.TreeViewForm";
                 winForFocus = winForFocus.Substring(0, chkForKB - 1);
             }
             else
-                { tgtType = "orGenta.ItemsForm"; }
+                { tgtType = "orGenta_NNv.ItemsForm"; }
             foreach (Form chkForm in formsList)
             {
                 string thisFormType = chkForm.GetType().ToString();
@@ -82,7 +82,7 @@ namespace orGenta_NNv
 
         private void SideUtilBox_Load(object sender, EventArgs e)
         {
-            int padWidth = 25;      // Note: debug is 25, release is 16 (!)
+            int padWidth = 25;      
             lbCatList.Width = this.Width - padWidth;
             lbCatList.Height = this.Height - padWidth - 20;
             lbOpenWindows.Width = this.Width - padWidth;

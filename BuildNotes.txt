@@ -58,3 +58,4 @@
 	Added menu item to create new MS Access knowledge base
 	Fixed bug on import of overly long items
 	Converted to Open Source
+==	vsn 2.1.2.26  ==  Released as Open Source for Standalone Use

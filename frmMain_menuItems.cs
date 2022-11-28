@@ -454,7 +454,7 @@ namespace orGenta_NNv
             foreach (Form chkForm in formsList)
             {
                 string thisFormType = chkForm.GetType().ToString();
-                if (thisFormType != "orGenta.ItemsForm") { continue; }
+                if (thisFormType != "orGenta_NNv.ItemsForm") { continue; }
                 chkForm.Close();
             }
         }
