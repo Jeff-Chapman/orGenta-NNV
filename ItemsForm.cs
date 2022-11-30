@@ -775,5 +775,9 @@ namespace orGenta_NNv
 
         }
 
+        private void ItemGrid_CellContextMenuStripNeeded(object sender, DataGridViewCellContextMenuStripNeededEventArgs e)
+        {
+            myParentForm.myParentForm.ActiveTopItems = this;
+        }
     }
 }
