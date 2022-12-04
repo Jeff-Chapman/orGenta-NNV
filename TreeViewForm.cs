@@ -709,6 +709,5 @@ namespace orGenta_NNv
             sUtil.Items.Remove(sUWindowName);
         }
 
-
     }
 }
