@@ -532,6 +532,7 @@ namespace orGenta_NNv
             TreeNode myParentNode = myparent.FindNodeInTV(startingPath, null, false, "");
 
             newAddedNode = myparent.ActiveTopForm.SetupNewNode(myParentNode, newCatDesc);
+            myparent.ActiveTopForm.tvCategories.SelectedNode = newAddedNode;
             return newAddedNode;
         }
 

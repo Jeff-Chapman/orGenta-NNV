@@ -87,7 +87,7 @@ namespace orGenta_NNv
             clickedColumn = this.ItemGrid.HitTest(e.X, e.Y).ColumnIndex;
             clickedRow = this.ItemGrid.HitTest(e.X, e.Y).RowIndex;
             if (clickedRow == -1) { return; }
-            //string ActiveItem = GetItemIDforRow(clickedRow);
+
             string ActiveItem = ItemGrid.Rows[clickedRow].Cells[3].Value.ToString();
 
             // They clicked the Note checkbox

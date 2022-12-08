@@ -99,11 +99,13 @@
             this.ItemGrid.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
             this.ItemGrid.Location = new System.Drawing.Point(0, 0);
             this.ItemGrid.Name = "ItemGrid";
+            this.ItemGrid.RowHeadersWidth = 62;
             this.ItemGrid.RowTemplate.DefaultCellStyle.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ItemGrid.RowTemplate.Height = 28;
             this.ItemGrid.Size = new System.Drawing.Size(900, 424);
             this.ItemGrid.TabIndex = 0;
             this.ItemGrid.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.ItemGrid_CellClick);
+            this.ItemGrid.CellContextMenuStripNeeded += new System.Windows.Forms.DataGridViewCellContextMenuStripNeededEventHandler(this.ItemGrid_CellContextMenuStripNeeded);
             this.ItemGrid.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.ItemGrid_CellEndEdit);
             this.ItemGrid.SelectionChanged += new System.EventHandler(this.ItemGrid_SelectionChanged);
             this.ItemGrid.UserDeletingRow += new System.Windows.Forms.DataGridViewRowCancelEventHandler(this.ItemGrid_UserDeletingRow);
@@ -114,6 +116,7 @@
             // 
             this.hasNoteDataGridViewCheckBoxColumn.DataPropertyName = "hasNote";
             this.hasNoteDataGridViewCheckBoxColumn.HeaderText = "Note";
+            this.hasNoteDataGridViewCheckBoxColumn.MinimumWidth = 8;
             this.hasNoteDataGridViewCheckBoxColumn.Name = "hasNoteDataGridViewCheckBoxColumn";
             this.hasNoteDataGridViewCheckBoxColumn.Width = 40;
             // 
@@ -123,6 +126,7 @@
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.itemDescDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle1;
             this.itemDescDataGridViewTextBoxColumn.HeaderText = "Item Description";
+            this.itemDescDataGridViewTextBoxColumn.MinimumWidth = 8;
             this.itemDescDataGridViewTextBoxColumn.Name = "itemDescDataGridViewTextBoxColumn";
             this.itemDescDataGridViewTextBoxColumn.Width = 450;
             // 
@@ -130,14 +134,18 @@
             // 
             this.dateCreatedDataGridViewTextBoxColumn.DataPropertyName = "DateCreated";
             this.dateCreatedDataGridViewTextBoxColumn.HeaderText = "Created";
+            this.dateCreatedDataGridViewTextBoxColumn.MinimumWidth = 8;
             this.dateCreatedDataGridViewTextBoxColumn.Name = "dateCreatedDataGridViewTextBoxColumn";
+            this.dateCreatedDataGridViewTextBoxColumn.Width = 150;
             // 
             // itemIDDataGridViewTextBoxColumn
             // 
             this.itemIDDataGridViewTextBoxColumn.DataPropertyName = "ItemID";
             this.itemIDDataGridViewTextBoxColumn.HeaderText = "ItemID";
+            this.itemIDDataGridViewTextBoxColumn.MinimumWidth = 8;
             this.itemIDDataGridViewTextBoxColumn.Name = "itemIDDataGridViewTextBoxColumn";
             this.itemIDDataGridViewTextBoxColumn.Visible = false;
+            this.itemIDDataGridViewTextBoxColumn.Width = 150;
             // 
             // menuItemsContext
             // 
@@ -148,19 +156,19 @@
             this.toolStripSeparator1,
             this.deleteToolStripMenuItem});
             this.menuItemsContext.Name = "menuItemsContext";
-            this.menuItemsContext.Size = new System.Drawing.Size(175, 100);
+            this.menuItemsContext.Size = new System.Drawing.Size(175, 106);
             // 
             // zoomToolStripMenuItem
             // 
             this.zoomToolStripMenuItem.Name = "zoomToolStripMenuItem";
-            this.zoomToolStripMenuItem.Size = new System.Drawing.Size(174, 30);
+            this.zoomToolStripMenuItem.Size = new System.Drawing.Size(174, 32);
             this.zoomToolStripMenuItem.Text = "Zoom";
             this.zoomToolStripMenuItem.Click += new System.EventHandler(this.zoomToolStripMenuItem_Click);
             // 
             // assignToToolStripMenuItem
             // 
             this.assignToToolStripMenuItem.Name = "assignToToolStripMenuItem";
-            this.assignToToolStripMenuItem.Size = new System.Drawing.Size(174, 30);
+            this.assignToToolStripMenuItem.Size = new System.Drawing.Size(174, 32);
             this.assignToToolStripMenuItem.Text = "Assign To...";
             this.assignToToolStripMenuItem.Click += new System.EventHandler(this.assignToToolStripMenuItem_Click);
             // 
@@ -172,7 +180,7 @@
             // deleteToolStripMenuItem
             // 
             this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(174, 30);
+            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(174, 32);
             this.deleteToolStripMenuItem.Text = "Delete";
             this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
             // 
@@ -295,6 +303,7 @@
             this.CachedGrid.DataSource = this.localCacheTableBindingSource;
             this.CachedGrid.Location = new System.Drawing.Point(0, 25);
             this.CachedGrid.Name = "CachedGrid";
+            this.CachedGrid.RowHeadersWidth = 62;
             this.CachedGrid.RowTemplate.Height = 28;
             this.CachedGrid.Size = new System.Drawing.Size(900, 70);
             this.CachedGrid.TabIndex = 7;
@@ -303,44 +312,58 @@
             // 
             this.dataGridViewTextBoxColumn1.DataPropertyName = "Category";
             this.dataGridViewTextBoxColumn1.HeaderText = "Category";
+            this.dataGridViewTextBoxColumn1.MinimumWidth = 8;
             this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.Width = 150;
             // 
             // dataGridViewTextBoxColumn2
             // 
             this.dataGridViewTextBoxColumn2.DataPropertyName = "ParentID";
             this.dataGridViewTextBoxColumn2.HeaderText = "ParentID";
+            this.dataGridViewTextBoxColumn2.MinimumWidth = 8;
             this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            this.dataGridViewTextBoxColumn2.Width = 150;
             // 
             // dataGridViewTextBoxColumn3
             // 
             this.dataGridViewTextBoxColumn3.DataPropertyName = "ItemDesc";
             this.dataGridViewTextBoxColumn3.HeaderText = "ItemDesc";
+            this.dataGridViewTextBoxColumn3.MinimumWidth = 8;
             this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
+            this.dataGridViewTextBoxColumn3.Width = 150;
             // 
             // dataGridViewTextBoxColumn4
             // 
             this.dataGridViewTextBoxColumn4.DataPropertyName = "DateCreated";
             this.dataGridViewTextBoxColumn4.HeaderText = "DateCreated";
+            this.dataGridViewTextBoxColumn4.MinimumWidth = 8;
             this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
+            this.dataGridViewTextBoxColumn4.Width = 150;
             // 
             // dataGridViewTextBoxColumn5
             // 
             this.dataGridViewTextBoxColumn5.DataPropertyName = "NoteValue";
             this.dataGridViewTextBoxColumn5.HeaderText = "NoteValue";
+            this.dataGridViewTextBoxColumn5.MinimumWidth = 8;
             this.dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
+            this.dataGridViewTextBoxColumn5.Width = 150;
             // 
             // dataGridViewTextBoxColumn6
             // 
             this.dataGridViewTextBoxColumn6.DataPropertyName = "KBname";
             this.dataGridViewTextBoxColumn6.HeaderText = "KBname";
+            this.dataGridViewTextBoxColumn6.MinimumWidth = 8;
             this.dataGridViewTextBoxColumn6.Name = "dataGridViewTextBoxColumn6";
+            this.dataGridViewTextBoxColumn6.Width = 150;
             // 
             // cacheID
             // 
             this.cacheID.DataPropertyName = "cacheID";
             this.cacheID.HeaderText = "cacheID";
+            this.cacheID.MinimumWidth = 8;
             this.cacheID.Name = "cacheID";
             this.cacheID.Visible = false;
+            this.cacheID.Width = 150;
             // 
             // localCacheTableBindingSource
             // 

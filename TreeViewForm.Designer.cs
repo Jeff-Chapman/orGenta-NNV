@@ -113,27 +113,27 @@ namespace orGenta_NNv
             this.expandOnlyThisToolStripMenuItem,
             this.freezeClosedToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(271, 445);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(271, 438);
             // 
             // AddNodeToolStripMenuItem
             // 
             this.AddNodeToolStripMenuItem.Name = "AddNodeToolStripMenuItem";
             this.AddNodeToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D0)));
-            this.AddNodeToolStripMenuItem.Size = new System.Drawing.Size(270, 30);
+            this.AddNodeToolStripMenuItem.Size = new System.Drawing.Size(270, 32);
             this.AddNodeToolStripMenuItem.Text = "Add Category";
             this.AddNodeToolStripMenuItem.Click += new System.EventHandler(this.AddNodeToolStripMenuItem_Click);
             // 
             // editNodeToolStripMenuItem
             // 
             this.editNodeToolStripMenuItem.Name = "editNodeToolStripMenuItem";
-            this.editNodeToolStripMenuItem.Size = new System.Drawing.Size(270, 30);
+            this.editNodeToolStripMenuItem.Size = new System.Drawing.Size(270, 32);
             this.editNodeToolStripMenuItem.Text = "Edit Category";
             this.editNodeToolStripMenuItem.Click += new System.EventHandler(this.editNodeToolStripMenuItem_Click);
             // 
             // deleteNodeToolStripMenuItem
             // 
             this.deleteNodeToolStripMenuItem.Name = "deleteNodeToolStripMenuItem";
-            this.deleteNodeToolStripMenuItem.Size = new System.Drawing.Size(270, 30);
+            this.deleteNodeToolStripMenuItem.Size = new System.Drawing.Size(270, 32);
             this.deleteNodeToolStripMenuItem.Text = "Delete Category";
             this.deleteNodeToolStripMenuItem.Click += new System.EventHandler(this.deleteNodeToolStripMenuItem_Click);
             // 
@@ -146,14 +146,14 @@ namespace orGenta_NNv
             // 
             this.demoteToolStripMenuItem.Name = "demoteToolStripMenuItem";
             this.demoteToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Right)));
-            this.demoteToolStripMenuItem.Size = new System.Drawing.Size(270, 30);
+            this.demoteToolStripMenuItem.Size = new System.Drawing.Size(270, 32);
             this.demoteToolStripMenuItem.Text = ">> Demote";
             this.demoteToolStripMenuItem.Click += new System.EventHandler(this.demoteToolStripMenuItem_Click);
             // 
             // promoteToolStripMenuItem
             // 
             this.promoteToolStripMenuItem.Name = "promoteToolStripMenuItem";
-            this.promoteToolStripMenuItem.Size = new System.Drawing.Size(270, 30);
+            this.promoteToolStripMenuItem.Size = new System.Drawing.Size(270, 32);
             this.promoteToolStripMenuItem.Text = "Promote <<";
             this.promoteToolStripMenuItem.Click += new System.EventHandler(this.promoteToolStripMenuItem_Click);
             // 
@@ -165,21 +165,21 @@ namespace orGenta_NNv
             // copyToolStripMenuItem
             // 
             this.copyToolStripMenuItem.Name = "copyToolStripMenuItem";
-            this.copyToolStripMenuItem.Size = new System.Drawing.Size(270, 30);
+            this.copyToolStripMenuItem.Size = new System.Drawing.Size(270, 32);
             this.copyToolStripMenuItem.Text = "Cross-DB Copy";
             this.copyToolStripMenuItem.Click += new System.EventHandler(this.copyToolStripMenuItem_Click);
             // 
             // moveToolStripMenuItem
             // 
             this.moveToolStripMenuItem.Name = "moveToolStripMenuItem";
-            this.moveToolStripMenuItem.Size = new System.Drawing.Size(270, 30);
+            this.moveToolStripMenuItem.Size = new System.Drawing.Size(270, 32);
             this.moveToolStripMenuItem.Text = "Move";
             this.moveToolStripMenuItem.Click += new System.EventHandler(this.moveToolStripMenuItem_Click);
             // 
             // pasteToolStripMenuItem
             // 
             this.pasteToolStripMenuItem.Name = "pasteToolStripMenuItem";
-            this.pasteToolStripMenuItem.Size = new System.Drawing.Size(270, 30);
+            this.pasteToolStripMenuItem.Size = new System.Drawing.Size(270, 32);
             this.pasteToolStripMenuItem.Text = "Paste";
             this.pasteToolStripMenuItem.Click += new System.EventHandler(this.pasteToolStripMenuItem_Click);
             // 
@@ -187,7 +187,7 @@ namespace orGenta_NNv
             // 
             this.pasteItemsToolStripMenuItem.Enabled = false;
             this.pasteItemsToolStripMenuItem.Name = "pasteItemsToolStripMenuItem";
-            this.pasteItemsToolStripMenuItem.Size = new System.Drawing.Size(270, 30);
+            this.pasteItemsToolStripMenuItem.Size = new System.Drawing.Size(270, 32);
             this.pasteItemsToolStripMenuItem.Text = "Paste Items";
             // 
             // toolStripMenuItem3
@@ -198,28 +198,28 @@ namespace orGenta_NNv
             // expandNodeToolStripMenuItem
             // 
             this.expandNodeToolStripMenuItem.Name = "expandNodeToolStripMenuItem";
-            this.expandNodeToolStripMenuItem.Size = new System.Drawing.Size(270, 30);
+            this.expandNodeToolStripMenuItem.Size = new System.Drawing.Size(270, 32);
             this.expandNodeToolStripMenuItem.Text = "Expand Category";
             this.expandNodeToolStripMenuItem.Click += new System.EventHandler(this.expandNodeToolStripMenuItem_Click);
             // 
             // collapseNodeToolStripMenuItem
             // 
             this.collapseNodeToolStripMenuItem.Name = "collapseNodeToolStripMenuItem";
-            this.collapseNodeToolStripMenuItem.Size = new System.Drawing.Size(270, 30);
+            this.collapseNodeToolStripMenuItem.Size = new System.Drawing.Size(270, 32);
             this.collapseNodeToolStripMenuItem.Text = "Collapse Category";
             this.collapseNodeToolStripMenuItem.Click += new System.EventHandler(this.collapseNodeToolStripMenuItem_Click);
             // 
             // expandOnlyThisToolStripMenuItem
             // 
             this.expandOnlyThisToolStripMenuItem.Name = "expandOnlyThisToolStripMenuItem";
-            this.expandOnlyThisToolStripMenuItem.Size = new System.Drawing.Size(270, 30);
+            this.expandOnlyThisToolStripMenuItem.Size = new System.Drawing.Size(270, 32);
             this.expandOnlyThisToolStripMenuItem.Text = "Expand Only This";
             this.expandOnlyThisToolStripMenuItem.Click += new System.EventHandler(this.expandOnlyThisToolStripMenuItem_Click);
             // 
             // freezeClosedToolStripMenuItem
             // 
             this.freezeClosedToolStripMenuItem.Name = "freezeClosedToolStripMenuItem";
-            this.freezeClosedToolStripMenuItem.Size = new System.Drawing.Size(270, 30);
+            this.freezeClosedToolStripMenuItem.Size = new System.Drawing.Size(270, 32);
             this.freezeClosedToolStripMenuItem.Text = "Freeze Closed";
             this.freezeClosedToolStripMenuItem.Click += new System.EventHandler(this.freezeClosedToolStripMenuItem_Click);
             // 
@@ -394,12 +394,12 @@ namespace orGenta_NNv
             this.contextMenuStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.aboutThisKBToolStripMenuItem});
             this.contextMenuStrip2.Name = "contextMenuStrip2";
-            this.contextMenuStrip2.Size = new System.Drawing.Size(196, 34);
+            this.contextMenuStrip2.Size = new System.Drawing.Size(196, 36);
             // 
             // aboutThisKBToolStripMenuItem
             // 
             this.aboutThisKBToolStripMenuItem.Name = "aboutThisKBToolStripMenuItem";
-            this.aboutThisKBToolStripMenuItem.Size = new System.Drawing.Size(195, 30);
+            this.aboutThisKBToolStripMenuItem.Size = new System.Drawing.Size(195, 32);
             this.aboutThisKBToolStripMenuItem.Text = "About This KB";
             this.aboutThisKBToolStripMenuItem.Click += new System.EventHandler(this.aboutThisKBToolStripMenuItem_Click);
             // 
@@ -415,6 +415,7 @@ namespace orGenta_NNv
             this.Controls.Add(this.pnlEditCat);
             this.Controls.Add(this.pnlAddNode);
             this.Controls.Add(this.tvCategories);
+            this.MaximizeBox = false;
             this.Name = "TreeViewForm";
             this.Text = "(DB Name)";
             this.Activated += new System.EventHandler(this.TreeViewForm_Activated);

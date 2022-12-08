@@ -162,7 +162,9 @@ namespace orGenta_NNv
             TreeNode myParent = thisNode.Parent;
             myParent.Nodes.Remove(thisNode);
             TreeNode myGrandpa = myParent.Parent;
-            myGrandpa.Nodes.Add(thisNode);
+            int parLoc = myGrandpa.Nodes.IndexOf(myParent);
+            myGrandpa.Nodes.Insert(parLoc + 1, thisNode);
+            tvCategories.SelectedNode = thisNode;
             TreeIsDirty(thisNode, false);
         }
 

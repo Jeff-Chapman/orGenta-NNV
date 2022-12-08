@@ -478,7 +478,7 @@ namespace orGenta_NNv
             getDBconnxInfo(true);
             if (myServerType != "MS Access") { return; }    
 
-            if (myServerName == ".") { return; }
+            if ((RemoteConx) && (myServerName == ".")) { return; }
 
             string FullKBpathName = myServerName + "\\" + myKnowledgeDBname;
             int lenFKB = FullKBpathName.Length;

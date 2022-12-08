@@ -476,6 +476,7 @@ namespace orGenta_NNv
             myNoteForm.NoteIsOnNewItem = false;
             myNoteForm.parentItemID = ActiveItem;
             myNoteForm.tbNoteText.Text = NoteTextToShow;
+            myNoteForm.parentClickedRow = clickedRow;
 
             if (NoteTextToShow != EmptyNoteText)
             { 
@@ -775,5 +776,9 @@ namespace orGenta_NNv
 
         }
 
+        private void ItemGrid_CellContextMenuStripNeeded(object sender, DataGridViewCellContextMenuStripNeededEventArgs e)
+        {
+            myParentForm.myParentForm.ActiveTopItems = this;
+        }
     }
 }

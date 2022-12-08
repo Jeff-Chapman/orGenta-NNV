@@ -11,6 +11,7 @@ namespace orGenta_NNv
         public bool NoteIsOnNewItem;
         public string parentItemID;
         public bool noteWasBlank = true;
+        public int parentClickedRow;
         private ItemsForm myItemsForm;
         private MinimalIntface myMIform;
         private SharedRoutines myItemCleaner;
@@ -42,6 +43,7 @@ namespace orGenta_NNv
             if (tbNoteText.Text == EmptyNoteText)
             {
                 this.Close();
+                myItemsForm.ItemGrid.Rows[parentClickedRow].Cells[0].Value = 0;
                 return;
             }
 
