@@ -42,7 +42,6 @@ namespace orGenta_NNv
             this.copyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.moveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pasteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.pasteItemsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
             this.expandNodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.collapseNodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -67,6 +66,7 @@ namespace orGenta_NNv
             this.ttDBoffline = new System.Windows.Forms.ToolTip(this.components);
             this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.aboutThisKBToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pasteBelowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             this.pnlAddNode.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -105,15 +105,15 @@ namespace orGenta_NNv
             this.toolStripMenuItem2,
             this.copyToolStripMenuItem,
             this.moveToolStripMenuItem,
+            this.pasteBelowToolStripMenuItem,
             this.pasteToolStripMenuItem,
-            this.pasteItemsToolStripMenuItem,
             this.toolStripMenuItem3,
             this.expandNodeToolStripMenuItem,
             this.collapseNodeToolStripMenuItem,
             this.expandOnlyThisToolStripMenuItem,
             this.freezeClosedToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(271, 438);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(271, 471);
             // 
             // AddNodeToolStripMenuItem
             // 
@@ -180,15 +180,8 @@ namespace orGenta_NNv
             // 
             this.pasteToolStripMenuItem.Name = "pasteToolStripMenuItem";
             this.pasteToolStripMenuItem.Size = new System.Drawing.Size(270, 32);
-            this.pasteToolStripMenuItem.Text = "Paste";
+            this.pasteToolStripMenuItem.Text = "Paste Child";
             this.pasteToolStripMenuItem.Click += new System.EventHandler(this.pasteToolStripMenuItem_Click);
-            // 
-            // pasteItemsToolStripMenuItem
-            // 
-            this.pasteItemsToolStripMenuItem.Enabled = false;
-            this.pasteItemsToolStripMenuItem.Name = "pasteItemsToolStripMenuItem";
-            this.pasteItemsToolStripMenuItem.Size = new System.Drawing.Size(270, 32);
-            this.pasteItemsToolStripMenuItem.Text = "Paste Items";
             // 
             // toolStripMenuItem3
             // 
@@ -403,6 +396,13 @@ namespace orGenta_NNv
             this.aboutThisKBToolStripMenuItem.Text = "About This KB";
             this.aboutThisKBToolStripMenuItem.Click += new System.EventHandler(this.aboutThisKBToolStripMenuItem_Click);
             // 
+            // pasteBelowToolStripMenuItem
+            // 
+            this.pasteBelowToolStripMenuItem.Name = "pasteBelowToolStripMenuItem";
+            this.pasteBelowToolStripMenuItem.Size = new System.Drawing.Size(270, 32);
+            this.pasteBelowToolStripMenuItem.Text = "Paste Below";
+            this.pasteBelowToolStripMenuItem.Click += new System.EventHandler(this.pasteBelowToolStripMenuItem_Click);
+            // 
             // TreeViewForm
             // 
             this.AcceptButton = this.btnNewOK;
@@ -462,7 +462,6 @@ namespace orGenta_NNv
         private System.Windows.Forms.TextBox tbNewNodeName;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ToolStripMenuItem editNodeToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem pasteItemsToolStripMenuItem;
         private System.Windows.Forms.Panel pnlEditCat;
         private System.Windows.Forms.Button btnOKedit;
         private System.Windows.Forms.CheckBox cbReassign;
@@ -475,6 +474,6 @@ namespace orGenta_NNv
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip2;
         private System.Windows.Forms.ToolStripMenuItem aboutThisKBToolStripMenuItem;
         public System.Windows.Forms.PictureBox pbDBisDown;
-
+        private System.Windows.Forms.ToolStripMenuItem pasteBelowToolStripMenuItem;
     }
 }
