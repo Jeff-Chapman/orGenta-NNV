@@ -122,5 +122,10 @@ namespace orGenta_NNv
             catch { MessageBox.Show("Unable to Navigate to Link", "", MessageBoxButtons.OK, MessageBoxIcon.Error); }
         }
 
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            DialogResult userChoice = MessageBox.Show("Choose Cancel to Discard Changes...", "Cancel Entry?", MessageBoxButtons.RetryCancel);
+            if (userChoice == DialogResult.Cancel) { this.Close(); }
+        }
     }
 }

@@ -348,17 +348,36 @@ namespace orGenta_NNv
             deleteAfterPasteFlag = true;
         }
 
+        private void pasteBelowToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            pasteAsChildOrBelow(false);
+        }
+
         private void pasteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            pasteAsChildOrBelow(true);
+        }
+
+        private void pasteAsChildOrBelow(bool AsChild)
         {
             TreeNode TargetForPaste = tvCategories.SelectedNode;
             if (TargetForPaste == myParentForm.copyingNode) { return; }
 
-            if (deleteAfterPasteFlag) 
+            if (deleteAfterPasteFlag)
             {
                 TreeNode myParent = myParentForm.copyingNode.Parent;
                 myParent.Nodes.Remove(myParentForm.copyingNode);
-                TargetForPaste.Nodes.Add(myParentForm.copyingNode);
+                if (AsChild)
+                    { TargetForPaste.Nodes.Add(myParentForm.copyingNode); }
+                else
+                {
+                    TreeNode TargParent = TargetForPaste.Parent;
+                    int targLoc = TargParent.Nodes.IndexOf(TargetForPaste);
+                    TargParent.Nodes.Insert(targLoc + 1, myParentForm.copyingNode);
+                }
 
+                tvCategories.SelectedNode = myParentForm.copyingNode;
+                tvCategories.SelectedNode.EnsureVisible();
                 TreeIsDirty(myParentForm.copyingNode, false);
                 myParentForm.copyingNode = null;
             }
