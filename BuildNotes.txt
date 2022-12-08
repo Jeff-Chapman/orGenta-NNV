@@ -61,4 +61,4 @@
 ==	vsn 2.1.2.26  ==  Released as Open Source for Standalone Use
 27	Enhance treeview paste to allow child or below
 	Fixed bug so Category click doesn't duplicate Items window
-
+	Better handling of escape key on Note entry
