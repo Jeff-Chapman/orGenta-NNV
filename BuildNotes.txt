@@ -63,5 +63,6 @@
 	Fixed bug so Category click doesn't duplicate Items window
 	Better handling of escape key on Note entry
 28	Supress minimal interface context menu if only one option active
+	Enhanced Items search so now also matches within Notes
 
 
