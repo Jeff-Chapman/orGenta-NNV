@@ -45,7 +45,7 @@ namespace orGenta_NNv
             if ((btnNewSister.Checked) && (newNparent.Text != "Main"))
                 { newNparent = newNparent.Parent; }
 
-            SetupNewNode(newNparent, tbNewNodeName.Text);
+            SetupNewNode(newNparent, tbNewNodeName.Text, true);
 
             tmrTVdirty.Interval = 1000;
  
@@ -54,7 +54,7 @@ namespace orGenta_NNv
             tvCategories.Focus();
         }
 
-        public TreeNode SetupNewNode(TreeNode newNparent, string nodeText)
+        public TreeNode SetupNewNode(TreeNode newNparent, string nodeText, bool showNewNode)
         {
             TreeNode LoadTreeNode = new TreeNode(nodeText);
 
@@ -72,6 +72,17 @@ namespace orGenta_NNv
                 { tvCategories.SelectedNode = tvCategories.Nodes[0].Nodes[0]; }
             int myNodeLoc = newNparent.Nodes.IndexOf(tvCategories.SelectedNode);
             newNparent.Nodes.Insert(myNodeLoc + 1, LoadTreeNode);
+            if (showNewNode)
+            {
+                tvCategories.SelectedNode = LoadTreeNode;
+                tvCategories.SelectedNode.EnsureVisible();
+                int tvStop = LoadTreeNode.Bounds.Top;
+                int tvSleft = LoadTreeNode.Bounds.Left;
+                int clLeft = myParentForm.Left + this.Left + tvSleft + 80;
+                int clTop = myParentForm.Top + this.Top + tvStop + 140;
+                Cursor.Position = new Point(clLeft, clTop);
+            }
+
             FullPathList.Add(LoadTreeNode.FullPath);
             TreeIsDirty(LoadTreeNode, true);
 

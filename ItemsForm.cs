@@ -231,8 +231,9 @@ namespace orGenta_NNv
                 TreeNode newAddedNode;
                 TreeNode myParentNode = myParentForm.myParentForm.FindNodeInTV("Main\\Untitled", null, false, "");
                 List<string> newCatsToMake = myParentForm.myParentForm.AutoCreateCats;
-                foreach(string oneNewCat in newCatsToMake)
-                    { newAddedNode = myParentForm.myParentForm.ActiveTopForm.SetupNewNode(myParentNode, oneNewCat); }
+                TreeViewForm myTVform = myParentForm.myParentForm.ActiveTopForm;
+                foreach (string oneNewCat in newCatsToMake)
+                    { newAddedNode = myTVform.SetupNewNode(myParentNode, oneNewCat, false); }
 
                 newCatsToMake.Clear();
                 // Force category persistence            
