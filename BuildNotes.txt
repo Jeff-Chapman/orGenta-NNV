@@ -65,5 +65,6 @@
 28	Supress minimal interface context menu if only one option active
 	Enhanced Items search so now also matches within Notes
 	Show and select new Treeview nodes after creation
+	Resize column width of ItemDesc when form resizes
 
 

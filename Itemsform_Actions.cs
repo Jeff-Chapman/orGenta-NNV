@@ -160,6 +160,7 @@ namespace orGenta_NNv
             int formWid = this.Width;
             pb2arrow.Left = formWid - 66;
             if (localCacheToDisplay) { pb2arrow.Visible = true; }
+            this.itemDescDataGridViewTextBoxColumn.Width = this.Width - 200;
         }
 
         private void ItemsForm_ResizeBegin(object sender, EventArgs e)
