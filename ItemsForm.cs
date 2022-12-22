@@ -185,6 +185,15 @@ namespace orGenta_NNv
             {
                 DataSet myDS = new DataSet();
                 myDS = DataGrabber.GetDataFor(DataProvider, myDBconx, myLoadSQL);
+                DataSet myNotesDS = new DataSet();
+                if (ItemToFind != "")
+                {
+                    string myNoteLoadSQL = "SELECT hasNote, ItemDesc, DateCreated, Vid.ItemID FROM (vw_Get_Items_Distinct Vid " + RLockOption;
+                    myNoteLoadSQL += " INNER JOIN Notes " + RLockOption + " ON Vid.ItemID = Notes.ItemID) WHERE";
+                    myNoteLoadSQL += " [NoteValue] LIKE '%" + ItemToFind + "%' ORDER BY DateCreated DESC";
+                    myNotesDS = DataGrabber.GetDataFor(DataProvider, myDBconx, myNoteLoadSQL);
+                    myDS.Merge(myNotesDS);
+                }
                 searchMayBeEmpty = false;
                 if (myDS.Tables[0].Rows.Count == 0)
                     { searchMayBeEmpty = true; }
@@ -222,8 +231,9 @@ namespace orGenta_NNv
                 TreeNode newAddedNode;
                 TreeNode myParentNode = myParentForm.myParentForm.FindNodeInTV("Main\\Untitled", null, false, "");
                 List<string> newCatsToMake = myParentForm.myParentForm.AutoCreateCats;
-                foreach(string oneNewCat in newCatsToMake)
-                    { newAddedNode = myParentForm.myParentForm.ActiveTopForm.SetupNewNode(myParentNode, oneNewCat); }
+                TreeViewForm myTVform = myParentForm.myParentForm.ActiveTopForm;
+                foreach (string oneNewCat in newCatsToMake)
+                    { newAddedNode = myTVform.SetupNewNode(myParentNode, oneNewCat, false); }
 
                 newCatsToMake.Clear();
                 // Force category persistence            

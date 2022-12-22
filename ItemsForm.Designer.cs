@@ -99,7 +99,7 @@
             this.ItemGrid.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
             this.ItemGrid.Location = new System.Drawing.Point(0, 0);
             this.ItemGrid.Name = "ItemGrid";
-            this.ItemGrid.RowHeadersWidth = 62;
+            this.ItemGrid.RowHeadersWidth = 40;  
             this.ItemGrid.RowTemplate.DefaultCellStyle.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ItemGrid.RowTemplate.Height = 28;
             this.ItemGrid.Size = new System.Drawing.Size(900, 424);
@@ -128,7 +128,7 @@
             this.itemDescDataGridViewTextBoxColumn.HeaderText = "Item Description";
             this.itemDescDataGridViewTextBoxColumn.MinimumWidth = 8;
             this.itemDescDataGridViewTextBoxColumn.Name = "itemDescDataGridViewTextBoxColumn";
-            this.itemDescDataGridViewTextBoxColumn.Width = 450;
+            this.itemDescDataGridViewTextBoxColumn.Width = 490; 
             // 
             // dateCreatedDataGridViewTextBoxColumn
             // 
@@ -136,7 +136,7 @@
             this.dateCreatedDataGridViewTextBoxColumn.HeaderText = "Created";
             this.dateCreatedDataGridViewTextBoxColumn.MinimumWidth = 8;
             this.dateCreatedDataGridViewTextBoxColumn.Name = "dateCreatedDataGridViewTextBoxColumn";
-            this.dateCreatedDataGridViewTextBoxColumn.Width = 150;
+            this.dateCreatedDataGridViewTextBoxColumn.Width = 100;  
             // 
             // itemIDDataGridViewTextBoxColumn
             // 

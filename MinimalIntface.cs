@@ -108,19 +108,20 @@ namespace orGenta_NNv
             this.menucreateCat,
             this.menuDontLink});
             this.ctxMenuTextClick.Name = "ctxMenuTextClick";
-            this.ctxMenuTextClick.Size = new System.Drawing.Size(167, 68);
+            this.ctxMenuTextClick.Size = new System.Drawing.Size(212, 68);
+            this.ctxMenuTextClick.Opening += new System.ComponentModel.CancelEventHandler(this.ctxMenuTextClick_Opening);
             this.ctxMenuTextClick.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.ctxMenuTextClick_ItemClicked);
             // 
             // menucreateCat
             // 
             this.menucreateCat.Name = "menucreateCat";
-            this.menucreateCat.Size = new System.Drawing.Size(166, 32);
+            this.menucreateCat.Size = new System.Drawing.Size(211, 32);
             this.menucreateCat.Text = "Create Category";
             // 
             // menuDontLink
             // 
             this.menuDontLink.Name = "menuDontLink";
-            this.menuDontLink.Size = new System.Drawing.Size(166, 32);
+            this.menuDontLink.Size = new System.Drawing.Size(211, 32);
             this.menuDontLink.Text = "Don\'t Link";
             // 
             // btnEnter
@@ -352,68 +353,101 @@ namespace orGenta_NNv
 
             if (e.ClickedItem == menucreateCat)
             {
-                // opt-in newPotCats
-                foreach (string oneCat in newPotCats)
-                    { myNewCatList.Items.Add(oneCat, true); }
-
-                myNewCatListForm.Top = this.Top - (newPotCats.Count * 16) - 50;
-                myNewCatListForm.Height = (newPotCats.Count * 16) + 32;
-
-                myNewCatListForm.ShowDialog();
-
-                StreamWriter writeStops = new StreamWriter("orgStopWords.txt", true);
-
-                // Add unchecked items to stopwords, remove from newPotCats
-
-                holdPotStopWords.Clear();
-                holdPotStopWords = (ArrayList)newPotCats.Clone();
-                foreach (string oneCat in myNewCatList.CheckedItems)
-                    { holdPotStopWords.Remove(oneCat);  }
-                foreach (string stopWord in holdPotStopWords)
-                {
-                    writeStops.WriteLine(stopWord);
-                    myParent.orgStopWords += " " + stopWord;
-                    newPotCats.Remove(stopWord);
-                }
-
-                writeStops.Close();
-                writeStops.Dispose();
+                ShowCategoryList(myNewCatListForm, myNewCatList);
                 return;
             }
 
             if (e.ClickedItem == menuDontLink)
             {
-                myNewCatListForm.lblListHeader.Text = "Don't link these:";
-
-                foreach (string oneCat in newPotCats)
-                    { myNewCatList.Items.Add(oneCat, false); }
-                foreach (string oneCat in existingCats)
-                    { myNewCatList.Items.Add(oneCat, false); }
-
-                myNewCatListForm.Top = this.Top - (myNewCatList.Items.Count * 16) - 50;
-                myNewCatListForm.Height = (myNewCatList.Items.Count * 16) + 32;
-
-                myNewCatListForm.ShowDialog();
-
-                foreach (string oneCat in myNewCatList.CheckedItems)
-                {
-                    List<string> oneSup = new List<string> { oneCat, this.txtDataEntered.Text };
-                    myCatSupp.Add(oneSup);
-                }
-
+                ShowCatSupressions(myNewCatListForm, myNewCatList);
                 return;
             }
+        }
 
+        private void ShowCatSupressions(CatSupressForm myNewCatListForm, CheckedListBox myNewCatList)
+        {
+            myNewCatListForm.lblListHeader.Text = "Don't link these:";
+
+            foreach (string oneCat in newPotCats)
+                { myNewCatList.Items.Add(oneCat, false); }
+            foreach (string oneCat in existingCats)
+                { myNewCatList.Items.Add(oneCat, false); }
+
+            myNewCatListForm.Top = this.Top - (myNewCatList.Items.Count * 16) - 50;
+            myNewCatListForm.Height = (myNewCatList.Items.Count * 16) + 32;
+
+            myNewCatListForm.ShowDialog();
+
+            foreach (string oneCat in myNewCatList.CheckedItems)
+            {
+                List<string> oneSup = new List<string> { oneCat, this.txtDataEntered.Text };
+                myCatSupp.Add(oneSup);
+            }
+
+            return;
+        }
+
+        private void ShowCategoryList(CatSupressForm myNewCatListForm, CheckedListBox myNewCatList)
+        {
+
+            // opt-in newPotCats
+            foreach (string oneCat in newPotCats)
+                { myNewCatList.Items.Add(oneCat, true); }
+
+            myNewCatListForm.Top = this.Top - (newPotCats.Count * 16) - 50;
+            myNewCatListForm.Height = (newPotCats.Count * 16) + 32;
+
+            myNewCatListForm.ShowDialog();
+
+            StreamWriter writeStops = new StreamWriter("orgStopWords.txt", true);
+
+            // Add unchecked items to stopwords, remove from newPotCats
+
+            holdPotStopWords.Clear();
+            holdPotStopWords = (ArrayList)newPotCats.Clone();
+            foreach (string oneCat in myNewCatList.CheckedItems)
+                { holdPotStopWords.Remove(oneCat); }
+            foreach (string stopWord in holdPotStopWords)
+            {
+                writeStops.WriteLine(stopWord);
+                myParent.orgStopWords += " " + stopWord;
+                newPotCats.Remove(stopWord);
+            }
+
+            writeStops.Close();
+            writeStops.Dispose();
+            return;
         }
 
         private void MinimalIntface_Activated(object sender, EventArgs e)
         {
             OptCreateCategories = myParent.optCreateCategories;
             OptHighlightCats = myParent.optHighlightCats;
-            menucreateCat.Visible = false;
-            if (OptCreateCategories) { menucreateCat.Visible = true; }
-            menuDontLink.Visible = false;
-            if (OptHighlightCats) { menuDontLink.Visible = true; }
+        }
+
+        private void ctxMenuTextClick_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if ((OptCreateCategories) && (OptHighlightCats)) { return; }
+
+            e.Cancel = true;
+            if (OptCreateCategories)
+            {
+                CatSupressForm myNewCatListForm = new CatSupressForm();
+                CheckedListBox myNewCatList = myNewCatListForm.ckListCategories;
+                myNewCatListForm.Left = this.Left + 45;
+                ShowCategoryList(myNewCatListForm, myNewCatList);
+                return;
+            }
+
+            if (OptHighlightCats)
+            {
+                CatSupressForm myNewCatListForm = new CatSupressForm();
+                CheckedListBox myNewCatList = myNewCatListForm.ckListCategories;
+                myNewCatListForm.Left = this.Left + 45;
+                ShowCatSupressions(myNewCatListForm, myNewCatList);
+                return;
+            }
+
         }
     }
 }
