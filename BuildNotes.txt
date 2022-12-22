@@ -62,3 +62,9 @@
 27	Enhance treeview paste to allow child or below
 	Fixed bug so Category click doesn't duplicate Items window
 	Better handling of escape key on Note entry
+28	Supress minimal interface context menu if only one option active
+	Enhanced Items search so now also matches within Notes
+	Show and select new Treeview nodes after creation
+	Resize column width of ItemDesc when form resizes
+
+

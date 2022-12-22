@@ -79,9 +79,6 @@ namespace orGenta_NNv
         private void menuFindItem_Click(object sender, EventArgs e)
         {
             ActiveTopForm.ItemSearch();
-            //this.pnlItemFind.Visible = true;
-            //this.txtItemSearch.Text = "";
-            //this.txtItemSearch.Focus();
         }
 
         private void menuAdvPrint_Click(object sender, EventArgs e)
