@@ -97,6 +97,8 @@ namespace orGenta_NNv
                 // if box was previously checked then keep it so
                 ItemGrid.Rows[clickedRow].Cells[0].Value = 1;
             }
+            if (myNoteForm.tbNoteText.Text == EmptyNoteText)
+                { ItemGrid.Rows[clickedRow].Cells[0].Value = 0; }
 
             sUtil = myParentForm.myParentForm.mySideUtils.lbCatList;
             sUtil.Visible = true;
@@ -257,7 +259,7 @@ namespace orGenta_NNv
                     string childCategoryID = pTag.CatID;
                     string myLoadSQL = "SELECT hasNote, ItemDesc, DateCreated, ItemID, CategoryID FROM vw_Get_Items " + RLockOption;
                     myLoadSQL += " WHERE CategoryID = " + childCategoryID;
-                    LoadUptheGrids(myLoadSQL);
+                    LoadUptheGrids(myLoadSQL, "");
                 }
             }
             else
