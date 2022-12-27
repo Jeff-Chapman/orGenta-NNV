@@ -87,6 +87,8 @@ namespace orGenta_NNv
             clickedColumn = this.ItemGrid.HitTest(e.X, e.Y).ColumnIndex;
             clickedRow = this.ItemGrid.HitTest(e.X, e.Y).RowIndex;
             if (clickedRow == -1) { return; }
+            if (clickedColumn == -1)
+                { ItemGrid.Rows[clickedRow].Selected = true; }
 
             string ActiveItem = ItemGrid.Rows[clickedRow].Cells[3].Value.ToString();
 
@@ -97,8 +99,6 @@ namespace orGenta_NNv
                 // if box was previously checked then keep it so
                 ItemGrid.Rows[clickedRow].Cells[0].Value = 1;
             }
-            if (myNoteForm.tbNoteText.Text == EmptyNoteText)
-                { ItemGrid.Rows[clickedRow].Cells[0].Value = 0; }
 
             sUtil = myParentForm.myParentForm.mySideUtils.lbCatList;
             sUtil.Visible = true;
