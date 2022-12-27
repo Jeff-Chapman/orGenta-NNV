@@ -15,7 +15,8 @@ namespace orGenta_NNv
         private ItemsForm myItemsForm;
         private MinimalIntface myMIform;
         private SharedRoutines myItemCleaner;
-        
+        private string EmptyNoteText = "Enter your note info here...";
+
         public NoteForm(ItemsForm parent)
         {
             InitializeComponent();
@@ -32,8 +33,6 @@ namespace orGenta_NNv
 
         private void btnOK_Click(object sender, EventArgs e)
         {
-            string EmptyNoteText = "Enter your note info here...";
-
             if (tbNoteText.Text == "")
             { 
                 this.Close();
@@ -127,7 +126,12 @@ namespace orGenta_NNv
         private void btnCancel_Click(object sender, EventArgs e)
         {
             DialogResult userChoice = MessageBox.Show("Choose Cancel to Discard Changes...", "Cancel Entry?", MessageBoxButtons.RetryCancel);
-            if (userChoice == DialogResult.Cancel) { this.Close(); }
+            if (userChoice == DialogResult.Cancel) 
+            {
+                if (tbNoteText.Text == EmptyNoteText)
+                    { myItemsForm.ItemGrid.Rows[parentClickedRow].Cells[0].Value = 0; }
+                this.Close(); 
+            }
         }
     }
 }
