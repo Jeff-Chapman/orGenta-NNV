@@ -499,6 +499,7 @@ namespace orGenta_NNv
             myNoteForm.NoteIsOnNewItem = false;
             myNoteForm.parentItemID = ActiveItem;
             myNoteForm.tbNoteText.Text = NoteTextToShow;
+            myNoteForm.originalNoteText = NoteTextToShow;
             myNoteForm.parentClickedRow = clickedRow;
 
             if (NoteTextToShow != EmptyNoteText)

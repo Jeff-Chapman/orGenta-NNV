@@ -83,6 +83,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "(Item ref here...)";
             this.Activated += new System.EventHandler(this.NoteForm_Activated);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.NoteForm_FormClosing);
             this.ResumeLayout(false);
 
         }

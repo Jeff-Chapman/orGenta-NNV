@@ -10,12 +10,15 @@ namespace orGenta_NNv
     {
         public bool NoteIsOnNewItem;
         public string parentItemID;
+        public string originalNoteText;
         public bool noteWasBlank = true;
         public int parentClickedRow;
         private ItemsForm myItemsForm;
         private MinimalIntface myMIform;
         private SharedRoutines myItemCleaner;
         private string EmptyNoteText = "Enter your note info here...";
+        private bool EscKeyPressed = false;
+        private bool OkayBtnPressed = false;
 
         public NoteForm(ItemsForm parent)
         {
@@ -33,6 +36,7 @@ namespace orGenta_NNv
 
         private void btnOK_Click(object sender, EventArgs e)
         {
+            OkayBtnPressed = true;
             if (tbNoteText.Text == "")
             { 
                 this.Close();
@@ -125,13 +129,28 @@ namespace orGenta_NNv
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
+            EscKeyPressed = true;
+            if (NoteHadChanges()) { return; }
+            this.Close();
+        }
+
+        private bool NoteHadChanges()
+        {
+            if (tbNoteText.Text == originalNoteText) { return false; }
             DialogResult userChoice = MessageBox.Show("Choose Cancel to Discard Changes...", "Cancel Entry?", MessageBoxButtons.RetryCancel);
-            if (userChoice == DialogResult.Cancel) 
+            if (userChoice == DialogResult.Cancel)
             {
                 if (tbNoteText.Text == EmptyNoteText)
                     { myItemsForm.ItemGrid.Rows[parentClickedRow].Cells[0].Value = 0; }
-                this.Close(); 
+                return false;
             }
+            return true;
+        }
+
+        private void NoteForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if ((EscKeyPressed) || (OkayBtnPressed)) { return; }
+            if (NoteHadChanges()) { e.Cancel = true; }
         }
     }
 }

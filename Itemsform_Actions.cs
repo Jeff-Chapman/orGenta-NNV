@@ -66,6 +66,7 @@ namespace orGenta_NNv
             string itemSamp = itemText + "...";
             if (itemText.Length > 20) { itemSamp = itemText.Substring(0, 20) + "..."; }
             myNoteForm.Text = "Note For: \"" + itemSamp + "\"";
+            myNoteForm.originalNoteText = EmptyNoteText;
             myNoteForm.Show();
         }
 
