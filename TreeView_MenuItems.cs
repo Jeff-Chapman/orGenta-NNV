@@ -563,6 +563,9 @@ namespace orGenta_NNv
             if (this.tvCategories.SelectedNode.ForeColor != FrozenColor)
                 { CollapseFrozenNodes(this.tvCategories.SelectedNode); }
             this.tvCategories.EndUpdate();
+            Rectangle nodeLoc = tvCategories.SelectedNode.Bounds;
+            Cursor.Position = new Point(myParentForm.Left + this.Left + nodeLoc.Left + 40,
+                myParentForm.Top + this.Top + nodeLoc.Top + 140);
         }
 
         private void CollapseFrozenNodes(TreeNode StartingNode)
@@ -588,6 +591,9 @@ namespace orGenta_NNv
             Application.DoEvents();
             CollapseNodeCascade(this.tvCategories.SelectedNode);
             this.Cursor = Cursors.Default;
+            Rectangle nodeLoc = tvCategories.SelectedNode.Bounds;
+            Cursor.Position = new Point(myParentForm.Left + this.Left + nodeLoc.Left + 40,
+                myParentForm.Top + this.Top + nodeLoc.Top + 140);
         }
 
         private void CollapseNodeCascade(TreeNode NodeToCollapse)
@@ -611,6 +617,9 @@ namespace orGenta_NNv
             this.tvCategories.SelectedNode = SaveMyNode;
             SaveMyNode.EnsureVisible();
             SaveMyNode.Expand();
+            Rectangle nodeLoc = tvCategories.SelectedNode.Bounds;
+            Cursor.Position = new Point(myParentForm.Left + this.Left + nodeLoc.Left + 40,
+                myParentForm.Top + this.Top + nodeLoc.Top + 140);
         }
 
         private void freezeClosedToolStripMenuItem_Click(object sender, EventArgs e)
