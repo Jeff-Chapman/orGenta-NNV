@@ -106,7 +106,7 @@ namespace orGenta_NNv
             GC.KeepAlive(ownerMutex);
 
             mySideUtils = new SideUtilBox(this);
-            mySideUtils.Left = this.Right + 10;
+            mySideUtils.Left = this.Right - 6;
             mySideUtils.Top = this.Top + 60;
 
             GetTextLineForm = new MinimalIntface(this);
@@ -323,7 +323,7 @@ namespace orGenta_NNv
         {
             try
             {
-                mySideUtils.Left = this.Right + 10;
+                mySideUtils.Left = this.Right - 6;
                 mySideUtils.Top = this.Top + 60;
             }
             catch { }
