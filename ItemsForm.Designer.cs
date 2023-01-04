@@ -31,6 +31,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ItemsForm));
             this.ItemGrid = new System.Windows.Forms.DataGridView();
@@ -95,11 +96,19 @@
             this.itemIDDataGridViewTextBoxColumn});
             this.ItemGrid.ContextMenuStrip = this.menuItemsContext;
             this.ItemGrid.DataSource = this.vwGetItemsBindingSource;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.ItemGrid.DefaultCellStyle = dataGridViewCellStyle2;
             this.ItemGrid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ItemGrid.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
             this.ItemGrid.Location = new System.Drawing.Point(0, 0);
             this.ItemGrid.Name = "ItemGrid";
-            this.ItemGrid.RowHeadersWidth = 40;  
+            this.ItemGrid.RowHeadersWidth = 40;
             this.ItemGrid.RowTemplate.DefaultCellStyle.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ItemGrid.RowTemplate.Height = 28;
             this.ItemGrid.Size = new System.Drawing.Size(900, 424);
@@ -128,7 +137,7 @@
             this.itemDescDataGridViewTextBoxColumn.HeaderText = "Item Description";
             this.itemDescDataGridViewTextBoxColumn.MinimumWidth = 8;
             this.itemDescDataGridViewTextBoxColumn.Name = "itemDescDataGridViewTextBoxColumn";
-            this.itemDescDataGridViewTextBoxColumn.Width = 490; 
+            this.itemDescDataGridViewTextBoxColumn.Width = 490;
             // 
             // dateCreatedDataGridViewTextBoxColumn
             // 
@@ -136,7 +145,6 @@
             this.dateCreatedDataGridViewTextBoxColumn.HeaderText = "Created";
             this.dateCreatedDataGridViewTextBoxColumn.MinimumWidth = 8;
             this.dateCreatedDataGridViewTextBoxColumn.Name = "dateCreatedDataGridViewTextBoxColumn";
-            this.dateCreatedDataGridViewTextBoxColumn.Width = 100;  
             // 
             // itemIDDataGridViewTextBoxColumn
             // 
@@ -156,31 +164,31 @@
             this.toolStripSeparator1,
             this.deleteToolStripMenuItem});
             this.menuItemsContext.Name = "menuItemsContext";
-            this.menuItemsContext.Size = new System.Drawing.Size(175, 106);
+            this.menuItemsContext.Size = new System.Drawing.Size(173, 106);
             // 
             // zoomToolStripMenuItem
             // 
             this.zoomToolStripMenuItem.Name = "zoomToolStripMenuItem";
-            this.zoomToolStripMenuItem.Size = new System.Drawing.Size(174, 32);
+            this.zoomToolStripMenuItem.Size = new System.Drawing.Size(172, 32);
             this.zoomToolStripMenuItem.Text = "Zoom";
             this.zoomToolStripMenuItem.Click += new System.EventHandler(this.zoomToolStripMenuItem_Click);
             // 
             // assignToToolStripMenuItem
             // 
             this.assignToToolStripMenuItem.Name = "assignToToolStripMenuItem";
-            this.assignToToolStripMenuItem.Size = new System.Drawing.Size(174, 32);
+            this.assignToToolStripMenuItem.Size = new System.Drawing.Size(172, 32);
             this.assignToToolStripMenuItem.Text = "Assign To...";
             this.assignToToolStripMenuItem.Click += new System.EventHandler(this.assignToToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(171, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(169, 6);
             // 
             // deleteToolStripMenuItem
             // 
             this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(174, 32);
+            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(172, 32);
             this.deleteToolStripMenuItem.Text = "Delete";
             this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
             // 
