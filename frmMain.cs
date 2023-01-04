@@ -69,6 +69,7 @@ namespace orGenta_NNv
         private void frmMain_Load(object sender, EventArgs e)
         {
             RestoreCoordinates();
+            RestoreUserOptions();
 
             if (Control.ModifierKeys == Keys.Shift)
             { 
@@ -106,7 +107,7 @@ namespace orGenta_NNv
             GC.KeepAlive(ownerMutex);
 
             mySideUtils = new SideUtilBox(this);
-            mySideUtils.Left = this.Right + 10;
+            mySideUtils.Left = this.Right - 6;
             mySideUtils.Top = this.Top + 60;
 
             GetTextLineForm = new MinimalIntface(this);
@@ -163,6 +164,23 @@ namespace orGenta_NNv
             dbCleanupRoutines();
             mySideUtils.Show();       
             this.Cursor = Cursors.Arrow;
+        }
+
+        private void RestoreUserOptions()
+        {
+            RegistryKey ThisUser = Registry.CurrentUser;
+            try
+            {
+                RegistryKey UserOptions = ThisUser.OpenSubKey("Software\\orGenta\\UserOptions", true);
+                optLongErrMessages = Convert.ToBoolean(UserOptions.GetValue("LongErrMessages", 1));
+                optTVupdateInterval = Convert.ToInt32(UserOptions.GetValue("TVupdateInterval", 10000)); 
+                optTVupdateInterval2nd = Convert.ToInt32(UserOptions.GetValue("TVupdateInterval2nd", 30000));
+                optWrapMode = Convert.ToBoolean(UserOptions.GetValue("WrapMode", 1));
+                optAdjustItemsToParent = Convert.ToBoolean(UserOptions.GetValue("AdjustItemsToParent", 1));
+                optCreateCategories = Convert.ToBoolean(UserOptions.GetValue("CreateCategories", 0));
+                optHighlightCats = Convert.ToBoolean(UserOptions.GetValue("HighlightCats", 0));
+            }
+            catch {}
         }
 
         [RummageKeepReflectionSafe]
@@ -323,7 +341,7 @@ namespace orGenta_NNv
         {
             try
             {
-                mySideUtils.Left = this.Right + 10;
+                mySideUtils.Left = this.Right - 6;
                 mySideUtils.Top = this.Top + 60;
             }
             catch { }
@@ -471,6 +489,15 @@ namespace orGenta_NNv
             RegistryKey ScreenSize = ThisUser.CreateSubKey("Software\\orGenta\\ScreenSize");
             ScreenSize.SetValue("Height", this.Height);
             ScreenSize.SetValue("Width", this.Width);
+
+            RegistryKey UserOptions = ThisUser.CreateSubKey("Software\\orGenta\\UserOptions");
+            UserOptions.SetValue("LongErrMessages", optLongErrMessages);
+            UserOptions.SetValue("TVupdateInterval", optTVupdateInterval);
+            UserOptions.SetValue("TVupdateInterval2nd", optTVupdateInterval2nd);
+            UserOptions.SetValue("WrapMode", optWrapMode);
+            UserOptions.SetValue("AdjustItemsToParent", optAdjustItemsToParent);
+            UserOptions.SetValue("CreateCategories", optCreateCategories);
+            UserOptions.SetValue("HighlightCats", optHighlightCats);
         }
 
     }
