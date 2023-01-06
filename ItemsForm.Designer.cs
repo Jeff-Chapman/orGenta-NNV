@@ -145,6 +145,7 @@
             this.dateCreatedDataGridViewTextBoxColumn.HeaderText = "Created";
             this.dateCreatedDataGridViewTextBoxColumn.MinimumWidth = 8;
             this.dateCreatedDataGridViewTextBoxColumn.Name = "dateCreatedDataGridViewTextBoxColumn";
+            this.dateCreatedDataGridViewTextBoxColumn.Width = 150;
             // 
             // itemIDDataGridViewTextBoxColumn
             // 

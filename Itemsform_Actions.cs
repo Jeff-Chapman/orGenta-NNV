@@ -251,7 +251,7 @@ namespace orGenta_NNv
             if (ShowChildItems)
             {
                 TreeNode hotNode;
-                try { hotNode = myParentForm.tvCategories.SelectedNode; }
+                try { hotNode = myNodeForTheseItems; }
                 catch { hotNode = myParentForm.tvCategories.Nodes[0]; }
                 foreach (TreeNode childNode in hotNode.Nodes)
                 {

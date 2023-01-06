@@ -65,6 +65,7 @@ namespace orGenta_NNv
         public string NewNoteText = "";
         public IDbConnection myDBconx;
         public string categoryID;
+        public TreeNode myNodeForTheseItems;
         public bool FormIsShadow = false;
         public string DataProvider;
         public string RLockOption;
@@ -740,6 +741,8 @@ namespace orGenta_NNv
         {
             myParentForm.myParentForm.ActiveTopItems = this;
             myParentForm.myParentForm.ActiveTopForm = myParentForm;
+            myParentForm.myParentForm.menuExportCSV.Enabled = true;
+            myParentForm.myParentForm.menuItems2email.Enabled = true;
             myParentForm.BringToFront();
             if ((formJustLoaded) && (myParentForm.myParentForm.optAdjustItemsToParent == true))
             {
@@ -754,7 +757,6 @@ namespace orGenta_NNv
             pb2arrow.Top = splGridSplitter.SplitterDistance - 13;
             pb2arrow.Left = this.Width - 66;
             this.tbNewItem.Focus();
-
         }
 
         public void AutoAssign_Items()

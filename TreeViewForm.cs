@@ -317,6 +317,7 @@ namespace orGenta_NNv
             myItemForm.myDBconx = myDBconx;
             myItemForm.DataProvider = DataProvider;
             myItemForm.RLockOption = RLockOption;
+            myItemForm.myNodeForTheseItems = e.Node;
 
             myItemForm.Show();
             String thisItem = CatToShow;
