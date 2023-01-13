@@ -45,7 +45,7 @@ namespace orGenta_NNv
             if ((btnNewSister.Checked) && (newNparent.Text != "Main"))
                 { newNparent = newNparent.Parent; }
 
-            SetupNewNode(newNparent, tbNewNodeName.Text);
+            SetupNewNode(newNparent, tbNewNodeName.Text, true);
 
             tmrTVdirty.Interval = 1000;
  
@@ -54,7 +54,7 @@ namespace orGenta_NNv
             tvCategories.Focus();
         }
 
-        public TreeNode SetupNewNode(TreeNode newNparent, string nodeText)
+        public TreeNode SetupNewNode(TreeNode newNparent, string nodeText, bool showNewNode)
         {
             TreeNode LoadTreeNode = new TreeNode(nodeText);
 
@@ -72,6 +72,17 @@ namespace orGenta_NNv
                 { tvCategories.SelectedNode = tvCategories.Nodes[0].Nodes[0]; }
             int myNodeLoc = newNparent.Nodes.IndexOf(tvCategories.SelectedNode);
             newNparent.Nodes.Insert(myNodeLoc + 1, LoadTreeNode);
+            if (showNewNode)
+            {
+                tvCategories.SelectedNode = LoadTreeNode;
+                tvCategories.SelectedNode.EnsureVisible();
+                int tvStop = LoadTreeNode.Bounds.Top;
+                int tvSleft = LoadTreeNode.Bounds.Left;
+                int clLeft = myParentForm.Left + this.Left + tvSleft + 80;
+                int clTop = myParentForm.Top + this.Top + tvStop + 140;
+                Cursor.Position = new Point(clLeft, clTop);
+            }
+
             FullPathList.Add(LoadTreeNode.FullPath);
             TreeIsDirty(LoadTreeNode, true);
 
@@ -162,7 +173,9 @@ namespace orGenta_NNv
             TreeNode myParent = thisNode.Parent;
             myParent.Nodes.Remove(thisNode);
             TreeNode myGrandpa = myParent.Parent;
-            myGrandpa.Nodes.Add(thisNode);
+            int parLoc = myGrandpa.Nodes.IndexOf(myParent);
+            myGrandpa.Nodes.Insert(parLoc + 1, thisNode);
+            tvCategories.SelectedNode = thisNode;
             TreeIsDirty(thisNode, false);
         }
 
@@ -348,17 +361,36 @@ namespace orGenta_NNv
             deleteAfterPasteFlag = true;
         }
 
+        private void pasteBelowToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            pasteAsChildOrBelow(false);
+        }
+
         private void pasteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            pasteAsChildOrBelow(true);
+        }
+
+        private void pasteAsChildOrBelow(bool AsChild)
         {
             TreeNode TargetForPaste = tvCategories.SelectedNode;
             if (TargetForPaste == myParentForm.copyingNode) { return; }
 
-            if (deleteAfterPasteFlag) 
+            if (deleteAfterPasteFlag)
             {
                 TreeNode myParent = myParentForm.copyingNode.Parent;
                 myParent.Nodes.Remove(myParentForm.copyingNode);
-                TargetForPaste.Nodes.Add(myParentForm.copyingNode);
+                if (AsChild)
+                    { TargetForPaste.Nodes.Add(myParentForm.copyingNode); }
+                else
+                {
+                    TreeNode TargParent = TargetForPaste.Parent;
+                    int targLoc = TargParent.Nodes.IndexOf(TargetForPaste);
+                    TargParent.Nodes.Insert(targLoc + 1, myParentForm.copyingNode);
+                }
 
+                tvCategories.SelectedNode = myParentForm.copyingNode;
+                tvCategories.SelectedNode.EnsureVisible();
                 TreeIsDirty(myParentForm.copyingNode, false);
                 myParentForm.copyingNode = null;
             }

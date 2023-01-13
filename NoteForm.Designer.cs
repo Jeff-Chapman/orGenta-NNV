@@ -30,6 +30,7 @@
         {
             this.btnOK = new System.Windows.Forms.Button();
             this.tbNoteText = new System.Windows.Forms.RichTextBox();
+            this.btnCancel = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnOK
@@ -58,13 +59,26 @@
             this.tbNoteText.DragDrop += new System.Windows.Forms.DragEventHandler(this.tbNoteText_DragDrop);
             this.tbNoteText.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.tbNoteText_LinkClicked);
             // 
+            // btnCancel
+            // 
+            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnCancel.Location = new System.Drawing.Point(646, 427);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(95, 28);
+            this.btnCancel.TabIndex = 2;
+            this.btnCancel.Text = "Cancel";
+            this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            // 
             // NoteForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(757, 472);
             this.Controls.Add(this.tbNoteText);
             this.Controls.Add(this.btnOK);
+            this.Controls.Add(this.btnCancel);
             this.Name = "NoteForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "(Item ref here...)";
@@ -77,5 +91,6 @@
 
         private System.Windows.Forms.Button btnOK;
         public System.Windows.Forms.RichTextBox tbNoteText;
+        private System.Windows.Forms.Button btnCancel;
     }
 }

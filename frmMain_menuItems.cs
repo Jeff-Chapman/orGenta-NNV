@@ -79,9 +79,6 @@ namespace orGenta_NNv
         private void menuFindItem_Click(object sender, EventArgs e)
         {
             ActiveTopForm.ItemSearch();
-            //this.pnlItemFind.Visible = true;
-            //this.txtItemSearch.Text = "";
-            //this.txtItemSearch.Focus();
         }
 
         private void menuAdvPrint_Click(object sender, EventArgs e)
@@ -478,7 +475,7 @@ namespace orGenta_NNv
             getDBconnxInfo(true);
             if (myServerType != "MS Access") { return; }    
 
-            if (myServerName == ".") { return; }
+            if ((RemoteConx) && (myServerName == ".")) { return; }
 
             string FullKBpathName = myServerName + "\\" + myKnowledgeDBname;
             int lenFKB = FullKBpathName.Length;

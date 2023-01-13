@@ -87,7 +87,9 @@ namespace orGenta_NNv
             clickedColumn = this.ItemGrid.HitTest(e.X, e.Y).ColumnIndex;
             clickedRow = this.ItemGrid.HitTest(e.X, e.Y).RowIndex;
             if (clickedRow == -1) { return; }
-            //string ActiveItem = GetItemIDforRow(clickedRow);
+            if (clickedColumn == -1)
+                { ItemGrid.Rows[clickedRow].Selected = true; }
+
             string ActiveItem = ItemGrid.Rows[clickedRow].Cells[3].Value.ToString();
 
             // They clicked the Note checkbox
@@ -160,6 +162,7 @@ namespace orGenta_NNv
             int formWid = this.Width;
             pb2arrow.Left = formWid - 66;
             if (localCacheToDisplay) { pb2arrow.Visible = true; }
+            this.itemDescDataGridViewTextBoxColumn.Width = this.Width - 200;
         }
 
         private void ItemsForm_ResizeBegin(object sender, EventArgs e)
@@ -256,7 +259,7 @@ namespace orGenta_NNv
                     string childCategoryID = pTag.CatID;
                     string myLoadSQL = "SELECT hasNote, ItemDesc, DateCreated, ItemID, CategoryID FROM vw_Get_Items " + RLockOption;
                     myLoadSQL += " WHERE CategoryID = " + childCategoryID;
-                    LoadUptheGrids(myLoadSQL);
+                    LoadUptheGrids(myLoadSQL, "");
                 }
             }
             else

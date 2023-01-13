@@ -213,6 +213,7 @@ namespace orGenta_NNv
                 promoteToolStripMenuItem.Enabled = false;
                 copyToolStripMenuItem.Enabled = false;
                 pasteToolStripMenuItem.Enabled = false;
+                pasteBelowToolStripMenuItem.Enabled = false;
                 moveToolStripMenuItem.Enabled = false;
                 freezeClosedToolStripMenuItem.Enabled = false;
                 return;
@@ -223,6 +224,7 @@ namespace orGenta_NNv
             demoteToolStripMenuItem.Enabled = true;
             copyToolStripMenuItem.Enabled = true;      
             pasteToolStripMenuItem.Enabled = true;
+            pasteBelowToolStripMenuItem.Enabled = true;
             moveToolStripMenuItem.Enabled = true;
             freezeClosedToolStripMenuItem.Enabled = true;
 
@@ -240,9 +242,15 @@ namespace orGenta_NNv
                 { demoteToolStripMenuItem.Enabled = true; }
 
             if (myParentForm.copyingNode == null) 
-                { pasteToolStripMenuItem.Enabled = false; }
+            { 
+                pasteToolStripMenuItem.Enabled = false;
+                pasteBelowToolStripMenuItem.Enabled = false;
+            }
             else 
-                { pasteToolStripMenuItem.Enabled = true; }
+            { 
+                pasteToolStripMenuItem.Enabled = true;
+                pasteBelowToolStripMenuItem.Enabled = true;
+            }
 
             if (thisNode.ForeColor == FrozenColor)
                 { freezeClosedToolStripMenuItem.Text = "Unfreeze"; }
@@ -292,14 +300,14 @@ namespace orGenta_NNv
 
             int myYloc = e.Y;
             int myRightBorder = this.Left + this.Width;
+            string CatToShow = e.Node.Text;
 
-            // ERR: don't reload form if already shown, just give it focus
+            if (FoundOpenWindow(CatToShow)) { return; };
 
             ItemsForm myItemForm = new ItemsForm(this);
             myItemForm.MdiParent = myParentForm;
             myItemForm.Top = myYloc + this.Top;
             myItemForm.Left = myRightBorder + 6;
-            string CatToShow = e.Node.Text;
             myItemForm.Text = activeDBname + " :: " + CatToShow;
 
             TagStruct myTag = (TagStruct)e.Node.Tag;
@@ -325,6 +333,32 @@ namespace orGenta_NNv
             MouseOperations.MouseEvent(MouseOperations.MouseEventFlags.LeftUp);
         }
 
+        private bool FoundOpenWindow(string CatToShow)
+        {
+            bool foundIt = false;
+            string winForFocus = activeDBname + " :: " + CatToShow;
+
+            Form[] formsList = myParentForm.MdiChildren;
+            string tgtType = "orGenta_NNv.ItemsForm"; 
+            foreach (Form chkForm in formsList)
+            {
+                string thisFormType = chkForm.GetType().ToString();
+                if (thisFormType != tgtType) { continue; }
+                if (chkForm.Text.IndexOf(winForFocus) > -1)
+                { 
+                    chkForm.Activate();
+                    foundIt = true;
+                    Cursor.Position = new Point(myParentForm.Left + chkForm.Left + 80, myParentForm.Top + chkForm.Top + 100);
+                    Application.DoEvents();
+                    chkForm.Focus();
+                    MouseOperations.MouseEvent(MouseOperations.MouseEventFlags.LeftDown);
+                    MouseOperations.MouseEvent(MouseOperations.MouseEventFlags.LeftUp);
+                    break;
+                }
+            }
+
+            return foundIt;
+        }
         public void BuildItemCatXref(ItemsForm myItemForm)
         {
             // build the ItemsCatXrefArray, the cross-ref between data rows and category fullpaths
@@ -708,7 +742,6 @@ namespace orGenta_NNv
             String sUWindowName = Text + " (KB)";
             sUtil.Items.Remove(sUWindowName);
         }
-
 
     }
 }
