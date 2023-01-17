@@ -31,7 +31,8 @@ namespace orGenta_NNv
             if (dbnLen < 4) { tbDatabase.Text += ".mdb"; }
             bool hasGoodExt = false;
             int dotLoc = tbDatabase.Text.IndexOf(".");
-            string testExt = tbDatabase.Text.Substring(dotLoc);
+            string testExt = "";
+            try { testExt = tbDatabase.Text.Substring(dotLoc); } catch { }    
             if ((testExt == ".mdb") || (testExt == ".accdb")) { hasGoodExt = true; }
             if (!hasGoodExt) { tbDatabase.Text += ".mdb"; }
 
