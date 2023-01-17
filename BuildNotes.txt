@@ -71,3 +71,4 @@
 	Fix code for prompt on form close from the title clickbox
 	Couple of bug fixes
 	Persist user options to Registry
+	Add support for new versions of MS Access

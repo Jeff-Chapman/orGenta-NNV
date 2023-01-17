@@ -37,6 +37,7 @@ namespace orGenta_NNv
 
         public bool testing;
         public IDbConnection myDBconx;
+        public bool isOldMSaccess;
         public bool RemoteConx;
         public frmMain myParentForm;
         public string DataProvider;
@@ -317,6 +318,7 @@ namespace orGenta_NNv
             myItemForm.myDBconx = myDBconx;
             myItemForm.DataProvider = DataProvider;
             myItemForm.RLockOption = RLockOption;
+            myItemForm.myNodeForTheseItems = e.Node;
 
             myItemForm.Show();
             String thisItem = CatToShow;

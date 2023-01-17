@@ -45,6 +45,7 @@ namespace orGenta_NNv
         public string lastExecutedSearch;
         public string orgStopWords;
         public bool RunningMinimal;
+        public static bool Running64bit;
         public TreeNode copyingNode;
         public string copyingSourceDB;
         public List<string> KBsOpen = new List<string>();
@@ -54,6 +55,7 @@ namespace orGenta_NNv
         public List<string> AutoCreateCats = new List<string> { };
         public IDbConnection localCacheDBconx;
         public bool endOfUserSearch = false;
+        private bool isItOldMSaccess;
 
         // NOTICE: This software is Copyright (c) 2006, 2021 by Jeff D. Chapman
         // Non-networked version licensed as Open Source under GNU Lesser General Public License v3.0
@@ -68,6 +70,7 @@ namespace orGenta_NNv
 
         private void frmMain_Load(object sender, EventArgs e)
         {
+            Running64bit = Environment.Is64BitProcess;
             RestoreCoordinates();
             RestoreUserOptions();
 
@@ -243,6 +246,7 @@ namespace orGenta_NNv
         {
             tvfMyTreeForm = new TreeViewForm(this);
             tvfMyTreeForm.myDBconx = myDBconx;
+            tvfMyTreeForm.isOldMSaccess = isItOldMSaccess;
             tvfMyTreeForm.DataProvider = DataProvider;
             tvfMyTreeForm.dbVersion = dBversion;
             tvfMyTreeForm.RLockOption = RLockOption;
