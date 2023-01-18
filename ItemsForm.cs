@@ -65,6 +65,7 @@ namespace orGenta_NNv
         public string NewNoteText = "";
         public IDbConnection myDBconx;
         public string categoryID;
+        public TreeNode myNodeForTheseItems;
         public bool FormIsShadow = false;
         public string DataProvider;
         public string RLockOption;
@@ -191,8 +192,10 @@ namespace orGenta_NNv
         {
             SharedRoutines DataGrabber = new SharedRoutines();
 
-            if (myDBconx.Database == "")
+            if (myParentForm.isOldMSaccess)
             { orGentaDBDataSet.vw_Get_Items.Columns["hasNote"].DataType = typeof(Byte); }
+            else
+            { orGentaDBDataSet.vw_Get_Items.Columns["CategoryID"].DataType = typeof(Int16); }
 
             try
             {
@@ -499,6 +502,7 @@ namespace orGenta_NNv
             myNoteForm.NoteIsOnNewItem = false;
             myNoteForm.parentItemID = ActiveItem;
             myNoteForm.tbNoteText.Text = NoteTextToShow;
+            myNoteForm.originalNoteText = NoteTextToShow;
             myNoteForm.parentClickedRow = clickedRow;
 
             if (NoteTextToShow != EmptyNoteText)
@@ -739,6 +743,8 @@ namespace orGenta_NNv
         {
             myParentForm.myParentForm.ActiveTopItems = this;
             myParentForm.myParentForm.ActiveTopForm = myParentForm;
+            myParentForm.myParentForm.menuExportCSV.Enabled = true;
+            myParentForm.myParentForm.menuItems2email.Enabled = true;
             myParentForm.BringToFront();
             if ((formJustLoaded) && (myParentForm.myParentForm.optAdjustItemsToParent == true))
             {
@@ -753,7 +759,6 @@ namespace orGenta_NNv
             pb2arrow.Top = splGridSplitter.SplitterDistance - 13;
             pb2arrow.Left = this.Width - 66;
             this.tbNewItem.Focus();
-
         }
 
         public void AutoAssign_Items()

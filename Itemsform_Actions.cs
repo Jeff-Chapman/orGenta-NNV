@@ -66,6 +66,7 @@ namespace orGenta_NNv
             string itemSamp = itemText + "...";
             if (itemText.Length > 20) { itemSamp = itemText.Substring(0, 20) + "..."; }
             myNoteForm.Text = "Note For: \"" + itemSamp + "\"";
+            myNoteForm.originalNoteText = EmptyNoteText;
             myNoteForm.Show();
         }
 
@@ -250,7 +251,7 @@ namespace orGenta_NNv
             if (ShowChildItems)
             {
                 TreeNode hotNode;
-                try { hotNode = myParentForm.tvCategories.SelectedNode; }
+                try { hotNode = myNodeForTheseItems; }
                 catch { hotNode = myParentForm.tvCategories.Nodes[0]; }
                 foreach (TreeNode childNode in hotNode.Nodes)
                 {
