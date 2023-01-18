@@ -118,7 +118,13 @@ namespace orGenta_NNv
             this.Cursor = Cursors.WaitCursor;
 
             myConxString = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=";
-            //myConxString += myServerName + "\\" + myKnowledgeDBname + ";User Id=Admin;Password=;";
+            int dotLoc = myKnowledgeDBname.IndexOf(".");
+            string dbExt = myKnowledgeDBname.Substring(dotLoc);
+            isItOldMSaccess = true;
+            if (dbExt == ".accdb") 
+                { myConxString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=";
+                isItOldMSaccess = false; }
+
             myConxString += myServerName + "\\" + myKnowledgeDBname + ";User Id=" + myUserID +
                 ";Jet OLEDB:Encrypt Database=True;Jet OLEDB:Database Password=" + myPW + ";";
 
@@ -134,6 +140,8 @@ namespace orGenta_NNv
             {
                 try
                 {
+                    DataTable provTable = DbProviderFactories.GetFactoryClasses();
+
                     DbProviderFactory myProviderFactory = DbProviderFactories.GetFactory(DataProvider);
                     myDBconx = myProviderFactory.CreateConnection();
                     myDBconx.ConnectionString = myConxString;

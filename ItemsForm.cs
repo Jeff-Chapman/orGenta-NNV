@@ -192,8 +192,10 @@ namespace orGenta_NNv
         {
             SharedRoutines DataGrabber = new SharedRoutines();
 
-            if (myDBconx.Database == "")
+            if (myParentForm.isOldMSaccess)
             { orGentaDBDataSet.vw_Get_Items.Columns["hasNote"].DataType = typeof(Byte); }
+            else
+            { orGentaDBDataSet.vw_Get_Items.Columns["CategoryID"].DataType = typeof(Int16); }
 
             try
             {

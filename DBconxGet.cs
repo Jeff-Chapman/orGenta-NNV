@@ -28,8 +28,13 @@ namespace orGenta_NNv
       
             int dbnLen = tbDatabase.Text.Length;
 
-            if ((dbnLen < 4) || (tbDatabase.Text.Substring(dbnLen - 4, 4) != ".mdb"))
-                { tbDatabase.Text += ".mdb"; }
+            if (dbnLen < 4) { tbDatabase.Text += ".mdb"; }
+            bool hasGoodExt = false;
+            int dotLoc = tbDatabase.Text.IndexOf(".");
+            string testExt = "";
+            try { testExt = tbDatabase.Text.Substring(dotLoc); } catch { }    
+            if ((testExt == ".mdb") || (testExt == ".accdb")) { hasGoodExt = true; }
+            if (!hasGoodExt) { tbDatabase.Text += ".mdb"; }
 
             this.Close();
         }
@@ -53,23 +58,23 @@ namespace orGenta_NNv
 
         private void btnSelectDB_Click(object sender, EventArgs e)
         {
-            openDBdialog.Filter = "MS Access (*.mdb)|*.mdb";
-                openDBdialog.DefaultExt = "mdb";
-                if (openDBdialog.ShowDialog(this) == DialogResult.OK)
+            openDBdialog.Filter = "MS Access (*.mdb,*.accdb)|*.mdb;*.accdb";
+            openDBdialog.DefaultExt = "mdb";
+            if (openDBdialog.ShowDialog(this) == DialogResult.OK)
+            {
+                string dbFullName = openDBdialog.FileName;
+                int lastSlash = 0;
+                for (int i = dbFullName.Length - 1; i > 0;  i--)
                 {
-                    string dbFullName = openDBdialog.FileName;
-                    int lastSlash = 0;
-                    for (int i = dbFullName.Length - 1; i > 0;  i--)
+                    if (dbFullName.Substring(i,1) == "\\")
                     {
-                        if (dbFullName.Substring(i,1) == "\\")
-                        {
-                            lastSlash = i;
-                            break;
-                        }
+                        lastSlash = i;
+                        break;
                     }
-                    tbServer.Text = dbFullName.Substring(0,lastSlash);
-                    tbDatabase.Text = dbFullName.Substring(lastSlash + 1);
                 }
+                tbServer.Text = dbFullName.Substring(0,lastSlash);
+                tbDatabase.Text = dbFullName.Substring(lastSlash + 1);
+            }
         }
 
     }
