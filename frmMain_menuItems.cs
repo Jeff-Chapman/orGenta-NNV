@@ -478,26 +478,17 @@ namespace orGenta_NNv
             if ((RemoteConx) && (myServerName == ".")) { return; }
 
             string FullKBpathName = myServerName + "\\" + myKnowledgeDBname;
+            string seedDB = "orgSeed.mdb";
 
             if (File.Exists("orgSeed.mdb"))
             {
                 int lenFKB = FullKBpathName.Length;
                 if (FullKBpathName.Substring(lenFKB - 4, 4) != ".mdb")
                     { FullKBpathName += ".mdb"; }
-                try
-                {
-                    File.Copy("orgSeed.mdb", FullKBpathName, false);
-                    File.SetAttributes(FullKBpathName, FileAttributes.Normal);
-                }
-                catch (Exception ex)
-                {
-                    string copyErr = ex.Message;
-                    MessageBox.Show("Failed to create " + myKnowledgeDBname + ". " + copyErr);
-                    return;
-                }
             }
             else
             {
+                seedDB = "orgSeed.accdb";
                 int lenFKB = FullKBpathName.Length;
                 if (FullKBpathName.Substring(lenFKB - 4, 4) == ".mdb")
                     { FullKBpathName = FullKBpathName.Replace(".mdb", ".accdb"); }
@@ -506,19 +497,9 @@ namespace orGenta_NNv
                     if (FullKBpathName.Substring(lenFKB - 6, 6) != ".accdb")
                         { FullKBpathName += ".accdb"; }
                 }
-
-                try
-                {
-                    File.Copy("orgSeed.accdb", FullKBpathName, false);
-                    File.SetAttributes(FullKBpathName, FileAttributes.Normal);
-                }
-                catch (Exception ex)
-                {
-                    string copyErr = ex.Message;
-                    MessageBox.Show("Failed to create " + myKnowledgeDBname + ". " + copyErr);
-                    return;
-                }
             }
+
+            if (!DoTheCopy(FullKBpathName, seedDB)) { return; }
 
             RLockOption = "";
             int hasDot = myKnowledgeDBname.IndexOf(".");
@@ -530,5 +511,22 @@ namespace orGenta_NNv
             DBshowTree();
         }
 
+        private bool DoTheCopy(string FullKBpathName, string seedDB)
+        {
+            bool copySuccessful = false;
+            try
+            {
+                File.Copy(seedDB, FullKBpathName, false);
+                File.SetAttributes(FullKBpathName, FileAttributes.Normal);
+                copySuccessful = true;
+            }
+            catch (Exception ex)
+            {
+                string copyErr = ex.Message;
+                MessageBox.Show("Failed to create " + myKnowledgeDBname + ". " + copyErr);
+            }
+
+            return copySuccessful;
+        }
     }
 }
