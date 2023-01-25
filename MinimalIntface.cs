@@ -10,31 +10,35 @@ namespace orGenta_NNv
 {
     public class MinimalIntface : System.Windows.Forms.Form
 	{
-		public System.Windows.Forms.RichTextBox txtDataEntered;
+        #region Private variables
 		private System.Windows.Forms.Button btnEnter;
 		private System.Windows.Forms.Button btnExit;
         private System.Windows.Forms.Button btnRestore;
-        public Label lblKBname;
         private Button btnMInote;
         private System.ComponentModel.IContainer components;
         private NoteForm myNoteForm;
-        public string wordToCheck = "";
         private string stopChars = " .,;'\"";
-        public string NewNoteText = "";
-        public string AllCatList = "";
         private bool OptCreateCategories = true;
         private bool OptHighlightCats = true;
         private frmMain myParent;
         private string saveOneChar;
-        public bool userClickedControl = false;
         private ContextMenuStrip ctxMenuTextClick;
         private ToolStripMenuItem menucreateCat;
         private ToolStripMenuItem menuDontLink;
-        public ArrayList newPotCats = new ArrayList();
-        public ArrayList existingCats = new ArrayList();
         private ArrayList holdPotStopWords = new ArrayList();
         private char priorKeyChar = ' ';
         private List<List<string>> myCatSupp;
+        #endregion
+
+        public System.Windows.Forms.RichTextBox txtDataEntered;
+        public Label lblKBname;
+        public ArrayList newPotCats = new ArrayList();
+        public ArrayList existingCats = new ArrayList();
+        public string wordToCheck = "";
+        public string NewNoteText = "";
+        public string AllCatList = "";
+        private ComboBox cboxKBs;
+        public bool userClickedControl = false;
 
         public MinimalIntface(frmMain parent)
 		{
@@ -69,10 +73,7 @@ namespace orGenta_NNv
 		}
 
 		#region Windows Form Designer generated code
-		/// <summary>
-		/// Required method for Designer support - do not modify
-		/// the contents of this method with the code editor.
-		/// </summary>
+
 		private void InitializeComponent()
 		{
             this.components = new System.ComponentModel.Container();
@@ -86,6 +87,7 @@ namespace orGenta_NNv
             this.btnRestore = new System.Windows.Forms.Button();
             this.lblKBname = new System.Windows.Forms.Label();
             this.btnMInote = new System.Windows.Forms.Button();
+            this.cboxKBs = new System.Windows.Forms.ComboBox();
             this.ctxMenuTextClick.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -164,6 +166,7 @@ namespace orGenta_NNv
             this.lblKBname.Size = new System.Drawing.Size(150, 26);
             this.lblKBname.TabIndex = 5;
             this.lblKBname.Text = "<KBname>";
+            this.lblKBname.Click += new System.EventHandler(this.lblKBname_Click);
             // 
             // btnMInote
             // 
@@ -175,13 +178,24 @@ namespace orGenta_NNv
             this.btnMInote.UseVisualStyleBackColor = true;
             this.btnMInote.Click += new System.EventHandler(this.btnMInote_Click);
             // 
+            // cboxKBs
+            // 
+            this.cboxKBs.FormattingEnabled = true;
+            this.cboxKBs.Location = new System.Drawing.Point(0, 0);
+            this.cboxKBs.Name = "cboxKBs";
+            this.cboxKBs.Size = new System.Drawing.Size(152, 28);
+            this.cboxKBs.TabIndex = 6;
+            this.cboxKBs.Visible = false;
+            this.cboxKBs.SelectedValueChanged += new System.EventHandler(this.cboxKBs_SelectedValueChanged);
+            // 
             // MinimalIntface
             // 
             this.AcceptButton = this.btnEnter;
             this.AutoScaleBaseSize = new System.Drawing.Size(8, 19);
             this.CancelButton = this.btnExit;
-            this.ClientSize = new System.Drawing.Size(851, 20);
+            this.ClientSize = new System.Drawing.Size(851, 26);
             this.ControlBox = false;
+            this.Controls.Add(this.cboxKBs);
             this.Controls.Add(this.btnMInote);
             this.Controls.Add(this.lblKBname);
             this.Controls.Add(this.btnRestore);
@@ -449,6 +463,49 @@ namespace orGenta_NNv
                 return;
             }
 
+        }
+
+        private void lblKBname_Click(object sender, EventArgs e)
+        {
+            if (myParent.KBsOpen.Count < 2) { return; }
+            if (myParent.KBsOpen.Count == 2) 
+                { switchToOtherKB();
+                return; }
+            cboxKBs.Items.Clear();
+            cboxKBs.Items.AddRange(myParent.KBsOpen.ToArray());
+            cboxKBs.Visible = true;
+            cboxKBs.DroppedDown = true;
+        }
+
+        private void switchToOtherKB()
+        {
+            List<string> KBlist = myParent.KBsOpen;
+            string currentKB = myParent.ActiveTopForm.activeDBname;
+            int KBloc = KBlist.IndexOf(currentKB);
+            int newKBloc = 1 - KBloc;
+            string switchToKB = KBlist[newKBloc];
+            lblKBname.Text = switchToKB;
+            BringToActive(switchToKB);
+        }
+
+        private void BringToActive(string switchToKB)
+        {
+            foreach (Form testTV in myParent.MdiChildren)
+            {
+                string thisFormType = testTV.GetType().ToString();
+                if (thisFormType == "orGenta_NNv.ItemsForm") { continue; }
+                TreeViewForm chkTVform = (TreeViewForm)testTV;
+                if (chkTVform.activeDBname != switchToKB) { continue; }
+                myParent.ActiveTopForm = chkTVform;
+            }
+        }
+
+        private void cboxKBs_SelectedValueChanged(object sender, EventArgs e)
+        {
+            lblKBname.Text = cboxKBs.Text;
+            cboxKBs.Visible = false;
+            BringToActive(lblKBname.Text);
+            txtDataEntered.Focus();
         }
     }
 }

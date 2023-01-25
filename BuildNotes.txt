@@ -72,3 +72,4 @@
 	Couple of bug fixes
 	Persist user options to Registry
 	Add support for new versions of MS Access
+30	Click on minimal interface KB name allows choosing KB

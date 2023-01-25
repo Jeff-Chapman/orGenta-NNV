@@ -39,7 +39,8 @@ namespace orGenta_NNv
             // Locate the form at the bottom right of the screen
             GetTextLineForm.Left = ScreenSize.Width - GetTextLineForm.Width;
             GetTextLineForm.Top = ScreenSize.Height - 26;
-            GetTextLineForm.lblKBname.Text = activeDBname;
+            GetTextLineForm.lblKBname.Text = ActiveTopForm.activeDBname;
+            activeDBname = ActiveTopForm.activeDBname;
             GetTextLineForm.txtDataEntered.SelectionStart = 0;
             GetTextLineForm.ResetEntryColor();
             string startingPrompt = "--> Enter a new Item, or a single word to Search";
@@ -109,6 +110,8 @@ namespace orGenta_NNv
 
         private void SearchForMatchMI()
         {
+            ActiveTopForm.BringToFront();
+
             // Search categories first
             string MIsearch = GetTextLineForm.txtDataEntered.Text;
             findReplaying = false;
