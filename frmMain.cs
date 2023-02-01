@@ -56,6 +56,7 @@ namespace orGenta_NNv
         public IDbConnection localCacheDBconx;
         public bool endOfUserSearch = false;
         private bool isItOldMSaccess;
+        private bool isItSQLite;
 
         // NOTICE: This software is Copyright (c) 2006, 2021 by Jeff D. Chapman
         // Non-networked version licensed as Open Source under GNU Lesser General Public License v3.0
@@ -247,6 +248,7 @@ namespace orGenta_NNv
             tvfMyTreeForm = new TreeViewForm(this);
             tvfMyTreeForm.myDBconx = myDBconx;
             tvfMyTreeForm.isOldMSaccess = isItOldMSaccess;
+            tvfMyTreeForm.isSQLlite = isItSQLite;
             tvfMyTreeForm.DataProvider = DataProvider;
             tvfMyTreeForm.dbVersion = dBversion;
             tvfMyTreeForm.RLockOption = RLockOption;

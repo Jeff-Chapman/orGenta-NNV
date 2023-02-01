@@ -10,6 +10,7 @@ namespace orGenta_NNv
         public bool restoredDBinfo;
         public bool testing = false;
         public string DataProvider = "System.Data.OleDb";
+        private string DBextensioins = ".mdb|.accdb|.sqlite";
 
         public DBconxGet()
         {
@@ -33,7 +34,7 @@ namespace orGenta_NNv
             int dotLoc = tbDatabase.Text.IndexOf(".");
             string testExt = "";
             try { testExt = tbDatabase.Text.Substring(dotLoc); } catch { }    
-            if ((testExt == ".mdb") || (testExt == ".accdb")) { hasGoodExt = true; }
+            if (DBextensioins.IndexOf(testExt) > -1) { hasGoodExt = true; }
             if (!hasGoodExt) { tbDatabase.Text += ".mdb"; }
 
             this.Close();
@@ -59,6 +60,7 @@ namespace orGenta_NNv
         private void btnSelectDB_Click(object sender, EventArgs e)
         {
             openDBdialog.Filter = "MS Access (*.mdb,*.accdb)|*.mdb;*.accdb";
+            openDBdialog.Filter += "|SQLite (*.sqlite)|*.sqlite";
             openDBdialog.DefaultExt = "mdb";
             if (openDBdialog.ShowDialog(this) == DialogResult.OK)
             {
