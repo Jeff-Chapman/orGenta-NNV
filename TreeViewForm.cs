@@ -38,6 +38,7 @@ namespace orGenta_NNv
         public bool testing;
         public IDbConnection myDBconx;
         public bool isOldMSaccess;
+        public bool isSQLlite;
         public bool RemoteConx;
         public frmMain myParentForm;
         public string DataProvider;

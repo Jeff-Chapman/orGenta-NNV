@@ -194,8 +194,10 @@ namespace orGenta_NNv
 
             if (myParentForm.isOldMSaccess)
             { orGentaDBDataSet.vw_Get_Items.Columns["hasNote"].DataType = typeof(Byte); }
-            else
+            else if (!myParentForm.isSQLlite)
             { orGentaDBDataSet.vw_Get_Items.Columns["CategoryID"].DataType = typeof(Int16); }
+            if (myParentForm.isSQLlite)
+            { orGentaDBDataSet.vw_Get_Items.Columns["CategoryID"].DataType = typeof(String); }
 
             try
             {
