@@ -183,7 +183,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "SettingsForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "orGenta System Settings";
+            this.Text = "orGenta Settings";
             this.ResumeLayout(false);
             this.PerformLayout();
 

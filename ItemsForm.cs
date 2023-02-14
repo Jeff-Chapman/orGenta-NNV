@@ -516,8 +516,13 @@ namespace orGenta_NNv
             {
                 myNoteForm.tbNoteText.SelectionStart = 0;
                 myNoteForm.tbNoteText.SelectionLength = NoteTextToShow.Length;
-            }            
-            
+            }
+
+            // check if note too wide to fit in parent window
+            int mdiParWidth = this.MdiParent.Width;
+            if (myNoteForm.Left + myNoteForm.Width + 20 > mdiParWidth)
+                { myNoteForm.Width = mdiParWidth - myNoteForm.Left - 20; }
+
             myNoteForm.Show();
 
         }
