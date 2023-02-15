@@ -503,6 +503,11 @@ namespace orGenta_NNv
 
             RLockOption = "";
             int hasDot = myKnowledgeDBname.IndexOf(".");
+            if (hasDot < 0)
+            {
+                myKnowledgeDBname += ".mdb";
+                hasDot = myKnowledgeDBname.IndexOf(".");
+            }
             int KBnameStarts = FullKBpathName.IndexOf(myKnowledgeDBname.Substring(0,hasDot));
             myKnowledgeDBname = FullKBpathName.Substring(KBnameStarts);
 
