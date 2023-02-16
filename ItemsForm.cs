@@ -475,12 +475,12 @@ namespace orGenta_NNv
         private void BuildAndShowNote(string ActiveItem)
         {
             string NoteTextToShow = "";
-            
+
             string GetItemCmd = "SELECT NoteValue FROM Notes " + RLockOption + "WHERE ItemID = " + ActiveItem;
 
             IDbCommand cmd = myDBconx.CreateCommand();
             cmd.CommandText = GetItemCmd;
-       
+
             try
             {
                 NoteTextToShow = cmd.ExecuteScalar().ToString();
@@ -488,19 +488,10 @@ namespace orGenta_NNv
                 { NoteTextToShow = EmptyNoteText; }
             }
             catch
-                { NoteTextToShow = EmptyNoteText; }
+            { NoteTextToShow = EmptyNoteText; }
 
-            myNoteForm = new NoteForm(this);
-            myNoteForm.MdiParent = myParentForm.myParentForm;
-            myNoteForm.Top = this.Top + 60;
-            myNoteForm.Left = this.Left - 30;
-            // if OK button is hidden we need to shift form upwards
-            if (myNoteForm.Bottom > myParentForm.myParentForm.Height - 90)
-                { myNoteForm.Height = myParentForm.myParentForm.Height - myNoteForm.Top - 100; }
             string itemText = ItemGrid.Rows[clickedRow].Cells[1].Value.ToString();
-            string itemSamp = itemText + "...";
-            if (itemText.Length > 20) { itemSamp = itemText.Substring(0, 20) + "..."; }
-            myNoteForm.Text = "Note For: \"" + itemSamp + "\"";
+            MakeAndPositionNote(itemText);
             myNoteForm.NoteIsOnNewItem = false;
             myNoteForm.parentItemID = ActiveItem;
             myNoteForm.tbNoteText.Text = NoteTextToShow;
@@ -508,7 +499,7 @@ namespace orGenta_NNv
             myNoteForm.parentClickedRow = clickedRow;
 
             if (NoteTextToShow != EmptyNoteText)
-            { 
+            {
                 myNoteForm.tbNoteText.SelectionStart = NoteTextToShow.Length;
                 myNoteForm.noteWasBlank = false;
             }
@@ -518,13 +509,29 @@ namespace orGenta_NNv
                 myNoteForm.tbNoteText.SelectionLength = NoteTextToShow.Length;
             }
 
+            myNoteForm.Show();
+
+        }
+
+        private void MakeAndPositionNote(string itemText)
+        {
+            myNoteForm = new NoteForm(this);
+            myNoteForm.MdiParent = myParentForm.myParentForm;
+            myNoteForm.Top = this.Top + 60;
+            myNoteForm.Left = this.Left - 30;
+
+            // if OK button is hidden we need to shift form upwards
+            if (myNoteForm.Bottom > myParentForm.myParentForm.Height - 90)
+            { myNoteForm.Height = myParentForm.myParentForm.Height - myNoteForm.Top - 100; }
+
             // check if note too wide to fit in parent window
             int mdiParWidth = this.MdiParent.Width;
             if (myNoteForm.Left + myNoteForm.Width + 20 > mdiParWidth)
-                { myNoteForm.Width = mdiParWidth - myNoteForm.Left - 20; }
+            { myNoteForm.Width = mdiParWidth - myNoteForm.Left - 20; }
 
-            myNoteForm.Show();
-
+            string itemSamp = itemText + "...";
+            if (itemText.Length > 20) { itemSamp = itemText.Substring(0, 20) + "..."; }
+            myNoteForm.Text = "Note For: \"" + itemSamp + "\"";
         }
 
         private void tmrSoftAssign_Tick(object sender, EventArgs e)
