@@ -298,7 +298,12 @@ namespace orGenta_NNv
         {
             SetContextMenu();
             if (e.Button != MouseButtons.Left) { return; }
-            if (collapsingNodeFlag || expandingNodeFlag) { return; }
+            if (collapsingNodeFlag || expandingNodeFlag) 
+            {
+                expandingNodeFlag = false;
+                collapsingNodeFlag = false;
+                return; 
+            }
 
             int myYloc = e.Y;
             int myRightBorder = this.Left + this.Width;
@@ -362,6 +367,7 @@ namespace orGenta_NNv
 
             return foundIt;
         }
+
         public void BuildItemCatXref(ItemsForm myItemForm)
         {
             // build the ItemsCatXrefArray, the cross-ref between data rows and category fullpaths
@@ -604,8 +610,8 @@ namespace orGenta_NNv
 
         private void tvCategories_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            expandingNodeFlag = false;
-            collapsingNodeFlag = false;
+            //expandingNodeFlag = false;
+            //collapsingNodeFlag = false;
         }
 
         private void TreeViewForm_Load(object sender, EventArgs e)
