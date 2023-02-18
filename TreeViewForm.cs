@@ -292,6 +292,8 @@ namespace orGenta_NNv
             if ((pnlAddNode.Visible) || (pnlEditCat.Visible)) { return; }
             tvCategories.SelectedNode = e.Node;
             SetContextMenu();
+            expandingNodeFlag = false;
+            collapsingNodeFlag = false;
         }
 
         public void tvCategories_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
@@ -606,12 +608,6 @@ namespace orGenta_NNv
         private void tvCategories_BeforeCollapse(object sender, TreeViewCancelEventArgs e)
         {
             collapsingNodeFlag = true;
-        }
-
-        private void tvCategories_AfterSelect(object sender, TreeViewEventArgs e)
-        {
-            //expandingNodeFlag = false;
-            //collapsingNodeFlag = false;
         }
 
         private void TreeViewForm_Load(object sender, EventArgs e)
