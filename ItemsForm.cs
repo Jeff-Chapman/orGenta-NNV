@@ -181,7 +181,10 @@ namespace orGenta_NNv
             {
                 string thisItem = myDGrow.Cells[3].Value.ToString();
                 IDbCommand cmd = myDBconx.CreateCommand();
-                string getCatcmd = "SELECT TOP 1 CategoryID FROM Rels WHERE isDeleted = 0 AND ItemID = " + thisItem;
+                string getCatcmd = "SELECT TOP 1 ";
+                if (DataProvider == "System.Data.Odbc") { getCatcmd = "SELECT "; }
+                getCatcmd += "CategoryID FROM Rels WHERE isDeleted = 0 AND ItemID = " + thisItem;
+                if (DataProvider == "System.Data.Odbc") { getCatcmd += " LIMIT 1"; }
                 cmd.CommandText = getCatcmd;
                 string SearchCatFound = cmd.ExecuteScalar().ToString();
                 SearchCats.Add(SearchCatFound);
