@@ -165,7 +165,8 @@ namespace orGenta_NNv
                     parentNode.Nodes.Add(LoadTreeNode);
                 }
             }
-            FullPathList.Add(LoadTreeNode.FullPath);
+            try { FullPathList.Add(LoadTreeNode.FullPath); }
+            catch { }
         }
 
         private TreeNode findNodeParent(string parentID)
