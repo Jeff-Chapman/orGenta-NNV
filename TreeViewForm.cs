@@ -292,13 +292,20 @@ namespace orGenta_NNv
             if ((pnlAddNode.Visible) || (pnlEditCat.Visible)) { return; }
             tvCategories.SelectedNode = e.Node;
             SetContextMenu();
+            expandingNodeFlag = false;
+            collapsingNodeFlag = false;
         }
 
         public void tvCategories_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             SetContextMenu();
             if (e.Button != MouseButtons.Left) { return; }
-            if (collapsingNodeFlag || expandingNodeFlag) { return; }
+            if (collapsingNodeFlag || expandingNodeFlag) 
+            {
+                expandingNodeFlag = false;
+                collapsingNodeFlag = false;
+                return; 
+            }
 
             int myYloc = e.Y;
             int myRightBorder = this.Left + this.Width;
@@ -362,6 +369,7 @@ namespace orGenta_NNv
 
             return foundIt;
         }
+
         public void BuildItemCatXref(ItemsForm myItemForm)
         {
             // build the ItemsCatXrefArray, the cross-ref between data rows and category fullpaths
@@ -600,12 +608,6 @@ namespace orGenta_NNv
         private void tvCategories_BeforeCollapse(object sender, TreeViewCancelEventArgs e)
         {
             collapsingNodeFlag = true;
-        }
-
-        private void tvCategories_AfterSelect(object sender, TreeViewEventArgs e)
-        {
-            expandingNodeFlag = false;
-            collapsingNodeFlag = false;
         }
 
         private void TreeViewForm_Load(object sender, EventArgs e)

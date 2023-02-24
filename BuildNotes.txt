@@ -74,3 +74,4 @@
 	Add support for new versions of MS Access
 30	Click on minimal interface KB name allows choosing KB
 	Add support for use of a single SQLite database
+==	vsn 2.2.1.30  ==  Released as Open Source for Standalone Use

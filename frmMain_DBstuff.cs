@@ -5,7 +5,6 @@ using System.IO;
 using System.Data;
 using System.Data.Common;
 using System.Reflection;
-using System.Data.SQLite;
 
 namespace orGenta_NNv
 {
@@ -121,6 +120,11 @@ namespace orGenta_NNv
 
             myConxString = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=";
             int dotLoc = myKnowledgeDBname.IndexOf(".");
+            if (dotLoc < 0)
+            { 
+                myKnowledgeDBname += ".mdb";
+                dotLoc = myKnowledgeDBname.IndexOf(".");
+            }
             string dbExt = myKnowledgeDBname.Substring(dotLoc);
             isItOldMSaccess = true;
             if (dbExt == ".accdb") 

@@ -325,8 +325,8 @@ namespace orGenta_NNv
 
             // add rels for all its solo-attached items to traschan 
 
-            string TrashInCmd = "INSERT INTO Rels (CategoryID, ItemID) ";
-            TrashInCmd += "SELECT 3, II.ItemID FROM (Rels II INNER JOIN ";
+            string TrashInCmd = "INSERT INTO Rels (CategoryID, ItemID, isDeleted) ";
+            TrashInCmd += "SELECT 3, II.ItemID, 0 FROM (Rels II INNER JOIN ";
             TrashInCmd += "vw_AssignCount AA ON II.ItemID = AA.ItemID) WHERE (II.CategoryID = ";
             TrashInCmd += delCatID + ") AND (AA.AssignCount = 1)";
 
