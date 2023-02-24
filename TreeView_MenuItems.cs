@@ -405,9 +405,9 @@ namespace orGenta_NNv
                 if (TargetPasted != null)
                     { PasteChildDrill(myParentForm.copyingNode, TargetPasted); }
                 tvCategories.Nodes.Clear();
+                tvCategories.ResumeLayout();                
                 BuildCatTree();
                 tvCategories.Nodes[0].Expand();
-                tvCategories.ResumeLayout();
                 myParentForm.findReplaying = false;
                 SearchForCat(origCatText);
                 myParentForm.copyingNode = null;
