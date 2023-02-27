@@ -325,8 +325,8 @@ namespace orGenta_NNv
 
             // add rels for all its solo-attached items to traschan 
 
-            string TrashInCmd = "INSERT INTO Rels (CategoryID, ItemID) ";
-            TrashInCmd += "SELECT 3, II.ItemID FROM (Rels II INNER JOIN ";
+            string TrashInCmd = "INSERT INTO Rels (CategoryID, ItemID, isDeleted) ";
+            TrashInCmd += "SELECT 3, II.ItemID, 0 FROM (Rels II INNER JOIN ";
             TrashInCmd += "vw_AssignCount AA ON II.ItemID = AA.ItemID) WHERE (II.CategoryID = ";
             TrashInCmd += delCatID + ") AND (AA.AssignCount = 1)";
 
@@ -405,9 +405,9 @@ namespace orGenta_NNv
                 if (TargetPasted != null)
                     { PasteChildDrill(myParentForm.copyingNode, TargetPasted); }
                 tvCategories.Nodes.Clear();
+                tvCategories.ResumeLayout();                
                 BuildCatTree();
                 tvCategories.Nodes[0].Expand();
-                tvCategories.ResumeLayout();
                 myParentForm.findReplaying = false;
                 SearchForCat(origCatText);
                 myParentForm.copyingNode = null;
@@ -563,6 +563,9 @@ namespace orGenta_NNv
             if (this.tvCategories.SelectedNode.ForeColor != FrozenColor)
                 { CollapseFrozenNodes(this.tvCategories.SelectedNode); }
             this.tvCategories.EndUpdate();
+            Rectangle nodeLoc = tvCategories.SelectedNode.Bounds;
+            Cursor.Position = new Point(myParentForm.Left + this.Left + nodeLoc.Left + 40,
+                myParentForm.Top + this.Top + nodeLoc.Top + 140);
         }
 
         private void CollapseFrozenNodes(TreeNode StartingNode)
@@ -588,6 +591,9 @@ namespace orGenta_NNv
             Application.DoEvents();
             CollapseNodeCascade(this.tvCategories.SelectedNode);
             this.Cursor = Cursors.Default;
+            Rectangle nodeLoc = tvCategories.SelectedNode.Bounds;
+            Cursor.Position = new Point(myParentForm.Left + this.Left + nodeLoc.Left + 40,
+                myParentForm.Top + this.Top + nodeLoc.Top + 140);
         }
 
         private void CollapseNodeCascade(TreeNode NodeToCollapse)
@@ -611,6 +617,9 @@ namespace orGenta_NNv
             this.tvCategories.SelectedNode = SaveMyNode;
             SaveMyNode.EnsureVisible();
             SaveMyNode.Expand();
+            Rectangle nodeLoc = tvCategories.SelectedNode.Bounds;
+            Cursor.Position = new Point(myParentForm.Left + this.Left + nodeLoc.Left + 40,
+                myParentForm.Top + this.Top + nodeLoc.Top + 140);
         }
 
         private void freezeClosedToolStripMenuItem_Click(object sender, EventArgs e)

@@ -478,28 +478,60 @@ namespace orGenta_NNv
             if ((RemoteConx) && (myServerName == ".")) { return; }
 
             string FullKBpathName = myServerName + "\\" + myKnowledgeDBname;
-            int lenFKB = FullKBpathName.Length;
-            if (FullKBpathName.Substring(lenFKB - 4, 4) != ".mdb")
-                { FullKBpathName += ".mdb"; }
+            string seedDB = "orgSeed.mdb";
 
-            try
+            if (File.Exists("orgSeed.mdb"))
             {
-                File.Copy("orgSeed.mdb", FullKBpathName, false);
-                File.SetAttributes(FullKBpathName, FileAttributes.Normal);
+                int lenFKB = FullKBpathName.Length;
+                if (FullKBpathName.Substring(lenFKB - 4, 4) != ".mdb")
+                    { FullKBpathName += ".mdb"; }
             }
-            catch (Exception ex)
+            else
             {
-                string copyErr = ex.Message;
-                MessageBox.Show("Failed to create " + myKnowledgeDBname + ". " + copyErr);
-                return;
+                seedDB = "orgSeed.accdb";
+                int lenFKB = FullKBpathName.Length;
+                if (FullKBpathName.Substring(lenFKB - 4, 4) == ".mdb")
+                    { FullKBpathName = FullKBpathName.Replace(".mdb", ".accdb"); }
+                else
+                {
+                    if (FullKBpathName.Substring(lenFKB - 6, 6) != ".accdb")
+                        { FullKBpathName += ".accdb"; }
+                }
             }
+
+            if (!DoTheCopy(FullKBpathName, seedDB)) { return; }
 
             RLockOption = "";
+            int hasDot = myKnowledgeDBname.IndexOf(".");
+            if (hasDot < 0)
+            {
+                myKnowledgeDBname += ".mdb";
+                hasDot = myKnowledgeDBname.IndexOf(".");
+            }
+            int KBnameStarts = FullKBpathName.IndexOf(myKnowledgeDBname.Substring(0,hasDot));
+            myKnowledgeDBname = FullKBpathName.Substring(KBnameStarts);
 
             if (!BuildAndValidateDBconx(false)) { return; }
 
             DBshowTree();
         }
 
+        private bool DoTheCopy(string FullKBpathName, string seedDB)
+        {
+            bool copySuccessful = false;
+            try
+            {
+                File.Copy(seedDB, FullKBpathName, false);
+                File.SetAttributes(FullKBpathName, FileAttributes.Normal);
+                copySuccessful = true;
+            }
+            catch (Exception ex)
+            {
+                string copyErr = ex.Message;
+                MessageBox.Show("Failed to create " + myKnowledgeDBname + ". " + copyErr);
+            }
+
+            return copySuccessful;
+        }
     }
 }

@@ -67,5 +67,11 @@
 	Show and select new Treeview nodes after creation
 	Resize column width of ItemDesc when form resizes
 ==	vsn 2.1.3.28  ==  Released as Open Source for Standalone Use
-
-
+29	Allow unprompted escape from unchanged note
+	Fix code for prompt on form close from the title clickbox
+	Couple of bug fixes
+	Persist user options to Registry
+	Add support for new versions of MS Access
+30	Click on minimal interface KB name allows choosing KB
+	Add support for use of a single SQLite database
+==	vsn 2.2.1.30  ==  Released as Open Source for Standalone Use

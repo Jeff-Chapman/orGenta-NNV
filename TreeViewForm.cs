@@ -37,6 +37,8 @@ namespace orGenta_NNv
 
         public bool testing;
         public IDbConnection myDBconx;
+        public bool isOldMSaccess;
+        public bool isSQLlite;
         public bool RemoteConx;
         public frmMain myParentForm;
         public string DataProvider;
@@ -163,7 +165,8 @@ namespace orGenta_NNv
                     parentNode.Nodes.Add(LoadTreeNode);
                 }
             }
-            FullPathList.Add(LoadTreeNode.FullPath);
+            try { FullPathList.Add(LoadTreeNode.FullPath); }
+            catch { }
         }
 
         private TreeNode findNodeParent(string parentID)
@@ -290,13 +293,20 @@ namespace orGenta_NNv
             if ((pnlAddNode.Visible) || (pnlEditCat.Visible)) { return; }
             tvCategories.SelectedNode = e.Node;
             SetContextMenu();
+            expandingNodeFlag = false;
+            collapsingNodeFlag = false;
         }
 
         public void tvCategories_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             SetContextMenu();
             if (e.Button != MouseButtons.Left) { return; }
-            if (collapsingNodeFlag || expandingNodeFlag) { return; }
+            if (collapsingNodeFlag || expandingNodeFlag) 
+            {
+                expandingNodeFlag = false;
+                collapsingNodeFlag = false;
+                return; 
+            }
 
             int myYloc = e.Y;
             int myRightBorder = this.Left + this.Width;
@@ -317,6 +327,7 @@ namespace orGenta_NNv
             myItemForm.myDBconx = myDBconx;
             myItemForm.DataProvider = DataProvider;
             myItemForm.RLockOption = RLockOption;
+            myItemForm.myNodeForTheseItems = e.Node;
 
             myItemForm.Show();
             String thisItem = CatToShow;
@@ -359,6 +370,7 @@ namespace orGenta_NNv
 
             return foundIt;
         }
+
         public void BuildItemCatXref(ItemsForm myItemForm)
         {
             // build the ItemsCatXrefArray, the cross-ref between data rows and category fullpaths
@@ -597,12 +609,6 @@ namespace orGenta_NNv
         private void tvCategories_BeforeCollapse(object sender, TreeViewCancelEventArgs e)
         {
             collapsingNodeFlag = true;
-        }
-
-        private void tvCategories_AfterSelect(object sender, TreeViewEventArgs e)
-        {
-            expandingNodeFlag = false;
-            collapsingNodeFlag = false;
         }
 
         private void TreeViewForm_Load(object sender, EventArgs e)

@@ -65,6 +65,7 @@ namespace orGenta_NNv
         public string NewNoteText = "";
         public IDbConnection myDBconx;
         public string categoryID;
+        public TreeNode myNodeForTheseItems;
         public bool FormIsShadow = false;
         public string DataProvider;
         public string RLockOption;
@@ -180,7 +181,10 @@ namespace orGenta_NNv
             {
                 string thisItem = myDGrow.Cells[3].Value.ToString();
                 IDbCommand cmd = myDBconx.CreateCommand();
-                string getCatcmd = "SELECT TOP 1 CategoryID FROM Rels WHERE isDeleted = 0 AND ItemID = " + thisItem;
+                string getCatcmd = "SELECT TOP 1 ";
+                if (DataProvider == "System.Data.Odbc") { getCatcmd = "SELECT "; }
+                getCatcmd += "CategoryID FROM Rels WHERE isDeleted = 0 AND ItemID = " + thisItem;
+                if (DataProvider == "System.Data.Odbc") { getCatcmd += " LIMIT 1"; }
                 cmd.CommandText = getCatcmd;
                 string SearchCatFound = cmd.ExecuteScalar().ToString();
                 SearchCats.Add(SearchCatFound);
@@ -191,8 +195,12 @@ namespace orGenta_NNv
         {
             SharedRoutines DataGrabber = new SharedRoutines();
 
-            if (myDBconx.Database == "")
+            if (myParentForm.isOldMSaccess)
             { orGentaDBDataSet.vw_Get_Items.Columns["hasNote"].DataType = typeof(Byte); }
+            else if (!myParentForm.isSQLlite)
+            { orGentaDBDataSet.vw_Get_Items.Columns["CategoryID"].DataType = typeof(Int16); }
+            if (myParentForm.isSQLlite)
+            { orGentaDBDataSet.vw_Get_Items.Columns["CategoryID"].DataType = typeof(String); }
 
             try
             {
@@ -470,12 +478,12 @@ namespace orGenta_NNv
         private void BuildAndShowNote(string ActiveItem)
         {
             string NoteTextToShow = "";
-            
+
             string GetItemCmd = "SELECT NoteValue FROM Notes " + RLockOption + "WHERE ItemID = " + ActiveItem;
 
             IDbCommand cmd = myDBconx.CreateCommand();
             cmd.CommandText = GetItemCmd;
-       
+
             try
             {
                 NoteTextToShow = cmd.ExecuteScalar().ToString();
@@ -483,26 +491,18 @@ namespace orGenta_NNv
                 { NoteTextToShow = EmptyNoteText; }
             }
             catch
-                { NoteTextToShow = EmptyNoteText; }
+            { NoteTextToShow = EmptyNoteText; }
 
-            myNoteForm = new NoteForm(this);
-            myNoteForm.MdiParent = myParentForm.myParentForm;
-            myNoteForm.Top = this.Top + 60;
-            myNoteForm.Left = this.Left - 30;
-            // if OK button is hidden we need to shift form upwards
-            if (myNoteForm.Bottom > myParentForm.myParentForm.Height - 90)
-                { myNoteForm.Height = myParentForm.myParentForm.Height - myNoteForm.Top - 100; }
             string itemText = ItemGrid.Rows[clickedRow].Cells[1].Value.ToString();
-            string itemSamp = itemText + "...";
-            if (itemText.Length > 20) { itemSamp = itemText.Substring(0, 20) + "..."; }
-            myNoteForm.Text = "Note For: \"" + itemSamp + "\"";
+            MakeAndPositionNote(itemText);
             myNoteForm.NoteIsOnNewItem = false;
             myNoteForm.parentItemID = ActiveItem;
             myNoteForm.tbNoteText.Text = NoteTextToShow;
+            myNoteForm.originalNoteText = NoteTextToShow;
             myNoteForm.parentClickedRow = clickedRow;
 
             if (NoteTextToShow != EmptyNoteText)
-            { 
+            {
                 myNoteForm.tbNoteText.SelectionStart = NoteTextToShow.Length;
                 myNoteForm.noteWasBlank = false;
             }
@@ -510,10 +510,31 @@ namespace orGenta_NNv
             {
                 myNoteForm.tbNoteText.SelectionStart = 0;
                 myNoteForm.tbNoteText.SelectionLength = NoteTextToShow.Length;
-            }            
-            
+            }
+
             myNoteForm.Show();
 
+        }
+
+        private void MakeAndPositionNote(string itemText)
+        {
+            myNoteForm = new NoteForm(this);
+            myNoteForm.MdiParent = myParentForm.myParentForm;
+            myNoteForm.Top = this.Top + 60;
+            myNoteForm.Left = this.Left - 30;
+
+            // if OK button is hidden we need to shift form upwards
+            if (myNoteForm.Bottom > myParentForm.myParentForm.Height - 90)
+            { myNoteForm.Height = myParentForm.myParentForm.Height - myNoteForm.Top - 100; }
+
+            // check if note too wide to fit in parent window
+            int mdiParWidth = this.MdiParent.Width;
+            if (myNoteForm.Left + myNoteForm.Width + 20 > mdiParWidth)
+            { myNoteForm.Width = mdiParWidth - myNoteForm.Left - 20; }
+
+            string itemSamp = itemText + "...";
+            if (itemText.Length > 20) { itemSamp = itemText.Substring(0, 20) + "..."; }
+            myNoteForm.Text = "Note For: \"" + itemSamp + "\"";
         }
 
         private void tmrSoftAssign_Tick(object sender, EventArgs e)
@@ -739,6 +760,8 @@ namespace orGenta_NNv
         {
             myParentForm.myParentForm.ActiveTopItems = this;
             myParentForm.myParentForm.ActiveTopForm = myParentForm;
+            myParentForm.myParentForm.menuExportCSV.Enabled = true;
+            myParentForm.myParentForm.menuItems2email.Enabled = true;
             myParentForm.BringToFront();
             if ((formJustLoaded) && (myParentForm.myParentForm.optAdjustItemsToParent == true))
             {
@@ -753,7 +776,6 @@ namespace orGenta_NNv
             pb2arrow.Top = splGridSplitter.SplitterDistance - 13;
             pb2arrow.Left = this.Width - 66;
             this.tbNewItem.Focus();
-
         }
 
         public void AutoAssign_Items()

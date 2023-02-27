@@ -116,11 +116,31 @@ namespace orGenta_NNv
         private bool BuildAndValidateDBconx(bool isSilent)
         {
             this.Cursor = Cursors.WaitCursor;
+            isItSQLite = false;
 
             myConxString = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=";
-            //myConxString += myServerName + "\\" + myKnowledgeDBname + ";User Id=Admin;Password=;";
+            int dotLoc = myKnowledgeDBname.IndexOf(".");
+            if (dotLoc < 0)
+            { 
+                myKnowledgeDBname += ".mdb";
+                dotLoc = myKnowledgeDBname.IndexOf(".");
+            }
+            string dbExt = myKnowledgeDBname.Substring(dotLoc);
+            isItOldMSaccess = true;
+            if (dbExt == ".accdb") 
+                { myConxString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=";
+                isItOldMSaccess = false; }
+
             myConxString += myServerName + "\\" + myKnowledgeDBname + ";User Id=" + myUserID +
                 ";Jet OLEDB:Encrypt Database=True;Jet OLEDB:Database Password=" + myPW + ";";
+
+            if (dbExt == ".sqlite")
+            {
+                myConxString = "DSN=SQLite;DataSource=" + myServerName + "\\" + myKnowledgeDBname + ";Version=3;";
+                DataProvider = "System.Data.Odbc";
+                isItOldMSaccess = false;
+                isItSQLite = true;
+            }
 
             // Try to connect to the DB 
 
@@ -134,6 +154,8 @@ namespace orGenta_NNv
             {
                 try
                 {
+                    DataTable provTable = DbProviderFactories.GetFactoryClasses();
+
                     DbProviderFactory myProviderFactory = DbProviderFactories.GetFactory(DataProvider);
                     myDBconx = myProviderFactory.CreateConnection();
                     myDBconx.ConnectionString = myConxString;

@@ -89,7 +89,6 @@ namespace orGenta_NNv
             this.tvCategories.BeforeCollapse += new System.Windows.Forms.TreeViewCancelEventHandler(this.tvCategories_BeforeCollapse);
             this.tvCategories.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.tvCategories_BeforeExpand);
             this.tvCategories.NodeMouseHover += new System.Windows.Forms.TreeNodeMouseHoverEventHandler(this.tvCategories_NodeMouseHover);
-            this.tvCategories.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvCategories_AfterSelect);
             this.tvCategories.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvCategories_NodeMouseClick);
             // 
             // contextMenuStrip1

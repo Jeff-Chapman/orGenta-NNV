@@ -57,15 +57,10 @@ namespace orGenta_NNv
 
         private void btnNote_Click(object sender, EventArgs e)
         {
-            myNoteForm = new NoteForm(this);
-            myNoteForm.MdiParent = myParentForm.myParentForm;
-            myNoteForm.Top = this.Top + 60;
-            myNoteForm.Left = this.Left - 30;
-            myNoteForm.NoteIsOnNewItem = true;
             string itemText = tbNewItem.Text;
-            string itemSamp = itemText + "...";
-            if (itemText.Length > 20) { itemSamp = itemText.Substring(0, 20) + "..."; }
-            myNoteForm.Text = "Note For: \"" + itemSamp + "\"";
+            MakeAndPositionNote(itemText);
+            myNoteForm.NoteIsOnNewItem = true;
+            myNoteForm.originalNoteText = EmptyNoteText;
             myNoteForm.Show();
         }
 
@@ -250,7 +245,7 @@ namespace orGenta_NNv
             if (ShowChildItems)
             {
                 TreeNode hotNode;
-                try { hotNode = myParentForm.tvCategories.SelectedNode; }
+                try { hotNode = myNodeForTheseItems; }
                 catch { hotNode = myParentForm.tvCategories.Nodes[0]; }
                 foreach (TreeNode childNode in hotNode.Nodes)
                 {
