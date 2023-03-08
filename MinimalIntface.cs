@@ -222,7 +222,7 @@ namespace orGenta_NNv
             this.Visible = false;
 		}
 
-		private void btnRestore_Click(object sender, System.EventArgs e)
+		public void btnRestore_Click(object sender, System.EventArgs e)
 		{
 			this.txtDataEntered.Focus();
             userClickedControl = false;
