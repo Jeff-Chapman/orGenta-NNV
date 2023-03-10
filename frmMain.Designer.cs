@@ -162,6 +162,7 @@
             // menuTrayed
             // 
             this.menuTrayed.Index = 7;
+            this.menuTrayed.Shortcut = System.Windows.Forms.Shortcut.CtrlK;
             this.menuTrayed.Text = "Trayed Mode";
             this.menuTrayed.Click += new System.EventHandler(this.menuTrayed_Click);
             // 
@@ -317,7 +318,7 @@
             // 
             this.menuImportItems.Enabled = false;
             this.menuImportItems.Index = 0;
-            this.menuImportItems.Text = "Import Items";
+            this.menuImportItems.Text = "Import Items...";
             this.menuImportItems.Click += new System.EventHandler(this.menuImportItems_Click);
             // 
             // menuExportCSV

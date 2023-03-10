@@ -27,6 +27,10 @@ namespace orGenta_NNv
         private System.Collections.ArrayList myCatXrefArray = new System.Collections.ArrayList();
         private System.Collections.ArrayList itemIDstoPrint = new System.Collections.ArrayList();
         private string FirstKBdate = "";
+        private bool isItOldMSaccess;
+        private bool isItSQLite;
+        private GlobalKeyboardHook _globalKeyboardHook;
+        private bool hasAlt = false;
         #endregion
         private bool testing = false;
 
@@ -55,8 +59,6 @@ namespace orGenta_NNv
         public List<string> AutoCreateCats = new List<string> { };
         public IDbConnection localCacheDBconx;
         public bool endOfUserSearch = false;
-        private bool isItOldMSaccess;
-        private bool isItSQLite;
 
         // NOTICE: This software is Copyright (c) 2006, 2021 by Jeff D. Chapman
         // Non-networked version licensed as Open Source under GNU Lesser General Public License v3.0
@@ -166,8 +168,62 @@ namespace orGenta_NNv
             CreateNewTree(myDBconx);
             KBsOpen.Add(activeDBname);
             dbCleanupRoutines();
-            mySideUtils.Show();       
+            mySideUtils.Show();
+            SetupKeyboardHooks();
             this.Cursor = Cursors.Arrow;
+        }
+
+        public void SetupKeyboardHooks()
+        {
+            _globalKeyboardHook = new GlobalKeyboardHook();
+            _globalKeyboardHook.KeyboardPressed += OnKeyPressed;
+        }
+
+        private void OnKeyPressed(object sender, GlobalKeyboardHookEventArgs e)
+        {
+            if (e.KeyboardState != GlobalKeyboardHook.KeyboardState.KeyDown) { return; }
+
+            //Console.WriteLine(e.KeyboardData.VirtualCode);
+            //Console.WriteLine(e.KeyboardData.Flags);
+            //Console.WriteLine("-----");
+
+            if (e.KeyboardData.VirtualCode == GlobalKeyboardHook.VkControl)
+            // 162 is the code for the Ctrl key
+            {
+                hasAlt = true;
+                return;
+            }
+
+            if (e.KeyboardData.VirtualCode != GlobalKeyboardHook.VkSnapshot)
+            // 75 is the code for k
+            {
+                hasAlt = false;
+                return;
+            }
+
+            if (hasAlt)
+            {
+                HandleKhotKey();
+                e.Handled = true;
+            }
+        }
+
+        private void HandleKhotKey()
+        {
+            this.Opacity = 0;
+            mySideUtils.Opacity = 0;
+            this.WindowState = FormWindowState.Normal;
+            if (!RunningMinimal) { menuTrayed_Click(this, null); }
+            this.Opacity = 1;
+            mySideUtils.Opacity = 1;
+            if (GetTextLineForm.txtDataEntered.Visible) 
+            {
+                GetTextLineForm.btnRestore_Click(this, null);
+                trayIconTrayed_DoubleClick(this, null);
+                Application.DoEvents();
+                return;
+            }
+            trayIconTrayed_Click(this, null);
         }
 
         private void RestoreUserOptions()
@@ -311,7 +367,7 @@ namespace orGenta_NNv
 
         private TreeNode Match1Node(TreeNode MatchNode, string PathToFind, string TagToMatch, bool PartialMatch, string PreviousFoundNode)
         {
-            if ((MatchNode.FullPath == PathToFind) || ((PartialMatch) &&
+            if ((MatchNode.FullPath.ToLower() == PathToFind.ToLower()) || ((PartialMatch) &&
                 (MatchNode.Text.ToLower().IndexOf(PathToFind.ToLower()) >= 0)))
             {
                 FoundMatchNode = true; 

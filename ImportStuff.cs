@@ -2,6 +2,7 @@
 using System.Windows.Forms;
 using System.IO;
 using System.Xml;
+using System.Collections;
 
 namespace orGenta_NNv
 {
@@ -16,9 +17,9 @@ namespace orGenta_NNv
         private string categoryPath;
         private string hasNoteFlag;
         private string priorItemID;
-        private System.Collections.ArrayList catFullPathList;
-        private System.Collections.ArrayList oldItemIDs = new System.Collections.ArrayList();
-        private System.Collections.ArrayList newItemIDs = new System.Collections.ArrayList();
+        private ArrayList catFullPathList = new ArrayList();
+        private ArrayList oldItemIDs = new ArrayList();
+        private ArrayList newItemIDs = new ArrayList();
         private bool importingNotes;
         private string FullNote = "";
         private string HalnaBuildItem;
@@ -104,6 +105,12 @@ namespace orGenta_NNv
             pbImportProgress.Visible = true;
             pbImportProgress.Maximum = SizeOfImportFile;
             this.btnCancel.Visible = true;
+
+            catFullPathList.Clear();
+            foreach (string onePath in myparent.ActiveTopForm.FullPathList)
+                { catFullPathList.Add(onePath.ToLower()); }
+            //catFullPathList = myparent.ActiveTopForm.FullPathList;
+
             int ImportReadCount;
 
             if (importMode == "Opml")
@@ -135,7 +142,6 @@ namespace orGenta_NNv
         {
             XMLImportReadCount = 0;
             XMLlevel = 0;
-            catFullPathList = myparent.ActiveTopForm.FullPathList;
             RootParentPath = "Main\\";
 
             foreach (XmlNode node in importedXML.DocumentElement.ChildNodes)
@@ -187,7 +193,6 @@ namespace orGenta_NNv
         private int LoadImportToTable(StreamReader ImportReader)
         {
             importingNotes = false;
-            catFullPathList = myparent.ActiveTopForm.FullPathList;
             int ImportReadCount = 0;
             
             oldItemIDs.Clear();
@@ -338,13 +343,17 @@ namespace orGenta_NNv
 
             // use existing path if exists, else create it
             string incomingCatID;
-            if (catFullPathList.IndexOf(categoryPath) >= 0)     // ERR: this is a bug, should be case insensitive
+            if (catFullPathList.IndexOf(categoryPath.ToLower()) >= 0)     
             {
                 TreeNode foundCat = myparent.FindNodeInTV(categoryPath, null, false, "");
                 TreeViewForm.TagStruct thisTag = (TreeViewForm.TagStruct)foundCat.Tag;
                 incomingCatID = thisTag.CatID;
             }
-            else { incomingCatID = createNodesForPath(categoryPath); }
+            else 
+            { 
+                incomingCatID = createNodesForPath(categoryPath);
+                catFullPathList.Add(categoryPath.ToLower());
+            }
 
             AddedItemID = myparent.ActiveTopItems.saveNewItemWrapper(newItemIn, newDateIn, incomingCatID);
         }
@@ -503,7 +512,7 @@ namespace orGenta_NNv
             string ExistPath = "";
             foreach (string thisPath in catFullPathList)
             {
-                if ((categoryPath.IndexOf(thisPath) > -1) && (thisPath.Length > ExistPath.Length))
+                if ((categoryPath.ToLower().IndexOf(thisPath) > -1) && (thisPath.Length > ExistPath.Length))
                     { ExistPath = thisPath; }
             }
 
