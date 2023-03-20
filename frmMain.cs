@@ -544,6 +544,14 @@ namespace orGenta_NNv
 
         private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
         {
+            if ( this.WindowState == FormWindowState.Minimized )
+            {
+                this.Opacity = 0;
+                mySideUtils.Opacity = 0;
+                this.WindowState = FormWindowState.Normal;
+                Application.DoEvents();
+            }
+
             RegistryKey ThisUser = Registry.CurrentUser;
             RegistryKey ScreenLoc = ThisUser.CreateSubKey("Software\\orGenta\\ScreenLocation");
             ScreenLoc.SetValue("Top", this.Top);
