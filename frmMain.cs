@@ -568,6 +568,8 @@ namespace orGenta_NNv
             UserOptions.SetValue("AdjustItemsToParent", optAdjustItemsToParent);
             UserOptions.SetValue("CreateCategories", optCreateCategories);
             UserOptions.SetValue("HighlightCats", optHighlightCats);
+
+            Application.Exit();
         }
 
     }
