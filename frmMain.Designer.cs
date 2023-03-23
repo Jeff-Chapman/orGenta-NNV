@@ -318,7 +318,7 @@
             // 
             this.menuImportItems.Enabled = false;
             this.menuImportItems.Index = 0;
-            this.menuImportItems.Text = "Import Items";
+            this.menuImportItems.Text = "Import Items...";
             this.menuImportItems.Click += new System.EventHandler(this.menuImportItems_Click);
             // 
             // menuExportCSV

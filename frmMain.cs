@@ -367,7 +367,7 @@ namespace orGenta_NNv
 
         private TreeNode Match1Node(TreeNode MatchNode, string PathToFind, string TagToMatch, bool PartialMatch, string PreviousFoundNode)
         {
-            if ((MatchNode.FullPath == PathToFind) || ((PartialMatch) &&
+            if ((MatchNode.FullPath.ToLower() == PathToFind.ToLower()) || ((PartialMatch) &&
                 (MatchNode.Text.ToLower().IndexOf(PathToFind.ToLower()) >= 0)))
             {
                 FoundMatchNode = true; 
@@ -544,6 +544,14 @@ namespace orGenta_NNv
 
         private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
         {
+            if ( this.WindowState == FormWindowState.Minimized )
+            {
+                this.Opacity = 0;
+                mySideUtils.Opacity = 0;
+                this.WindowState = FormWindowState.Normal;
+                Application.DoEvents();
+            }
+
             RegistryKey ThisUser = Registry.CurrentUser;
             RegistryKey ScreenLoc = ThisUser.CreateSubKey("Software\\orGenta\\ScreenLocation");
             ScreenLoc.SetValue("Top", this.Top);
@@ -560,6 +568,8 @@ namespace orGenta_NNv
             UserOptions.SetValue("AdjustItemsToParent", optAdjustItemsToParent);
             UserOptions.SetValue("CreateCategories", optCreateCategories);
             UserOptions.SetValue("HighlightCats", optHighlightCats);
+
+            Application.Exit();
         }
 
     }

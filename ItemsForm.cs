@@ -115,6 +115,7 @@ namespace orGenta_NNv
 
             string myLoadSQL;
             string myNoteLoadSQL = "";
+            myItemCleaner = new SharedRoutines();
 
             if (ItemToFind == "")
             {
@@ -122,18 +123,17 @@ namespace orGenta_NNv
             }
             else
             {
+                string holdItemToFind = myItemCleaner.CleanTheItem(ItemToFind);
                 myLoadSQL = "SELECT hasNote, ItemDesc, DateCreated, ItemID FROM vw_Get_Items_Distinct " + RLockOption;
-                myLoadSQL += " WHERE [ItemDesc] LIKE '%" + ItemToFind + "%' ORDER BY DateCreated DESC";
+                myLoadSQL += " WHERE [ItemDesc] LIKE '%" + holdItemToFind + "%' ORDER BY DateCreated DESC";
                 myCacheRecord.crCategory = "Unassigned";
                 myCacheRecord.crParentID = "1";
-                localCacheTableBindingSource.Filter += " AND ItemDesc LIKE '%" + ItemToFind + "%'";
+                localCacheTableBindingSource.Filter += " AND ItemDesc LIKE '%" + holdItemToFind + "%'";
 
                 myNoteLoadSQL = "SELECT hasNote, ItemDesc, DateCreated, Vid.ItemID FROM (vw_Get_Items_Distinct Vid " + RLockOption;
                 myNoteLoadSQL += " INNER JOIN Notes " + RLockOption + " ON Vid.ItemID = Notes.ItemID) WHERE";
-                myNoteLoadSQL += " [NoteValue] LIKE '%" + ItemToFind + "%' ORDER BY DateCreated DESC";
+                myNoteLoadSQL += " [NoteValue] LIKE '%" + holdItemToFind + "%' ORDER BY DateCreated DESC";
             }
-
-            myItemCleaner = new SharedRoutines();
 
             LoadUptheGrids(myLoadSQL, myNoteLoadSQL);
             if (ItemToFind != "") { FillInFirstCats(); }
