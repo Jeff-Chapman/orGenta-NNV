@@ -162,6 +162,7 @@
             // menuTrayed
             // 
             this.menuTrayed.Index = 7;
+            this.menuTrayed.Shortcut = System.Windows.Forms.Shortcut.CtrlK;
             this.menuTrayed.Text = "Trayed Mode";
             this.menuTrayed.Click += new System.EventHandler(this.menuTrayed_Click);
             // 
