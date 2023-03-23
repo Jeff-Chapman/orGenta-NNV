@@ -75,3 +75,4 @@
 30	Click on minimal interface KB name allows choosing KB
 	Add support for use of a single SQLite database
 ==	vsn 2.2.1.30  ==  Released as Open Source for Standalone Use
+31	Add system hook to Ctrl-k for minimal interface

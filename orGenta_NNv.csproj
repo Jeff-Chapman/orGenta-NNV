@@ -121,6 +121,7 @@
     <Compile Include="Itemsform_Actions.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="KeyCapture.cs" />
     <Compile Include="localCacheDataSet.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
