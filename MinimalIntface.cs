@@ -62,14 +62,9 @@ namespace orGenta_NNv
 
 		protected override void Dispose( bool disposing )
 		{
-			if( disposing )
-			{
-				if(components != null)
-				{
-					components.Dispose();
-				}
-			}
-			base.Dispose( disposing );
+            if (disposing && components != null)
+                { components.Dispose(); }
+            base.Dispose( disposing );
 		}
 
 		#region Windows Form Designer generated code

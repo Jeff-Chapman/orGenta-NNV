@@ -22,6 +22,7 @@ namespace orGenta_NNv
         private bool itemGotSavedToCache;
         private char[] PunctuationArray = new char[] { ' ', ',', '.', ':', '?', '!', '\'', '(', ')' };
         private SharedRoutines myErrHandler = new SharedRoutines();
+        private SharedRoutines myDBupdater = new SharedRoutines();
         private ArrayList PossibleAssigns = new ArrayList();
         private struct SAitems
         {
@@ -105,9 +106,7 @@ namespace orGenta_NNv
             dataGridViewCellStyle1 = new DataGridViewCellStyle();
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.NotSet;
             if (myParentForm.myParentForm.optWrapMode)
-            {
-                dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            }
+                { dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True; }
             itemDescDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle1;
 
             localCacheTableBindingSource.Filter = "KBname = '" + myParentForm.Text + "'";
@@ -117,10 +116,7 @@ namespace orGenta_NNv
             string myNoteLoadSQL = "";
             myItemCleaner = new SharedRoutines();
 
-            if (ItemToFind == "")
-            {
-                myLoadSQL = GetRegularItemsSQL();
-            }
+            if (ItemToFind == "") { myLoadSQL = GetRegularItemsSQL(); }
             else
             {
                 string holdItemToFind = myItemCleaner.CleanTheItem(ItemToFind);
@@ -196,11 +192,11 @@ namespace orGenta_NNv
             SharedRoutines DataGrabber = new SharedRoutines();
 
             if (myParentForm.isOldMSaccess)
-            { orGentaDBDataSet.vw_Get_Items.Columns["hasNote"].DataType = typeof(Byte); }
+                { orGentaDBDataSet.vw_Get_Items.Columns["hasNote"].DataType = typeof(Byte); }
             else if (!myParentForm.isSQLlite)
-            { orGentaDBDataSet.vw_Get_Items.Columns["CategoryID"].DataType = typeof(Int16); }
+                { orGentaDBDataSet.vw_Get_Items.Columns["CategoryID"].DataType = typeof(Int16); }
             if (myParentForm.isSQLlite)
-            { orGentaDBDataSet.vw_Get_Items.Columns["CategoryID"].DataType = typeof(String); }
+                { orGentaDBDataSet.vw_Get_Items.Columns["CategoryID"].DataType = typeof(String); }
 
             try
             {
@@ -317,9 +313,7 @@ namespace orGenta_NNv
             saveNewNoteInDB();
             string updSQLcmd = "UPDATE Items SET hasNote = 1";
             updSQLcmd += " WHERE (ItemID = " + itemForNote + ")";
-            IDbCommand cmd = myDBconx.CreateCommand();
-            cmd.CommandText = updSQLcmd;
-            int rowsIns = cmd.ExecuteNonQuery();
+            int rowsUpd = myDBupdater.DBupdate(myDBconx, updSQLcmd);
         }
 
         private void saveNewNoteInDB()
@@ -328,9 +322,7 @@ namespace orGenta_NNv
             string insNoteCmd = "INSERT INTO [Notes] ([ItemID],[NoteValue]) VALUES (";
             insNoteCmd += newItemIDback + ",'" + holdNote + "')";
 
-            IDbCommand cmd = myDBconx.CreateCommand();
-            cmd.CommandText = insNoteCmd;
-            int rowsIns = cmd.ExecuteNonQuery();
+            int rowsIns = myDBupdater.DBinsert(myDBconx, insNoteCmd);
         }
 
         private void persistItemandNotesToCache()
@@ -419,29 +411,27 @@ namespace orGenta_NNv
         private void saveNewItemInDB(string newCategoryID)
         {
             if (tbNewItem.Text == "") { return; }
-            IDbCommand cmd;
-            int rowsIns;
-            ItemAloneSave(out cmd, out rowsIns);
+
+            ItemAloneSave(out int rowsIns);
             if (newCategoryID == null) { newCategoryID = "2"; }       // use Unassigned if blank
 
             string insRelCmd = "INSERT INTO [Rels] ([CategoryID],[ItemID],[isDeleted]) VALUES (";
             insRelCmd += newCategoryID + "," + newItemIDback + ",0)";
-            cmd.CommandText = insRelCmd;
-            rowsIns = cmd.ExecuteNonQuery();
+            rowsIns = myDBupdater.DBinsert(myDBconx, insRelCmd);
 
             if (!calledFromWrapper) { SoftAssign(tbNewItem.Text); }
         }
 
-        private void ItemAloneSave(out IDbCommand cmd, out int rowsIns)
+        private void ItemAloneSave(out int rowsIns)
         {
             string holdItem = myItemCleaner.CleanTheItem(tbNewItem.Text);
+            IDbCommand cmd = myDBconx.CreateCommand();
 
-            string insItemCmd = "";
-            if (newItemDate == "")
-                { insItemCmd = "INSERT INTO [Items] ([ItemDesc],[hasNote],[isDeleted]) VALUES ("; }
-            else
-                { insItemCmd = "INSERT INTO [Items] ([ItemDesc],[hasNote],[isDeleted],[DateCreated]) VALUES ("; }
+            string insItemCmd = newItemDate == ""
+                ? "INSERT INTO [Items] ([ItemDesc],[hasNote],[isDeleted]) VALUES ("
+                : "INSERT INTO [Items] ([ItemDesc],[hasNote],[isDeleted],[DateCreated]) VALUES (";
             insItemCmd += "'" + holdItem + "',";
+
             if (newItemHasNote)
                 { insItemCmd += "1,0"; }
             else
@@ -451,14 +441,10 @@ namespace orGenta_NNv
             else
                 { insItemCmd += ",'" + newItemDate + "')"; }
 
-            cmd = myDBconx.CreateCommand();
-            cmd.CommandText = insItemCmd;
-            rowsIns = cmd.ExecuteNonQuery();
+            rowsIns = myDBupdater.DBinsert(myDBconx, insItemCmd);
 
-            if (myDBconx.Database != "")
-                { cmd.CommandText = "SELECT @@IDENTITY AS NEWROWID"; }
-            else
-                { cmd.CommandText = "SELECT MAX(ItemID) AS NEWROWID FROM Items"; }
+            cmd.CommandText = myDBconx.Database != "" ? 
+                "SELECT @@IDENTITY AS NEWROWID" : "SELECT MAX(ItemID) AS NEWROWID FROM Items";
 
             newItemIDback = cmd.ExecuteScalar().ToString();
         }
@@ -487,8 +473,7 @@ namespace orGenta_NNv
             try
             {
                 NoteTextToShow = cmd.ExecuteScalar().ToString();
-                if (NoteTextToShow == null)
-                { NoteTextToShow = EmptyNoteText; }
+                if (NoteTextToShow == null) { NoteTextToShow = EmptyNoteText; }
             }
             catch
             { NoteTextToShow = EmptyNoteText; }
@@ -525,12 +510,12 @@ namespace orGenta_NNv
 
             // if OK button is hidden we need to shift form upwards
             if (myNoteForm.Bottom > myParentForm.myParentForm.Height - 90)
-            { myNoteForm.Height = myParentForm.myParentForm.Height - myNoteForm.Top - 100; }
+                { myNoteForm.Height = myParentForm.myParentForm.Height - myNoteForm.Top - 100; }
 
             // check if note too wide to fit in parent window
             int mdiParWidth = this.MdiParent.Width;
             if (myNoteForm.Left + myNoteForm.Width + 20 > mdiParWidth)
-            { myNoteForm.Width = mdiParWidth - myNoteForm.Left - 20; }
+                { myNoteForm.Width = mdiParWidth - myNoteForm.Left - 20; }
 
             string itemSamp = itemText + "...";
             if (itemText.Length > 20) { itemSamp = itemText.Substring(0, 20) + "..."; }
@@ -561,8 +546,7 @@ namespace orGenta_NNv
 
             string insRelCmd = "INSERT INTO [Rels] ([CategoryID],[ItemID],[isDeleted]) VALUES (";
             insRelCmd += matchCategoryID + "," + matchItemID + ",0)";
-            cmd.CommandText = insRelCmd;
-            int rowsIns = cmd.ExecuteNonQuery();
+            int rowsIns = myDBupdater.DBinsert(myDBconx, insRelCmd);
             itemGotAssigned = true;
 
             SoftAssignCleanup(matchItemID);
@@ -579,11 +563,9 @@ namespace orGenta_NNv
                 {
                     // Remove item from "Unassigned" category if it's there. 
                     string matchCategoryID = "2";
-                    IDbCommand cmd = myDBconx.CreateCommand();
                     string delRelCmd = "UPDATE [Rels] SET isDeleted = 1 WHERE [CategoryID] = ";
                     delRelCmd += matchCategoryID + " AND [ItemID] = " + matchItemID;
-                    cmd.CommandText = delRelCmd;
-                    int countBack = (int)cmd.ExecuteNonQuery();
+                    int countBack = myDBupdater.DBupdate(myDBconx, delRelCmd);
                 }
             }
             itemBeingAssigned = false;
@@ -615,7 +597,7 @@ namespace orGenta_NNv
 
             for (int i = 0; i <= numAssignWords; i++)
             {
-                if ((i > 0) && ((SortedWords[i]) == SortedWords[i - 1])) { continue; }
+                if ((i > 0) && (SortedWords[i] == SortedWords[i - 1])) { continue; }
                 if (SortedWords[i].ToString() != "") { WorkingText += SortedWords[i].ToString() + " "; }
             }
             catNodes = myParentForm.tvCategories;
@@ -714,32 +696,31 @@ namespace orGenta_NNv
             string DelCatID = DelColVals[4].ToString();
 
             string updSQLcmd;
-            if (DeleteOptionMode == "Delete")
+            switch (DeleteOptionMode)
             {
-                updSQLcmd = "UPDATE Rels SET isDeleted = 1";
-                updSQLcmd += " WHERE (ItemID = " + DelItemID + " AND CategoryID = " + DelCatID + ")";
-            }
-            else if (DeleteOptionMode == "Discard")
-            {
-                updSQLcmd = "UPDATE Rels SET isDeleted = 1";
-                updSQLcmd += " WHERE (ItemID = " + DelItemID + ")";
-            }
-            else
-            {
-                // Removing from Trash
-                updSQLcmd = "UPDATE Items SET isDeleted = 1";
-                updSQLcmd += " WHERE (ItemID = " + DelItemID + ")";
+                case "Delete":
+                    updSQLcmd = "UPDATE Rels SET isDeleted = 1";
+                    updSQLcmd += " WHERE (ItemID = " + DelItemID + " AND CategoryID = " + DelCatID + ")";
+                    break;
+                case "Discard":
+                    updSQLcmd = "UPDATE Rels SET isDeleted = 1";
+                    updSQLcmd += " WHERE (ItemID = " + DelItemID + ")";
+                    break;
+                default:
+                    // Removing from Trash
+                    updSQLcmd = "UPDATE Items SET isDeleted = 1";
+                    updSQLcmd += " WHERE (ItemID = " + DelItemID + ")";
+                    break;
             }
 
-            IDbCommand cmd = myDBconx.CreateCommand();
-            cmd.CommandText = updSQLcmd;
-            int rowsUpd = cmd.ExecuteNonQuery();
+            int rowsUpd = myDBupdater.DBupdate(myDBconx, updSQLcmd);
 
             // In Delete mode, if an item is no longer attached to any Category
             //      then it equivalents to a Discard
 
             if (DeleteOptionMode == "Delete")
             {
+                IDbCommand cmd = myDBconx.CreateCommand();
                 string chkDelete = "SELECT COUNT(*) FROM Rels WHERE (ItemID = " + DelItemID + " AND isDeleted = 0)";
                 cmd.CommandText = chkDelete;
                 int attachCount = (int)cmd.ExecuteScalar();
@@ -751,8 +732,7 @@ namespace orGenta_NNv
                 // Insert rel for this item to the TrashCan category
                 string insRelCmd = "INSERT INTO [Rels] ([CategoryID],[ItemID],[isDeleted]) VALUES (";
                 insRelCmd += "3," + DelItemID + ",0)";
-                cmd.CommandText = insRelCmd;
-                int rowsIns = cmd.ExecuteNonQuery();
+                int rowsIns = myDBupdater.DBinsert(myDBconx, insRelCmd);
             }
         }
 
@@ -763,7 +743,7 @@ namespace orGenta_NNv
             myParentForm.myParentForm.menuExportCSV.Enabled = true;
             myParentForm.myParentForm.menuItems2email.Enabled = true;
             myParentForm.BringToFront();
-            if ((formJustLoaded) && (myParentForm.myParentForm.optAdjustItemsToParent == true))
+            if (formJustLoaded && (myParentForm.myParentForm.optAdjustItemsToParent == true))
             {
                 int MDIright = myParentForm.myParentForm.Right;
                 this.Width = MDIright - this.Left - myParentForm.myParentForm.Left - 20;

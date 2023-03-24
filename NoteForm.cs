@@ -16,6 +16,7 @@ namespace orGenta_NNv
         private ItemsForm myItemsForm;
         private MinimalIntface myMIform;
         private SharedRoutines myItemCleaner;
+        private SharedRoutines myDBupdater = new SharedRoutines();
         private string EmptyNoteText = "Enter your note info here...";
         private bool EscKeyPressed = false;
         private bool OkayBtnPressed = false;
@@ -70,25 +71,20 @@ namespace orGenta_NNv
                 return;
             }
 
-            string holdNote;
-            IDbCommand cmd;
-
             // insert new note for an existing item
 
+            string holdNote;
             if (noteWasBlank)
             {
                 holdNote = myItemCleaner.CleanTheItem(tbNoteText.Text);
                 string insNoteCmd = "INSERT INTO [Notes] ([ItemID],[NoteValue]) VALUES (";
                 insNoteCmd += parentItemID + ",'" + holdNote + "')";
 
-                cmd = myItemsForm.myDBconx.CreateCommand();
-                cmd.CommandText = insNoteCmd;
-                int rowsIns = cmd.ExecuteNonQuery();
+                int rowsIns = myDBupdater.DBinsert(myItemsForm.myDBconx, insNoteCmd);
 
                 // update hasNote flag in the Item
                 string updItemNoteCmd = "UPDATE Items SET hasNote = 1 WHERE ItemID = " + parentItemID;
-                cmd.CommandText = updItemNoteCmd;
-                int rowsUpdI = cmd.ExecuteNonQuery();
+                int rowsUpdI = myDBupdater.DBupdate(myItemsForm.myDBconx, updItemNoteCmd);
 
                 this.Close();
                 return;
@@ -100,9 +96,7 @@ namespace orGenta_NNv
             string updNoteCmd = "UPDATE [Notes] SET [NoteValue] =  '" + holdNote;
             updNoteCmd += "' WHERE ItemID = " + parentItemID;
 
-            cmd = myItemsForm.myDBconx.CreateCommand();
-            cmd.CommandText = updNoteCmd;
-            int rowsUpd = cmd.ExecuteNonQuery();
+            int rowsUpd = myDBupdater.DBupdate(myItemsForm.myDBconx, updNoteCmd);
             this.Close();
         }
 

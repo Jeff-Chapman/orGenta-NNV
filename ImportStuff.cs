@@ -245,10 +245,8 @@ namespace orGenta_NNv
             string lastChar = ImportedItem.Substring(ImportedItem.Length - 1);
             if (lastChar != "\"")    // This is a multiline note that continues
             {
-                if (FullNote == "")
-                    { FullNote = ImportedItem; }
-                else
-                    {FullNote += "\r\n" + ImportedItem;}
+                if (FullNote == "") { FullNote = ImportedItem; }
+                else {FullNote += "\r\n" + ImportedItem;}
                 return;
             }
             if (FullNote != "") 
@@ -278,9 +276,7 @@ namespace orGenta_NNv
             string newItemIn = "";
             string newDateIn;
             if ((importMode == "Items") || (importMode == "ItemsDates"))
-            {
-                newItemIn = QuoteCleanup(colsIn[0]);
-            }
+                { newItemIn = QuoteCleanup(colsIn[0]); }
 
             if (newItemIn.Length > 250)
             {
@@ -381,13 +377,8 @@ namespace orGenta_NNv
                     return;
                 }
 
-                if (HalnaBuildItem == "")
-                { HalnaBuildItem = ImportedItem.Trim(); }
-                else
-                {
-                    AddToHalnaNote(ImportedItem, thisIndent);
-                }
-
+                if (HalnaBuildItem == "") { HalnaBuildItem = ImportedItem.Trim(); }
+                else { AddToHalnaNote(ImportedItem, thisIndent); }
             }
             else
             {
@@ -423,7 +414,6 @@ namespace orGenta_NNv
 
         private string GetCategoryParent(int thisIndent)
         {
-            //if (importMode == "Opml") { thisIndent++; }
             string workingCat = IncomingCategory;
             string newParentPath = "";
             if (thisIndent == 0) 

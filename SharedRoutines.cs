@@ -57,5 +57,21 @@ namespace orGenta_NNv
             return holdItem;
         }
 
+        public int DBinsert(IDbConnection myDBconx, string insertCmd)
+        {
+            IDbCommand cmd = myDBconx.CreateCommand();
+            cmd.CommandText = insertCmd;
+            int rowsIns = cmd.ExecuteNonQuery();
+            return rowsIns;
+        }
+
+        public int DBupdate(IDbConnection myDBconx, string updateCmd)
+        {
+            IDbCommand cmd = myDBconx.CreateCommand();
+            cmd.CommandText = updateCmd;
+            int rowsUpd = cmd.ExecuteNonQuery();
+            return rowsUpd;
+        }
+
     }
 }
