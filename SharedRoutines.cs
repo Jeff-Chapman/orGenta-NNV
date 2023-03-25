@@ -58,7 +58,7 @@ namespace orGenta_NNv
             return holdItem;
         }
 
-        public int DBinsert(bool testing, bool optLongErrMessages, string myRoutineName, IDbConnection myDBconx, string insertCmd)
+        public int DBinsert(bool optLongErrMessages, string myRoutineName, IDbConnection myDBconx, string insertCmd)
         {
             try
             {
@@ -69,7 +69,7 @@ namespace orGenta_NNv
             }
             catch (Exception ex)
             {
-                if (testing) { LogRTerror(myRoutineName, ex); }
+                if (Program.testing) { LogRTerror(myRoutineName, ex); }
                 MessageBox.Show(insertCmd, "DB Insert Error");
                 if (optLongErrMessages)
                 { ShowErrDetails(myRoutineName, ex, "DB Insert Error"); }
@@ -77,7 +77,7 @@ namespace orGenta_NNv
             }
         }
 
-        public int DBupdate(bool testing, bool optLongErrMessages, string myRoutineName, IDbConnection myDBconx, string updateCmd)
+        public int DBupdate(bool optLongErrMessages, string myRoutineName, IDbConnection myDBconx, string updateCmd)
         {
             try
             {
@@ -88,7 +88,7 @@ namespace orGenta_NNv
             }
             catch (Exception ex)
             {
-                if (testing) { LogRTerror(myRoutineName, ex); }
+                if (Program.testing) { LogRTerror(myRoutineName, ex); }
                 MessageBox.Show(updateCmd, "DB Update Error");
                 if (optLongErrMessages)
                 { ShowErrDetails(myRoutineName, ex, "DB Update Error"); }

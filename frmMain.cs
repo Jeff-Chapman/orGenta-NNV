@@ -33,8 +33,7 @@ namespace orGenta_NNv
         private GlobalKeyboardHook _globalKeyboardHook;
         private bool hasAlt = false;
         #endregion
-        private bool testing = false;
-
+        
         #region userOptions
         public bool optLongErrMessages = true;
         public int optTVupdateInterval = 10000;
@@ -80,12 +79,12 @@ namespace orGenta_NNv
 
             if (Control.ModifierKeys == Keys.Shift)
             { 
-                testing = true;
-                cbTesting.Visible = true;
+                Program.testing = true;
+                cbtesting.Visible = true;
                 lblDebugging.Visible = true;
             }
 
-            if (testing)
+            if (Program.testing)
             {
                 using (StreamWriter sw = File.AppendText(LogfileName))
                 {
@@ -141,7 +140,7 @@ namespace orGenta_NNv
                 { setupBuiltinDBsettings(); }
 
             // Try to autoconnect first before popping up the user KB conx box
-            if (testing) { getDBconnxInfo(); }
+            if (Program.testing) { getDBconnxInfo(); }
             if (!BuildAndValidateDBconx(true))
                 { getDBconnxInfo(); }
             else
@@ -320,8 +319,7 @@ namespace orGenta_NNv
             if (pathLen > 1)
                 { tvfMyTreeForm.Text = dbParts[pathLen - 2] + "\\" + dbParts[pathLen - 1];}
 
-            tvfMyTreeForm.testing = testing;
-            // if (testing) { tvfMyTreeForm.tmrTVdirty.Interval = 50000; }
+            // if (Program.testing) { tvfMyTreeForm.tmrTVdirty.Interval = 50000; }
             tvfMyTreeForm.Show();
         }
  
@@ -494,13 +492,13 @@ namespace orGenta_NNv
                 string insRelCmd = "INSERT INTO [Rels] ([CategoryID],[ItemID],[isDeleted]) VALUES (";
                 insRelCmd += AssigningCatID + "," + ItemNumber + ",0)";
 
-                int rowsIns = myDBupdater.DBinsert(testing, optLongErrMessages, "frmMain:AddCatsForItem", ActiveTopForm.myDBconx, insRelCmd);
+                int rowsIns = myDBupdater.DBinsert(optLongErrMessages, "frmMain:AddCatsForItem", ActiveTopForm.myDBconx, insRelCmd);
             }
 
             // Remove item from trash if it's there
             string TrashRem = "UPDATE Rels SET isDeleted = 1 WHERE (Rels.ItemID = "; 
             TrashRem += ItemNumber + ") AND (Rels.CategoryID = 3)";
-            int Trashed = myDBupdater.DBupdate(testing, optLongErrMessages, "frmMain:AddCatsForItem", ActiveTopForm.myDBconx, TrashRem);
+            int Trashed = myDBupdater.DBupdate(optLongErrMessages, "frmMain:AddCatsForItem", ActiveTopForm.myDBconx, TrashRem);
         }
 
         private void AddToAssignCats(TreeNode scanNode, CheckedListBox boxTarget)
@@ -512,9 +510,9 @@ namespace orGenta_NNv
                 { AddToAssignCats(childNode, boxTarget); }
         }
 
-        private void cbTesting_Click(object sender, EventArgs e)
+        private void cbtesting_Click(object sender, EventArgs e)
         {
-            testing = !testing;
+            Program.testing = !Program.testing;
         }
 
         private void frmMain_Paint(object sender, PaintEventArgs e)

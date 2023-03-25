@@ -36,7 +36,6 @@ namespace orGenta_NNv
             public string isDeleted;
         }
 
-        public bool testing;
         public IDbConnection myDBconx;
         public bool isOldMSaccess;
         public bool isSQLlite;
@@ -87,7 +86,7 @@ namespace orGenta_NNv
             }
             catch (Exception ex)
             {
-                if (testing) { myErrHandler.LogRTerror("BuildCatTree", ex); }
+                if (Program.testing) { myErrHandler.LogRTerror("BuildCatTree", ex); }
                 MessageBox.Show("Unable to read Categories from DB", "DB Read Error");
                 if (myParentForm.optLongErrMessages)
                     { myErrHandler.ShowErrDetails("BuildCatTree", ex, "DB Read Error"); }
@@ -493,7 +492,7 @@ namespace orGenta_NNv
             string myCatID = myTag.CatID;
             updCmdSQL += " WHERE [CategoryID] = " + myCatID;
 
-            int rowsUpd = myDBupdater.DBupdate(testing, myParentForm.optLongErrMessages, "TreeViewForm:UpdateExistingCat", myDBconx, updCmdSQL);
+            int rowsUpd = myDBupdater.DBupdate(myParentForm.optLongErrMessages, "TreeViewForm:UpdateExistingCat", myDBconx, updCmdSQL);
 
             if (deleteBit == "1") { CategoriesToDelete.Add(ExaminingNode); }
          }
@@ -519,7 +518,7 @@ namespace orGenta_NNv
             string manlAssignbit = myTag.ManualAssign;            
             insCmdSQL += frozBit + "," + deleteBit + "," + manlAssignbit + ")";
 
-            int rowsIns = myDBupdater.DBinsert(testing, myParentForm.optLongErrMessages, "TreeViewForm:PersistNewCat", myDBconx, insCmdSQL);
+            int rowsIns = myDBupdater.DBinsert(myParentForm.optLongErrMessages, "TreeViewForm:PersistNewCat", myDBconx, insCmdSQL);
 
             IDbCommand cmd = myDBconx.CreateCommand();
             cmd.CommandText = myDBconx.Database != "" ? 
@@ -532,7 +531,7 @@ namespace orGenta_NNv
                 try { AssignItemsToCat(catName, newIDback, true); }
                 catch (Exception ex)
                 {
-                    if (testing) { myErrHandler.LogRTerror("PersistNewCat:AssignItemsToCat", ex); }
+                    if (Program.testing) { myErrHandler.LogRTerror("PersistNewCat:AssignItemsToCat", ex); }
                 }
             }
             this.Cursor = Cursors.Arrow;
@@ -568,12 +567,12 @@ namespace orGenta_NNv
             string insCmdSQL = "INSERT INTO [Rels] ([CategoryID],[ItemID]) VALUES (";
             insCmdSQL += newIDback +  ", " + myItemID + ")";
 
-            int rowsIns = myDBupdater.DBinsert(testing, myParentForm.optLongErrMessages, "TreeViewForm:BuildRelation", myDBconx, insCmdSQL);
+            int rowsIns = myDBupdater.DBinsert(myParentForm.optLongErrMessages, "TreeViewForm:BuildRelation", myDBconx, insCmdSQL);
 
             // Remove items from "Unassigned" or "TrashCan" category if it's there. 
             string delRelCmd = "UPDATE [Rels] SET isDeleted = 1 WHERE [CategoryID] IN (2,3) ";
             delRelCmd += "AND [ItemID] = " + myItemID;
-            int countBack = myDBupdater.DBupdate(testing, myParentForm.optLongErrMessages, "TreeViewForm:BuildRelation", myDBconx, delRelCmd);
+            int countBack = myDBupdater.DBupdate(myParentForm.optLongErrMessages, "TreeViewForm:BuildRelation", myDBconx, delRelCmd);
         }
 
         private void tvCategories_BeforeExpand(object sender, TreeViewCancelEventArgs e)

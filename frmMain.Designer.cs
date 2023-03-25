@@ -74,7 +74,7 @@
             this.menuAbout = new System.Windows.Forms.MenuItem();
             this.menuShare = new System.Windows.Forms.MenuItem();
             this.menuFeedback = new System.Windows.Forms.MenuItem();
-            this.cbTesting = new System.Windows.Forms.CheckBox();
+            this.cbtesting = new System.Windows.Forms.CheckBox();
             this.trayIconTrayed = new System.Windows.Forms.NotifyIcon(this.components);
             this.tBarQuickBtns = new System.Windows.Forms.ToolBar();
             this.tBBtrayed = new System.Windows.Forms.ToolBarButton();
@@ -404,19 +404,19 @@
             this.menuFeedback.Text = "Feedback...";
             this.menuFeedback.Click += new System.EventHandler(this.menuFeedback_Click);
             // 
-            // cbTesting
+            // cbtesting
             // 
-            this.cbTesting.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbTesting.AutoSize = true;
-            this.cbTesting.Checked = true;
-            this.cbTesting.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbTesting.Location = new System.Drawing.Point(1144, 12);
-            this.cbTesting.Name = "cbTesting";
-            this.cbTesting.Size = new System.Drawing.Size(22, 21);
-            this.cbTesting.TabIndex = 1;
-            this.cbTesting.UseVisualStyleBackColor = true;
-            this.cbTesting.Visible = false;
-            this.cbTesting.Click += new System.EventHandler(this.cbTesting_Click);
+            this.cbtesting.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbtesting.AutoSize = true;
+            this.cbtesting.Checked = true;
+            this.cbtesting.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbtesting.Location = new System.Drawing.Point(1144, 12);
+            this.cbtesting.Name = "cbtesting";
+            this.cbtesting.Size = new System.Drawing.Size(22, 21);
+            this.cbtesting.TabIndex = 1;
+            this.cbtesting.UseVisualStyleBackColor = true;
+            this.cbtesting.Visible = false;
+            this.cbtesting.Click += new System.EventHandler(this.cbtesting_Click);
             // 
             // trayIconTrayed
             // 
@@ -530,7 +530,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1178, 594);
             this.Controls.Add(this.lblDebugging);
-            this.Controls.Add(this.cbTesting);
+            this.Controls.Add(this.cbtesting);
             this.Controls.Add(this.tBarQuickBtns);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.IsMdiContainer = true;
@@ -575,7 +575,7 @@
         private System.Windows.Forms.MenuItem menuCloseKB;
         private System.Windows.Forms.MenuItem menuItem41;
         private System.Windows.Forms.MenuItem menuSettings;
-        private System.Windows.Forms.CheckBox cbTesting;
+        private System.Windows.Forms.CheckBox cbtesting;
         private System.Windows.Forms.NotifyIcon trayIconTrayed;
         private System.Windows.Forms.ToolBar tBarQuickBtns;
         private System.Windows.Forms.ImageList iListTbarBtns;
