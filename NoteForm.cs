@@ -74,17 +74,18 @@ namespace orGenta_NNv
             // insert new note for an existing item
 
             string holdNote;
+            bool testflag = myItemsForm.myParentForm.testing;
+            bool longErrs = myItemsForm.myParentForm.myParentForm.optLongErrMessages;
             if (noteWasBlank)
             {
                 holdNote = myItemCleaner.CleanTheItem(tbNoteText.Text);
                 string insNoteCmd = "INSERT INTO [Notes] ([ItemID],[NoteValue]) VALUES (";
                 insNoteCmd += parentItemID + ",'" + holdNote + "')";
-
-                int rowsIns = myDBupdater.DBinsert(myItemsForm.myDBconx, insNoteCmd);
+                int rowsIns = myDBupdater.DBinsert(testflag, longErrs, "NoteForm:btnOK_Click", myItemsForm.myDBconx, insNoteCmd);
 
                 // update hasNote flag in the Item
                 string updItemNoteCmd = "UPDATE Items SET hasNote = 1 WHERE ItemID = " + parentItemID;
-                int rowsUpdI = myDBupdater.DBupdate(myItemsForm.myDBconx, updItemNoteCmd);
+                int rowsUpdI = myDBupdater.DBupdate(testflag, longErrs, "NoteForm:btnOK_Click", myItemsForm.myDBconx, updItemNoteCmd);
 
                 this.Close();
                 return;
@@ -96,7 +97,7 @@ namespace orGenta_NNv
             string updNoteCmd = "UPDATE [Notes] SET [NoteValue] =  '" + holdNote;
             updNoteCmd += "' WHERE ItemID = " + parentItemID;
 
-            int rowsUpd = myDBupdater.DBupdate(myItemsForm.myDBconx, updNoteCmd);
+            int rowsUpd = myDBupdater.DBupdate(testflag, longErrs, "NoteForm:btnOK_Click", myItemsForm.myDBconx, updNoteCmd);
             this.Close();
         }
 

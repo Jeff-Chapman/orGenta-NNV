@@ -494,13 +494,13 @@ namespace orGenta_NNv
                 string insRelCmd = "INSERT INTO [Rels] ([CategoryID],[ItemID],[isDeleted]) VALUES (";
                 insRelCmd += AssigningCatID + "," + ItemNumber + ",0)";
 
-                int rowsIns = myDBupdater.DBinsert(ActiveTopForm.myDBconx, insRelCmd);
+                int rowsIns = myDBupdater.DBinsert(testing, optLongErrMessages, "frmMain:AddCatsForItem", ActiveTopForm.myDBconx, insRelCmd);
             }
 
             // Remove item from trash if it's there
             string TrashRem = "UPDATE Rels SET isDeleted = 1 WHERE (Rels.ItemID = "; 
             TrashRem += ItemNumber + ") AND (Rels.CategoryID = 3)";
-            int Trashed = myDBupdater.DBupdate(ActiveTopForm.myDBconx,TrashRem);
+            int Trashed = myDBupdater.DBupdate(testing, optLongErrMessages, "frmMain:AddCatsForItem", ActiveTopForm.myDBconx, TrashRem);
         }
 
         private void AddToAssignCats(TreeNode scanNode, CheckedListBox boxTarget)

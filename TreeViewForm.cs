@@ -493,7 +493,7 @@ namespace orGenta_NNv
             string myCatID = myTag.CatID;
             updCmdSQL += " WHERE [CategoryID] = " + myCatID;
 
-            int rowsUpd = myDBupdater.DBupdate(myDBconx, updCmdSQL);
+            int rowsUpd = myDBupdater.DBupdate(testing, myParentForm.optLongErrMessages, "TreeViewForm:UpdateExistingCat", myDBconx, updCmdSQL);
 
             if (deleteBit == "1") { CategoriesToDelete.Add(ExaminingNode); }
          }
@@ -519,7 +519,7 @@ namespace orGenta_NNv
             string manlAssignbit = myTag.ManualAssign;            
             insCmdSQL += frozBit + "," + deleteBit + "," + manlAssignbit + ")";
 
-            int rowsIns = myDBupdater.DBinsert(myDBconx, insCmdSQL);
+            int rowsIns = myDBupdater.DBinsert(testing, myParentForm.optLongErrMessages, "TreeViewForm:PersistNewCat", myDBconx, insCmdSQL);
 
             IDbCommand cmd = myDBconx.CreateCommand();
             cmd.CommandText = myDBconx.Database != "" ? 
@@ -568,12 +568,12 @@ namespace orGenta_NNv
             string insCmdSQL = "INSERT INTO [Rels] ([CategoryID],[ItemID]) VALUES (";
             insCmdSQL += newIDback +  ", " + myItemID + ")";
 
-            int rowsIns = myDBupdater.DBinsert(myDBconx, insCmdSQL);
+            int rowsIns = myDBupdater.DBinsert(testing, myParentForm.optLongErrMessages, "TreeViewForm:BuildRelation", myDBconx, insCmdSQL);
 
             // Remove items from "Unassigned" or "TrashCan" category if it's there. 
             string delRelCmd = "UPDATE [Rels] SET isDeleted = 1 WHERE [CategoryID] IN (2,3) ";
             delRelCmd += "AND [ItemID] = " + myItemID;
-            int countBack = myDBupdater.DBupdate(myDBconx, delRelCmd);
+            int countBack = myDBupdater.DBupdate(testing, myParentForm.optLongErrMessages, "TreeViewForm:BuildRelation", myDBconx, delRelCmd);
         }
 
         private void tvCategories_BeforeExpand(object sender, TreeViewCancelEventArgs e)

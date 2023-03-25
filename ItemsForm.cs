@@ -313,7 +313,7 @@ namespace orGenta_NNv
             saveNewNoteInDB();
             string updSQLcmd = "UPDATE Items SET hasNote = 1";
             updSQLcmd += " WHERE (ItemID = " + itemForNote + ")";
-            int rowsUpd = myDBupdater.DBupdate(myDBconx, updSQLcmd);
+            int rowsUpd = myDBupdater.DBupdate(myParentForm.testing, myParentForm.myParentForm.optLongErrMessages, "ItemsForm:saveNewNoteInDBWrapper", myDBconx, updSQLcmd);
         }
 
         private void saveNewNoteInDB()
@@ -322,7 +322,7 @@ namespace orGenta_NNv
             string insNoteCmd = "INSERT INTO [Notes] ([ItemID],[NoteValue]) VALUES (";
             insNoteCmd += newItemIDback + ",'" + holdNote + "')";
 
-            int rowsIns = myDBupdater.DBinsert(myDBconx, insNoteCmd);
+            int rowsIns = myDBupdater.DBinsert(myParentForm.testing, myParentForm.myParentForm.optLongErrMessages, "ItemsForm:saveNewNoteInDB", myDBconx, insNoteCmd);
         }
 
         private void persistItemandNotesToCache()
@@ -417,7 +417,7 @@ namespace orGenta_NNv
 
             string insRelCmd = "INSERT INTO [Rels] ([CategoryID],[ItemID],[isDeleted]) VALUES (";
             insRelCmd += newCategoryID + "," + newItemIDback + ",0)";
-            rowsIns = myDBupdater.DBinsert(myDBconx, insRelCmd);
+            rowsIns = myDBupdater.DBinsert(myParentForm.testing, myParentForm.myParentForm.optLongErrMessages, "ItemsForm:saveNewItemInDB", myDBconx, insRelCmd);
 
             if (!calledFromWrapper) { SoftAssign(tbNewItem.Text); }
         }
@@ -441,7 +441,7 @@ namespace orGenta_NNv
             else
                 { insItemCmd += ",'" + newItemDate + "')"; }
 
-            rowsIns = myDBupdater.DBinsert(myDBconx, insItemCmd);
+            rowsIns = myDBupdater.DBinsert(myParentForm.testing, myParentForm.myParentForm.optLongErrMessages, "ItemsForm:ItemAloneSave", myDBconx, insItemCmd);
 
             cmd.CommandText = myDBconx.Database != "" ? 
                 "SELECT @@IDENTITY AS NEWROWID" : "SELECT MAX(ItemID) AS NEWROWID FROM Items";
@@ -546,7 +546,7 @@ namespace orGenta_NNv
 
             string insRelCmd = "INSERT INTO [Rels] ([CategoryID],[ItemID],[isDeleted]) VALUES (";
             insRelCmd += matchCategoryID + "," + matchItemID + ",0)";
-            int rowsIns = myDBupdater.DBinsert(myDBconx, insRelCmd);
+            int rowsIns = myDBupdater.DBinsert(myParentForm.testing, myParentForm.myParentForm.optLongErrMessages, "ItemsForm:tmrSoftAssign_Tick", myDBconx, insRelCmd);
             itemGotAssigned = true;
 
             SoftAssignCleanup(matchItemID);
@@ -565,7 +565,7 @@ namespace orGenta_NNv
                     string matchCategoryID = "2";
                     string delRelCmd = "UPDATE [Rels] SET isDeleted = 1 WHERE [CategoryID] = ";
                     delRelCmd += matchCategoryID + " AND [ItemID] = " + matchItemID;
-                    int countBack = myDBupdater.DBupdate(myDBconx, delRelCmd);
+                    int countBack = myDBupdater.DBupdate(myParentForm.testing, myParentForm.myParentForm.optLongErrMessages, "ItemsForm:SoftAssignCleanup", myDBconx, delRelCmd);
                 }
             }
             itemBeingAssigned = false;
@@ -713,7 +713,7 @@ namespace orGenta_NNv
                     break;
             }
 
-            int rowsUpd = myDBupdater.DBupdate(myDBconx, updSQLcmd);
+            int rowsUpd = myDBupdater.DBupdate(myParentForm.testing, myParentForm.myParentForm.optLongErrMessages, "ItemsForm:DeleteOneRow", myDBconx, updSQLcmd);
 
             // In Delete mode, if an item is no longer attached to any Category
             //      then it equivalents to a Discard
@@ -732,7 +732,7 @@ namespace orGenta_NNv
                 // Insert rel for this item to the TrashCan category
                 string insRelCmd = "INSERT INTO [Rels] ([CategoryID],[ItemID],[isDeleted]) VALUES (";
                 insRelCmd += "3," + DelItemID + ",0)";
-                int rowsIns = myDBupdater.DBinsert(myDBconx, insRelCmd);
+                int rowsIns = myDBupdater.DBinsert(myParentForm.testing, myParentForm.myParentForm.optLongErrMessages, "ItemsForm:DeleteOneRow", myDBconx, insRelCmd);
             }
         }
 

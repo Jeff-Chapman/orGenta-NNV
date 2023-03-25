@@ -5,6 +5,7 @@ using System.Data.Common;
 using System.IO;
 using Microsoft.Win32;
 using System.Security.Cryptography;
+using System.Windows.Forms;
 
 namespace orGenta_NNv
 {
@@ -57,20 +58,42 @@ namespace orGenta_NNv
             return holdItem;
         }
 
-        public int DBinsert(IDbConnection myDBconx, string insertCmd)
+        public int DBinsert(bool testing, bool optLongErrMessages, string myRoutineName, IDbConnection myDBconx, string insertCmd)
         {
-            IDbCommand cmd = myDBconx.CreateCommand();
-            cmd.CommandText = insertCmd;
-            int rowsIns = cmd.ExecuteNonQuery();
-            return rowsIns;
+            try
+            {
+                IDbCommand cmd = myDBconx.CreateCommand();
+                cmd.CommandText = insertCmd;
+                int rowsIns = cmd.ExecuteNonQuery();
+                return rowsIns;
+            }
+            catch (Exception ex)
+            {
+                if (testing) { LogRTerror(myRoutineName, ex); }
+                MessageBox.Show(insertCmd, "DB Insert Error");
+                if (optLongErrMessages)
+                { ShowErrDetails(myRoutineName, ex, "DB Insert Error"); }
+                return 0;
+            }
         }
 
-        public int DBupdate(IDbConnection myDBconx, string updateCmd)
+        public int DBupdate(bool testing, bool optLongErrMessages, string myRoutineName, IDbConnection myDBconx, string updateCmd)
         {
-            IDbCommand cmd = myDBconx.CreateCommand();
-            cmd.CommandText = updateCmd;
-            int rowsUpd = cmd.ExecuteNonQuery();
-            return rowsUpd;
+            try
+            {
+                IDbCommand cmd = myDBconx.CreateCommand();
+                cmd.CommandText = updateCmd;
+                int rowsUpd = cmd.ExecuteNonQuery();
+                return rowsUpd;
+            }
+            catch (Exception ex)
+            {
+                if (testing) { LogRTerror(myRoutineName, ex); }
+                MessageBox.Show(updateCmd, "DB Update Error");
+                if (optLongErrMessages)
+                { ShowErrDetails(myRoutineName, ex, "DB Update Error"); }
+                return 0;
+            }
         }
 
     }
