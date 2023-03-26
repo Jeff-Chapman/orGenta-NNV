@@ -25,18 +25,15 @@ namespace orGenta_NNv
         {
             LongErrMessages = myParent.optLongErrMessages;
             cbLongErrs.Checked = false;
-            if (LongErrMessages)
-                { cbLongErrs.Checked = true; }
+            if (LongErrMessages) { cbLongErrs.Checked = true; }
 
             WrapMode = myParent.optWrapMode;
             cbWrapText.Checked = false;
-            if (WrapMode)
-                { cbWrapText.Checked = true; }
+            if (WrapMode) { cbWrapText.Checked = true; }
 
             AdjustItemsToP = myParent.optAdjustItemsToParent;
             cbAdjustItemsToP.Checked = false;
-            if (AdjustItemsToP)
-                { cbAdjustItemsToP.Checked = true; }
+            if (AdjustItemsToP) { cbAdjustItemsToP.Checked = true; }
 
             TVupdateInterval = myParent.optTVupdateInterval / 1000;
             tbTVinterval1.Text = TVupdateInterval.ToString();
@@ -45,34 +42,29 @@ namespace orGenta_NNv
 
             CreateCategories = myParent.optCreateCategories;
             cbTrayCreateCats.Checked = false;
-            if (CreateCategories)
-                { cbTrayCreateCats.Checked = true; }
+            if (CreateCategories) { cbTrayCreateCats.Checked = true; }
 
             HighlightCats = myParent.optHighlightCats;
             cbHighlightCats.Checked = false;
-            if (HighlightCats)
-                { cbHighlightCats.Checked = true; }
+            if (HighlightCats) { cbHighlightCats.Checked = true; }
         }
 
         private void cbLongErrs_Click(object sender, EventArgs e)
         {
             LongErrMessages = false;
-            if (cbLongErrs.Checked)
-                { LongErrMessages = true; }
+            if (cbLongErrs.Checked) { LongErrMessages = true; }
         }
 
         private void cbWrapText_Click(object sender, EventArgs e)
         {
             WrapMode = false;
-            if (cbWrapText.Checked)
-                { WrapMode = true; }
+            if (cbWrapText.Checked) { WrapMode = true; }
         }
 
         private void cbAdjustItemsToP_Click(object sender, EventArgs e)
         {
             AdjustItemsToP = false;
-            if (cbAdjustItemsToP.Checked)
-                { AdjustItemsToP = true; }
+            if (cbAdjustItemsToP.Checked) { AdjustItemsToP = true; }
         }
 
         private void btnOK_Click(object sender, EventArgs e)
@@ -105,15 +97,13 @@ namespace orGenta_NNv
         private void cbTrayCreateCats_Click(object sender, EventArgs e)
         {
             CreateCategories = false;
-            if (cbTrayCreateCats.Checked)
-                { CreateCategories = true; }
+            if (cbTrayCreateCats.Checked) { CreateCategories = true; }
         }
 
         private void cbHighlightCats_Click(object sender, EventArgs e)
         {
             HighlightCats = false;
-            if (cbHighlightCats.Checked)
-                { HighlightCats = true; }
+            if (cbHighlightCats.Checked) { HighlightCats = true; }
         }
     }
 }

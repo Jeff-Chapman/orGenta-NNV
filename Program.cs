@@ -5,9 +5,8 @@ namespace orGenta_NNv
 {
     static class Program
     {
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
+        public static bool testing = false;
+
         [STAThread]
         static void Main()
         {

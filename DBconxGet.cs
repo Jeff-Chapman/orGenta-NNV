@@ -8,7 +8,6 @@ namespace orGenta_NNv
     public partial class DBconxGet : Form
     {
         public bool restoredDBinfo;
-        public bool testing = false;
         public string DataProvider = "System.Data.OleDb";
         private string DBextensioins = ".mdb|.accdb|.sqlite";
 

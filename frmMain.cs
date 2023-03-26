@@ -16,6 +16,7 @@ namespace orGenta_NNv
         private TreeViewForm tvfMyTreeForm;
         private string LogfileName = "ErrorLog.txt";
         private SharedRoutines myErrHandler = new SharedRoutines();
+        private SharedRoutines myDBupdater = new SharedRoutines();
         private bool restoredDBinfo;
         private MinimalIntface GetTextLineForm;    
         private bool FoundMatchNode;
@@ -32,8 +33,7 @@ namespace orGenta_NNv
         private GlobalKeyboardHook _globalKeyboardHook;
         private bool hasAlt = false;
         #endregion
-        private bool testing = false;
-
+        
         #region userOptions
         public bool optLongErrMessages = true;
         public int optTVupdateInterval = 10000;
@@ -79,12 +79,12 @@ namespace orGenta_NNv
 
             if (Control.ModifierKeys == Keys.Shift)
             { 
-                testing = true;
-                cbTesting.Visible = true;
+                Program.testing = true;
+                cbtesting.Visible = true;
                 lblDebugging.Visible = true;
             }
 
-            if (testing)
+            if (Program.testing)
             {
                 using (StreamWriter sw = File.AppendText(LogfileName))
                 {
@@ -140,7 +140,7 @@ namespace orGenta_NNv
                 { setupBuiltinDBsettings(); }
 
             // Try to autoconnect first before popping up the user KB conx box
-            if (testing) { getDBconnxInfo(); }
+            if (Program.testing) { getDBconnxInfo(); }
             if (!BuildAndValidateDBconx(true))
                 { getDBconnxInfo(); }
             else
@@ -255,15 +255,13 @@ namespace orGenta_NNv
             try
             {
                 RegistryKey ScreenLoc = ThisUser.OpenSubKey("Software\\orGenta\\ScreenLocation", true);
-                this.Top = Convert.ToInt32(ScreenLoc.GetValue("Top", 1));
-                this.Left = Convert.ToInt32(ScreenLoc.GetValue("Left", 1));
+                Top = Convert.ToInt32(ScreenLoc.GetValue("Top", 1));
+                Left = Convert.ToInt32(ScreenLoc.GetValue("Left", 1));
                 RegistryKey ScreenSize = ThisUser.OpenSubKey("Software\\orGenta\\ScreenSize", true);
-                this.Height = Convert.ToInt32(ScreenSize.GetValue("Height", 532));
-                if (this.Height < 100)
-                    { this.Height = 100; }
-                this.Width = Convert.ToInt32(ScreenSize.GetValue("Width", 728));
-                if (this.Width < 100)
-                    { this.Width = 100; }
+                Height = Convert.ToInt32(ScreenSize.GetValue("Height", 532));
+                if (Height < 300) { Height = 300; }
+                Width = Convert.ToInt32(ScreenSize.GetValue("Width", 728));
+                if (Width < 300) { Width = 300; }
             }
             catch {}
         }
@@ -321,8 +319,7 @@ namespace orGenta_NNv
             if (pathLen > 1)
                 { tvfMyTreeForm.Text = dbParts[pathLen - 2] + "\\" + dbParts[pathLen - 1];}
 
-            tvfMyTreeForm.testing = testing;
-            // if (testing) { tvfMyTreeForm.tmrTVdirty.Interval = 50000; }
+            // if (Program.testing) { tvfMyTreeForm.tmrTVdirty.Interval = 50000; }
             tvfMyTreeForm.Show();
         }
  
@@ -367,7 +364,7 @@ namespace orGenta_NNv
 
         private TreeNode Match1Node(TreeNode MatchNode, string PathToFind, string TagToMatch, bool PartialMatch, string PreviousFoundNode)
         {
-            if ((MatchNode.FullPath.ToLower() == PathToFind.ToLower()) || ((PartialMatch) &&
+            if ((MatchNode.FullPath.ToLower() == PathToFind.ToLower()) || (PartialMatch &&
                 (MatchNode.Text.ToLower().IndexOf(PathToFind.ToLower()) >= 0)))
             {
                 FoundMatchNode = true; 
@@ -393,8 +390,7 @@ namespace orGenta_NNv
             foreach (TreeNode ChildNode in MatchNode.Nodes)
             {
                 NodeThatMatches = Match1Node(ChildNode, PathToFind, TagToMatch, PartialMatch, PreviousFoundNode);
-                if (FoundMatchNode)
-                { return NodeThatMatches; }
+                if (FoundMatchNode) { return NodeThatMatches; }
             }
             return NodeThatMatches;
         }
@@ -476,8 +472,6 @@ namespace orGenta_NNv
 
         private void AddCatsForItem(string ItemNumber, CatAssignForm GetCatsForm)
         {
-            IDbCommand cmd = ActiveTopForm.myDBconx.CreateCommand();
-
             for (int j = 0; j < GetCatsForm.chkListAssignedCats.CheckedItems.Count; j++)
             {
                 // Find matching treenode to retrieve its category ID
@@ -489,7 +483,7 @@ namespace orGenta_NNv
                 // Don't assign the item if it's already there though
                 string chkText = "SELECT count(*) FROM Rels WHERE ItemID = ";
                 chkText += ItemNumber + " AND CategoryID = " + AssigningCatID + " AND isDeleted = 0";
-                cmd = ActiveTopForm.myDBconx.CreateCommand();
+                IDbCommand cmd = ActiveTopForm.myDBconx.CreateCommand();
                 cmd.CommandText = chkText;
                 int rowsMatch = (int)cmd.ExecuteScalar();
                 if (rowsMatch > 0) { continue; }
@@ -497,16 +491,14 @@ namespace orGenta_NNv
                 //  Add the Rels record for this item and category
                 string insRelCmd = "INSERT INTO [Rels] ([CategoryID],[ItemID],[isDeleted]) VALUES (";
                 insRelCmd += AssigningCatID + "," + ItemNumber + ",0)";
-                cmd.CommandText = insRelCmd;
-                int rowsIns = cmd.ExecuteNonQuery();
+
+                int rowsIns = myDBupdater.DBinsert(optLongErrMessages, "frmMain:AddCatsForItem", ActiveTopForm.myDBconx, insRelCmd);
             }
 
             // Remove item from trash if it's there
             string TrashRem = "UPDATE Rels SET isDeleted = 1 WHERE (Rels.ItemID = "; 
             TrashRem += ItemNumber + ") AND (Rels.CategoryID = 3)";
-            cmd.CommandText = TrashRem;
-            int Trashed = cmd.ExecuteNonQuery();
-        
+            int Trashed = myDBupdater.DBupdate(optLongErrMessages, "frmMain:AddCatsForItem", ActiveTopForm.myDBconx, TrashRem);
         }
 
         private void AddToAssignCats(TreeNode scanNode, CheckedListBox boxTarget)
@@ -518,12 +510,9 @@ namespace orGenta_NNv
                 { AddToAssignCats(childNode, boxTarget); }
         }
 
-        private void cbTesting_Click(object sender, EventArgs e)
+        private void cbtesting_Click(object sender, EventArgs e)
         {
-            if (testing)
-                { testing = false; }
-            else
-                { testing = true; }
+            Program.testing = !Program.testing;
         }
 
         private void frmMain_Paint(object sender, PaintEventArgs e)
