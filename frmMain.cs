@@ -59,6 +59,9 @@ namespace orGenta_NNv
         public List<string> AutoCreateCats = new List<string> { };
         public IDbConnection localCacheDBconx;
         public bool endOfUserSearch = false;
+        public int HighestMRUitem = 0;
+        public string[] OpenItemsWindows = new string[] {"","","","","","",""};
+        public int[,] ItemWindowLocUsed = new int[7,2]; // element [,0] is used flag [,1] is MRU#
 
         // NOTICE: This software is Copyright (c) 2006, 2021 by Jeff D. Chapman
         // Non-networked version licensed as Open Source under GNU Lesser General Public License v3.0

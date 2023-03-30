@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.IO;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace orGenta_NNv
 {
@@ -743,6 +744,17 @@ namespace orGenta_NNv
             myParentForm.myParentForm.menuExportCSV.Enabled = true;
             myParentForm.myParentForm.menuItems2email.Enabled = true;
             myParentForm.BringToFront();
+            if (!formJustLoaded)
+            {
+                List<string> MRUformList = myParentForm.myParentForm.OpenItemsWindows.ToList();
+                int foundForm = MRUformList.IndexOf(Text);
+                if (foundForm > -1)
+                {
+                    myParentForm.myParentForm.HighestMRUitem++;
+                    int hMRU = myParentForm.myParentForm.HighestMRUitem;
+                    myParentForm.myParentForm.ItemWindowLocUsed[foundForm, 1] = hMRU;
+                }
+            }
             if (formJustLoaded && (myParentForm.myParentForm.optAdjustItemsToParent == true))
             {
                 int MDIright = myParentForm.myParentForm.Right;
@@ -788,6 +800,16 @@ namespace orGenta_NNv
             sUtil = myParentForm.myParentForm.mySideUtils.lbOpenWindows;
             String sUWindowName = Text.Substring(Text.IndexOf(":") + 3);
             sUtil.Items.Remove(sUWindowName);
+            string[] OpenItemsWindows = myParentForm.myParentForm.OpenItemsWindows;
+            sUWindowName = Text;
+            int[,] ItemWindowLocUsed = myParentForm.myParentForm.ItemWindowLocUsed;
+            int foundMyWindow = OpenItemsWindows.ToList().IndexOf(sUWindowName);
+            if (foundMyWindow > -1)
+            {
+                ItemWindowLocUsed[foundMyWindow,0] = 0;
+                ItemWindowLocUsed[foundMyWindow, 1] = 0;
+                OpenItemsWindows[foundMyWindow] = "";
+            }
             this.orGentaDBDataSet.Clear();
             this.orGentaDBDataSet.Dispose();
             this.localCacheDataSet.Clear();

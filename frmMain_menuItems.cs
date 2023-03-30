@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.IO;
 using Microsoft.Win32;
+using System.Linq;
 
 namespace orGenta_NNv
 {
@@ -532,6 +533,53 @@ namespace orGenta_NNv
             }
 
             return copySuccessful;
+        }
+
+        private void menuRestackItems_Click(object sender, EventArgs e)
+        {
+            string[] holdOpenItemsWindows = new string[] { "", "", "", "", "", "", "" };
+            int[] holdItemWindowMRU = new int[7];
+            OpenItemsWindows.CopyTo(holdOpenItemsWindows,0);
+            for (int i = 0; i < 7; i++) { holdItemWindowMRU[i] = ItemWindowLocUsed[i,1]; }
+            System.Collections.Generic.List<int> MRUlist = holdItemWindowMRU.ToList();
+            int newHighMRU = 0;
+            for (int i = 1; i <= HighestMRUitem; i++)
+            {
+                int foundMRU = MRUlist.IndexOf(i);
+                if (foundMRU < 0) { continue; }
+                OpenItemsWindows[newHighMRU] = holdOpenItemsWindows[foundMRU];
+                ItemWindowLocUsed[newHighMRU, 0] = 1;
+                ItemWindowLocUsed[newHighMRU, 1] = newHighMRU + 1;
+                newHighMRU++;
+            }
+            // have to blank out unused remaining spots
+            for (int i = newHighMRU; i < 7; i++) 
+            { 
+                ItemWindowLocUsed[newHighMRU, 0] = 0;
+                ItemWindowLocUsed[newHighMRU, 1] = 0;
+            }
+            HighestMRUitem = newHighMRU;
+
+            // now reposition those windows and progressively bring to front
+            formsList = MdiChildren;
+            string tgtType = "orGenta_NNv.ItemsForm";
+            string stackThis = "";
+
+            for (int i = 0; i <= newHighMRU - 1; i++)
+            {
+                stackThis = OpenItemsWindows[i];
+                foreach (Form chkForm in formsList)
+                {
+                    string thisFormType = chkForm.GetType().ToString();
+                    if (thisFormType != tgtType) { continue; }
+                    if (chkForm.Text.IndexOf(stackThis) > -1)
+                    {
+                        chkForm.Top = i * 40;
+                        chkForm.Left = Width - chkForm.Width - 20;
+                        chkForm.BringToFront();
+                    }
+                }
+            }
         }
     }
 }

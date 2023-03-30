@@ -4,6 +4,7 @@ using System.Collections;
 using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Linq;
 
 namespace orGenta_NNv
 {
@@ -297,20 +298,17 @@ namespace orGenta_NNv
 
             if (FoundOpenWindow(CatToShow)) { return; };
 
-            ItemsForm myItemForm = new ItemsForm(this);
-            myItemForm.MdiParent = myParentForm;
-            myItemForm.Top = myYloc + this.Top;
-            myItemForm.Left = myRightBorder + 6;
-            myItemForm.Text = activeDBname + " :: " + CatToShow;
-
             TagStruct myTag = (TagStruct)e.Node.Tag;
-
             string myCatID = myTag.CatID;
-            myItemForm.categoryID = myCatID;
-            myItemForm.myDBconx = myDBconx;
-            myItemForm.DataProvider = DataProvider;
-            myItemForm.RLockOption = RLockOption;
-            myItemForm.myNodeForTheseItems = e.Node;
+
+            ItemsForm myItemForm = new ItemsForm(this)
+            {
+                MdiParent = myParentForm, Top = setItemFormTop(myYloc, CatToShow),
+                Left = myRightBorder + 6, Text = activeDBname + " :: " + CatToShow,
+                categoryID = myCatID, myDBconx = myDBconx,
+                DataProvider = DataProvider, RLockOption = RLockOption,
+                myNodeForTheseItems = e.Node,
+            };
 
             myItemForm.Show();
             String thisItem = CatToShow;
@@ -325,6 +323,28 @@ namespace orGenta_NNv
             myItemForm.Focus();
             MouseOperations.MouseEvent(MouseOperations.MouseEventFlags.LeftDown);
             MouseOperations.MouseEvent(MouseOperations.MouseEventFlags.LeftUp);
+        }
+
+        private int setItemFormTop(int myYloc, string CatToShow)
+        {
+            // check if all spots already used
+            int totUsed = 0;
+            for (int i = 0; i < 7; i++) { totUsed += myParentForm.ItemWindowLocUsed[i, 0]; }
+            if (totUsed == 7) { return myYloc + this.Top; }
+
+            myParentForm.HighestMRUitem++;
+            for (int NextAvailSpot = 0; NextAvailSpot < 7; NextAvailSpot++)
+            {
+                if (myParentForm.ItemWindowLocUsed[NextAvailSpot,0] == 0)
+                {
+                    myParentForm.ItemWindowLocUsed[NextAvailSpot,0] = 1;
+                    myParentForm.ItemWindowLocUsed[NextAvailSpot, 1] = myParentForm.HighestMRUitem;
+                    myParentForm.OpenItemsWindows[NextAvailSpot] = activeDBname + " :: " + CatToShow;
+                    return 40 * NextAvailSpot;
+                }
+            }
+
+            return myYloc + this.Top;
         }
 
         private bool FoundOpenWindow(string CatToShow)
