@@ -22,6 +22,7 @@ namespace orGenta_NNv
         private bool dbIsConnected;
         private string activeDBname;
         private bool DBversionIsOk;
+        private bool alwaysOpenFlag = false;
         private Version softwareVersion;
         private Version dBversion;
         private DBconxGet GetNewDB;
@@ -84,10 +85,11 @@ namespace orGenta_NNv
             DataProvider = GetNewDB.DataProvider;
             RemoteConx = false;
 
-            if (GetNewDB.cbUseAsDefault.Checked)
+            if (GetNewDB.cbAlwaysOpen.Checked)
             {
                 RegistryKey ThisUser = Registry.CurrentUser;
-                SaveDefaultDBtoRegistry(ThisUser);
+                SaveAlwaysOpenKBtoRegistry(ThisUser);
+                alwaysOpenFlag = true;
             }
 
         }
@@ -100,7 +102,7 @@ namespace orGenta_NNv
             GetNewDB.restoredDBinfo = restoredDBinfo;
         }
 
-        private void SaveDefaultDBtoRegistry(RegistryKey ThisUser)
+        private void SaveAlwaysOpenKBtoRegistry(RegistryKey ThisUser)
         {
             RegistryKey DBsettings = ThisUser.CreateSubKey("Software\\orGenta\\DBsettings");
 

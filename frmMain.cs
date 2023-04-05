@@ -53,6 +53,7 @@ namespace orGenta_NNv
         public TreeNode copyingNode;
         public string copyingSourceDB;
         public List<string> KBsOpen = new List<string>();
+        public List<bool> KBalwaysOpen = new List<bool>();
         public TreeViewForm ActiveTopForm;
         public ItemsForm ActiveTopItems;
         public List<List<string>> TempCatSuppress = new List<List<string>> { };
@@ -149,8 +150,8 @@ namespace orGenta_NNv
             else
             {
                 if (firstTimeKB) 
-                { 
-                    SaveDefaultDBtoRegistry(ThisUser);
+                {
+                    SaveAlwaysOpenKBtoRegistry(ThisUser);
                     RegistryKey DBsettings = ThisUser.CreateSubKey("Software\\orGenta\\1stLogin");
                     DBsettings.SetValue("ConxDate", DateTime.Now.ToShortDateString());
                     FirstKBdate = DateTime.Now.ToShortDateString();
@@ -170,6 +171,7 @@ namespace orGenta_NNv
             this.Text = "Orgenta :: " + activeDBname;
             CreateNewTree(myDBconx);
             KBsOpen.Add(activeDBname);
+            KBalwaysOpen.Add(alwaysOpenFlag);
             dbCleanupRoutines();
             mySideUtils.Show();
             SetupKeyboardHooks();

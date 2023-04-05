@@ -39,6 +39,7 @@ namespace orGenta_NNv
             dbCleanupRoutines();
             CreateNewTree(myDBconx);
             KBsOpen.Add(activeDBname);
+            KBalwaysOpen.Add(alwaysOpenFlag);
             menuCloseKB.Enabled = true;
 
             this.Cursor = Cursors.Arrow;
@@ -455,6 +456,7 @@ namespace orGenta_NNv
                 if (thisFormType != "orGenta_NNv.ItemsForm") { continue; }
                 chkForm.Close();
             }
+            HighestMRUitem = 1;
         }
 
         private void menuAutoAssign_Click(object sender, EventArgs e)

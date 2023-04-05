@@ -80,3 +80,4 @@
 	Add error trapping on KB inserts and updates
 	Change window tiling logic on Items forms
 	Add menu option to Restack Item windows in MRU order
+	Add checkbox to Always Open a KB

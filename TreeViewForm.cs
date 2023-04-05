@@ -618,7 +618,18 @@ namespace orGenta_NNv
             string KBinfo = DataProvider + "\n\r";
             KBinfo += myDBconx.ConnectionString + "\n\r";
             KBinfo += "Database Version: " + dbVersion.ToString();
-            MessageBox.Show(KBinfo, KBnameTitle);
+            frmKBinfo myKBinfoForm = new frmKBinfo();
+            myKBinfoForm.Text = KBnameTitle;
+            myKBinfoForm.tbAboutTheKB.Text = KBinfo;
+            int KBloc = myParentForm.KBsOpen.IndexOf(activeDBname);
+            myKBinfoForm.cbAlwaysOpen.Checked = myParentForm.KBalwaysOpen[KBloc];
+            bool saveAO = myKBinfoForm.cbAlwaysOpen.Checked;
+            myKBinfoForm.ShowDialog();
+            if (saveAO != myKBinfoForm.cbAlwaysOpen.Checked)
+            {
+                myParentForm.KBalwaysOpen[KBloc] = myKBinfoForm.cbAlwaysOpen.Checked;
+                // TODO: update registry
+            }
         }
 
         private void TreeViewForm_MouseEnter(object sender, EventArgs e)
