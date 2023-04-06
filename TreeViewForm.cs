@@ -651,7 +651,7 @@ namespace orGenta_NNv
                 }
                 else
                 {
-                    string RegAOloc = myParentForm.getRegRegAOloc(ThisUser, activeDBname);
+                    string RegAOloc = myParentForm.getRegAOloc(ThisUser, activeDBname);
                     RegistryKey DBsettings = ThisUser.CreateSubKey("Software\\orGenta\\DBsettings\\AO" + RegAOloc);
                     DBsettings.SetValue("DBname", "");
                 }

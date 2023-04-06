@@ -31,13 +31,13 @@ namespace orGenta_NNv
             if (!BuildAndValidateDBconx(false)) { return; }
 
             RegistryKey ThisUser = Registry.CurrentUser;
-            string AOlocBack = getRegRegAOloc(ThisUser, activeDBname);
+            string AOlocBack = getRegAOloc(ThisUser, activeDBname);
             if (AOlocBack != "0") { alwaysOpenFlag = true; }
 
             DBshowTree();
         }
 
-        public string getRegRegAOloc(RegistryKey ThisUser, string activeDBname)
+        public string getRegAOloc(RegistryKey ThisUser, string activeDBname)
         {
             string locBack = "0";
             RegistryKey DBsettings = ThisUser.CreateSubKey("Software\\orGenta\\DBsettings");
@@ -45,6 +45,7 @@ namespace orGenta_NNv
             for (int i = 1; i < AOcount + 1; i++)
             {
                 locBack = i.ToString();
+                DBsettings = ThisUser.CreateSubKey("Software\\orGenta\\DBsettings\\AO" + locBack.ToString());
                 string testName = Convert.ToString(DBsettings.GetValue("DBname", ""));
                 if (testName == activeDBname) { return locBack; }
             }

@@ -138,10 +138,15 @@ namespace orGenta_NNv
             }
             catch { firstTimeKB = true; }
 
-            if (!firstTimeKB)
-                { restoreDefaultDBsettings();}
-            else
-                { setupBuiltinDBsettings(); }
+            if (firstTimeKB) { setupBuiltinDBsettings(); }
+            else 
+            { 
+                openTheAOkbs();
+                mySideUtils.Show();
+                SetupKeyboardHooks();
+                this.Cursor = Cursors.Arrow;
+                return;
+            }
 
             // Try to autoconnect first before popping up the user KB conx box
             if (Program.testing) { getDBconnxInfo(); }
@@ -152,6 +157,7 @@ namespace orGenta_NNv
                 if (firstTimeKB) 
                 {
                     SaveAlwaysOpenKBtoRegistry(ThisUser);
+                    alwaysOpenFlag = true;
                     RegistryKey DBsettings = ThisUser.CreateSubKey("Software\\orGenta\\1stLogin");
                     DBsettings.SetValue("ConxDate", DateTime.Now.ToShortDateString());
                     FirstKBdate = DateTime.Now.ToShortDateString();
@@ -173,9 +179,37 @@ namespace orGenta_NNv
             KBsOpen.Add(activeDBname);
             KBalwaysOpen.Add(alwaysOpenFlag);
             dbCleanupRoutines();
+
             mySideUtils.Show();
             SetupKeyboardHooks();
             this.Cursor = Cursors.Arrow;
+        }
+
+        private void openTheAOkbs()
+        {
+            alwaysOpenFlag = true;
+            RegistryKey ThisUser = Registry.CurrentUser;
+            RegistryKey DBsettings = ThisUser.CreateSubKey("Software\\orGenta\\DBsettings");
+            int AOcount = Convert.ToInt32(DBsettings.GetValue("AOcount", 0));
+            for (int i = 1; i < AOcount + 1; i++)
+            {
+                string locBack = i.ToString();
+                DBsettings = ThisUser.CreateSubKey("Software\\orGenta\\DBsettings\\AO" + locBack.ToString());
+                myServerType = DBsettings.GetValue("ServerType").ToString();
+                myServerName = DBsettings.GetValue("ServerName").ToString();
+                myKnowledgeDBname = DBsettings.GetValue("DBname").ToString();
+                myUserID = DBsettings.GetValue("dbLoginID").ToString();
+                DataProvider = DBsettings.GetValue("dataProv").ToString();
+                RemoteConx = false;
+                if (!BuildAndValidateDBconx(true)) { getDBconnxInfo(); }
+                if (!dbIsConnected) { continue; }
+                CreateNewTree(myDBconx);
+                KBsOpen.Add(activeDBname);
+                KBalwaysOpen.Add(alwaysOpenFlag);
+                dbCleanupRoutines();
+            }
+            this.Text = "Orgenta :: " + activeDBname;
+            alwaysOpenFlag = false;
         }
 
         public void SetupKeyboardHooks()
@@ -327,29 +361,6 @@ namespace orGenta_NNv
 
             // if (Program.testing) { tvfMyTreeForm.tmrTVdirty.Interval = 50000; }
             tvfMyTreeForm.Show();
-        }
- 
-        private void restoreDefaultDBsettings()
-        {
-            restoredDBinfo = false;
-            RegistryKey ThisUser = Registry.CurrentUser;
-            try
-            {
-                RegistryKey DBsettings = ThisUser.OpenSubKey("Software\\orGenta\\DBsettings", true);
-                myServerType = DBsettings.GetValue("ServerType").ToString();
-                myServerName = DBsettings.GetValue("ServerName").ToString();
-                myKnowledgeDBname = DBsettings.GetValue("DBname").ToString();
-                myUserID = DBsettings.GetValue("dbLoginID").ToString();
-                DataProvider = DBsettings.GetValue("dataProv").ToString();
-                RemoteConx = false; 
-                restoredDBinfo = true;
-            }
-            catch
-            {
-                // Defaults to the oem MS Access DB
-                setupBuiltinDBsettings();
-            }
-            myPW = "";
         }
 
         public TreeNode FindNodeInTV(string PathToFind, string TagToMatch, bool PartialMatch, string PreviousFoundNode)
