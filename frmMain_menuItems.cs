@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.IO;
 using Microsoft.Win32;
+using System.Linq;
 
 namespace orGenta_NNv
 {
@@ -29,7 +30,26 @@ namespace orGenta_NNv
 
             if (!BuildAndValidateDBconx(false)) { return; }
 
+            RegistryKey ThisUser = Registry.CurrentUser;
+            string AOlocBack = getRegAOloc(ThisUser, activeDBname);
+            if (AOlocBack != "0") { alwaysOpenFlag = true; }
+
             DBshowTree();
+        }
+
+        public string getRegAOloc(RegistryKey ThisUser, string activeDBname)
+        {
+            string locBack = "0";
+            RegistryKey DBsettings = ThisUser.CreateSubKey("Software\\orGenta\\DBsettings");
+            int AOcount = Convert.ToInt32(DBsettings.GetValue("AOcount", 0));
+            for (int i = 1; i < AOcount + 1; i++)
+            {
+                locBack = i.ToString();
+                DBsettings = ThisUser.CreateSubKey("Software\\orGenta\\DBsettings\\AO" + locBack.ToString());
+                string testName = Convert.ToString(DBsettings.GetValue("DBname", ""));
+                if (testName == activeDBname) { return locBack; }
+            }
+            return "0";
         }
 
         private void DBshowTree()
@@ -38,6 +58,7 @@ namespace orGenta_NNv
             dbCleanupRoutines();
             CreateNewTree(myDBconx);
             KBsOpen.Add(activeDBname);
+            KBalwaysOpen.Add(alwaysOpenFlag);
             menuCloseKB.Enabled = true;
 
             this.Cursor = Cursors.Arrow;
@@ -52,7 +73,9 @@ namespace orGenta_NNv
             if (CloseResp == DialogResult.Cancel) { return; }
             ActiveTopForm.myDBconx.Close();
             ActiveTopForm.Close();
+            int KBloc = KBsOpen.IndexOf(DBtoClose);
             KBsOpen.Remove(DBtoClose);
+            KBalwaysOpen.RemoveAt(KBloc);
             if (KBsOpen.Count == 1) { menuCloseKB.Enabled = false; }
         }
 
@@ -454,6 +477,7 @@ namespace orGenta_NNv
                 if (thisFormType != "orGenta_NNv.ItemsForm") { continue; }
                 chkForm.Close();
             }
+            HighestMRUitem = 1;
         }
 
         private void menuAutoAssign_Click(object sender, EventArgs e)
@@ -532,6 +556,53 @@ namespace orGenta_NNv
             }
 
             return copySuccessful;
+        }
+
+        private void menuRestackItems_Click(object sender, EventArgs e)
+        {
+            string[] holdOpenItemsWindows = new string[] { "", "", "", "", "", "", "" };
+            int[] holdItemWindowMRU = new int[7];
+            OpenItemsWindows.CopyTo(holdOpenItemsWindows,0);
+            for (int i = 0; i < 7; i++) { holdItemWindowMRU[i] = ItemWindowLocUsed[i,1]; }
+            System.Collections.Generic.List<int> MRUlist = holdItemWindowMRU.ToList();
+            int newHighMRU = 0;
+            for (int i = 1; i <= HighestMRUitem; i++)
+            {
+                int foundMRU = MRUlist.IndexOf(i);
+                if (foundMRU < 0) { continue; }
+                OpenItemsWindows[newHighMRU] = holdOpenItemsWindows[foundMRU];
+                ItemWindowLocUsed[newHighMRU, 0] = 1;
+                ItemWindowLocUsed[newHighMRU, 1] = newHighMRU + 1;
+                newHighMRU++;
+            }
+            // have to blank out unused remaining spots
+            for (int i = newHighMRU; i < 7; i++) 
+            { 
+                ItemWindowLocUsed[newHighMRU, 0] = 0;
+                ItemWindowLocUsed[newHighMRU, 1] = 0;
+            }
+            HighestMRUitem = newHighMRU;
+
+            // now reposition those windows and progressively bring to front
+            formsList = MdiChildren;
+            string tgtType = "orGenta_NNv.ItemsForm";
+            string stackThis = "";
+
+            for (int i = 0; i <= newHighMRU - 1; i++)
+            {
+                stackThis = OpenItemsWindows[i];
+                foreach (Form chkForm in formsList)
+                {
+                    string thisFormType = chkForm.GetType().ToString();
+                    if (thisFormType != tgtType) { continue; }
+                    if (chkForm.Text.IndexOf(stackThis) > -1)
+                    {
+                        chkForm.Top = i * 40;
+                        chkForm.Left = Width - chkForm.Width - 20;
+                        chkForm.BringToFront();
+                    }
+                }
+            }
         }
     }
 }

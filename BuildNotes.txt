@@ -77,3 +77,7 @@
 ==	vsn 2.2.1.30  ==  Released as Open Source for Standalone Use
 31	Add system hook to Ctrl-k for minimal interface
 	Refactor testing flag to global static
+	Add error trapping on KB inserts and updates
+	Change window tiling logic on Items forms
+	Add menu option to Restack Item windows in MRU order
+	Add checkbox to Always Open a KB

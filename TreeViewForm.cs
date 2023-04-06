@@ -4,6 +4,8 @@ using System.Collections;
 using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Linq;
+using Microsoft.Win32;
 
 namespace orGenta_NNv
 {
@@ -48,6 +50,9 @@ namespace orGenta_NNv
         public System.Collections.ArrayList FullPathList = new System.Collections.ArrayList();
         public DataTable myCategoryTable = new DataTable();
         public ArrayList CategoriesToDelete = new ArrayList();
+        public string myServerType;
+        public string myServerName;
+        public string myUserID;
 
         public TreeViewForm(frmMain parent)
         {
@@ -297,20 +302,17 @@ namespace orGenta_NNv
 
             if (FoundOpenWindow(CatToShow)) { return; };
 
-            ItemsForm myItemForm = new ItemsForm(this);
-            myItemForm.MdiParent = myParentForm;
-            myItemForm.Top = myYloc + this.Top;
-            myItemForm.Left = myRightBorder + 6;
-            myItemForm.Text = activeDBname + " :: " + CatToShow;
-
             TagStruct myTag = (TagStruct)e.Node.Tag;
-
             string myCatID = myTag.CatID;
-            myItemForm.categoryID = myCatID;
-            myItemForm.myDBconx = myDBconx;
-            myItemForm.DataProvider = DataProvider;
-            myItemForm.RLockOption = RLockOption;
-            myItemForm.myNodeForTheseItems = e.Node;
+
+            ItemsForm myItemForm = new ItemsForm(this)
+            {
+                MdiParent = myParentForm, Top = setItemFormTop(myYloc, CatToShow),
+                Left = myRightBorder + 6, Text = activeDBname + " :: " + CatToShow,
+                categoryID = myCatID, myDBconx = myDBconx,
+                DataProvider = DataProvider, RLockOption = RLockOption,
+                myNodeForTheseItems = e.Node,
+            };
 
             myItemForm.Show();
             String thisItem = CatToShow;
@@ -325,6 +327,28 @@ namespace orGenta_NNv
             myItemForm.Focus();
             MouseOperations.MouseEvent(MouseOperations.MouseEventFlags.LeftDown);
             MouseOperations.MouseEvent(MouseOperations.MouseEventFlags.LeftUp);
+        }
+
+        private int setItemFormTop(int myYloc, string CatToShow)
+        {
+            // check if all spots already used
+            int totUsed = 0;
+            for (int i = 0; i < 7; i++) { totUsed += myParentForm.ItemWindowLocUsed[i, 0]; }
+            if (totUsed == 7) { return myYloc + this.Top; }
+
+            myParentForm.HighestMRUitem++;
+            for (int NextAvailSpot = 0; NextAvailSpot < 7; NextAvailSpot++)
+            {
+                if (myParentForm.ItemWindowLocUsed[NextAvailSpot,0] == 0)
+                {
+                    myParentForm.ItemWindowLocUsed[NextAvailSpot,0] = 1;
+                    myParentForm.ItemWindowLocUsed[NextAvailSpot, 1] = myParentForm.HighestMRUitem;
+                    myParentForm.OpenItemsWindows[NextAvailSpot] = activeDBname + " :: " + CatToShow;
+                    return 40 * NextAvailSpot;
+                }
+            }
+
+            return myYloc + this.Top;
         }
 
         private bool FoundOpenWindow(string CatToShow)
@@ -598,7 +622,40 @@ namespace orGenta_NNv
             string KBinfo = DataProvider + "\n\r";
             KBinfo += myDBconx.ConnectionString + "\n\r";
             KBinfo += "Database Version: " + dbVersion.ToString();
-            MessageBox.Show(KBinfo, KBnameTitle);
+            frmKBinfo myKBinfoForm = new frmKBinfo();
+            myKBinfoForm.Text = KBnameTitle;
+            myKBinfoForm.tbAboutTheKB.Text = KBinfo;
+            int KBloc = myParentForm.KBsOpen.IndexOf(activeDBname);
+            myKBinfoForm.cbAlwaysOpen.Checked = myParentForm.KBalwaysOpen[KBloc];
+            bool saveAO = myKBinfoForm.cbAlwaysOpen.Checked;
+            myKBinfoForm.ShowDialog();
+            if (saveAO != myKBinfoForm.cbAlwaysOpen.Checked)
+            {
+                myParentForm.KBalwaysOpen[KBloc] = myKBinfoForm.cbAlwaysOpen.Checked;
+                RegistryKey ThisUser = Registry.CurrentUser;
+                if (myKBinfoForm.cbAlwaysOpen.Checked)
+                {
+                    RegistryKey DBsettings = ThisUser.CreateSubKey("Software\\orGenta\\DBsettings");
+                    int AOcount = Convert.ToInt32(DBsettings.GetValue("AOcount", 0));
+                    AOcount++;
+                    DBsettings.SetValue("AOcount", AOcount);
+                    string AOcountStr = AOcount.ToString();
+
+                    DBsettings = ThisUser.CreateSubKey("Software\\orGenta\\DBsettings\\AO" + AOcountStr); 
+                    DBsettings.SetValue("RemoteConx", "0");
+                    DBsettings.SetValue("ServerType", myServerType);
+                    DBsettings.SetValue("ServerName", myServerName);
+                    DBsettings.SetValue("DBname", activeDBname);
+                    DBsettings.SetValue("dbLoginID", myUserID);
+                    DBsettings.SetValue("dataProv", DataProvider);
+                }
+                else
+                {
+                    string RegAOloc = myParentForm.getRegAOloc(ThisUser, activeDBname);
+                    RegistryKey DBsettings = ThisUser.CreateSubKey("Software\\orGenta\\DBsettings\\AO" + RegAOloc);
+                    DBsettings.SetValue("DBname", "");
+                }
+            }
         }
 
         private void TreeViewForm_MouseEnter(object sender, EventArgs e)
