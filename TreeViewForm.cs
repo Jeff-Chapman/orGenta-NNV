@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Linq;
+using Microsoft.Win32;
 
 namespace orGenta_NNv
 {
@@ -49,6 +50,9 @@ namespace orGenta_NNv
         public System.Collections.ArrayList FullPathList = new System.Collections.ArrayList();
         public DataTable myCategoryTable = new DataTable();
         public ArrayList CategoriesToDelete = new ArrayList();
+        public string myServerType;
+        public string myServerName;
+        public string myUserID;
 
         public TreeViewForm(frmMain parent)
         {
@@ -628,7 +632,29 @@ namespace orGenta_NNv
             if (saveAO != myKBinfoForm.cbAlwaysOpen.Checked)
             {
                 myParentForm.KBalwaysOpen[KBloc] = myKBinfoForm.cbAlwaysOpen.Checked;
-                // TODO: update registry
+                RegistryKey ThisUser = Registry.CurrentUser;
+                if (myKBinfoForm.cbAlwaysOpen.Checked)
+                {
+                    RegistryKey DBsettings = ThisUser.CreateSubKey("Software\\orGenta\\DBsettings");
+                    int AOcount = Convert.ToInt32(DBsettings.GetValue("AOcount", 0));
+                    AOcount++;
+                    DBsettings.SetValue("AOcount", AOcount);
+                    string AOcountStr = AOcount.ToString();
+
+                    DBsettings = ThisUser.CreateSubKey("Software\\orGenta\\DBsettings\\AO" + AOcountStr); 
+                    DBsettings.SetValue("RemoteConx", "0");
+                    DBsettings.SetValue("ServerType", myServerType);
+                    DBsettings.SetValue("ServerName", myServerName);
+                    DBsettings.SetValue("DBname", activeDBname);
+                    DBsettings.SetValue("dbLoginID", myUserID);
+                    DBsettings.SetValue("dataProv", DataProvider);
+                }
+                else
+                {
+                    string RegAOloc = myParentForm.getRegRegAOloc(ThisUser, activeDBname);
+                    RegistryKey DBsettings = ThisUser.CreateSubKey("Software\\orGenta\\DBsettings\\AO" + RegAOloc);
+                    DBsettings.SetValue("DBname", "");
+                }
             }
         }
 

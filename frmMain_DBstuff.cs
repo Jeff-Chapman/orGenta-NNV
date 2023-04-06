@@ -68,10 +68,12 @@ namespace orGenta_NNv
             RetrievDBsetupInfo();
             GetNewDB.openDBdialog.CheckFileExists = true;
             GetNewDB.Text = "Connect to KB";
+            GetNewDB.cbAlwaysOpen.Checked = false;
             if (newFlag) 
             {
                 GetNewDB.openDBdialog.CheckFileExists = false;
                 GetNewDB.tbDatabase.Text = "";
+                GetNewDB.cbAlwaysOpen.Checked = true;
                 GetNewDB.Text = "Create New KB";
             }
             
@@ -105,7 +107,12 @@ namespace orGenta_NNv
         private void SaveAlwaysOpenKBtoRegistry(RegistryKey ThisUser)
         {
             RegistryKey DBsettings = ThisUser.CreateSubKey("Software\\orGenta\\DBsettings");
+            int AOcount = Convert.ToInt32(DBsettings.GetValue("AOcount", 0));
+            AOcount++;
+            DBsettings.SetValue("AOcount", AOcount);
+            string AOcountStr = AOcount.ToString();
 
+            DBsettings = ThisUser.CreateSubKey("Software\\orGenta\\DBsettings\\AO" + AOcountStr); ;
             DBsettings.SetValue("RemoteConx", "0");
             DBsettings.SetValue("ServerType", myServerType);
             DBsettings.SetValue("ServerName", myServerName);

@@ -304,15 +304,16 @@ namespace orGenta_NNv
 
         private void CreateNewTree(IDbConnection myDBconx)
         {
-            tvfMyTreeForm = new TreeViewForm(this);
-            tvfMyTreeForm.myDBconx = myDBconx;
-            tvfMyTreeForm.isOldMSaccess = isItOldMSaccess;
-            tvfMyTreeForm.isSQLlite = isItSQLite;
-            tvfMyTreeForm.DataProvider = DataProvider;
-            tvfMyTreeForm.dbVersion = dBversion;
-            tvfMyTreeForm.RLockOption = RLockOption;
-            tvfMyTreeForm.activeDBname = activeDBname;
-            tvfMyTreeForm.RemoteConx = RemoteConx;
+            tvfMyTreeForm = new TreeViewForm(this)
+            {
+                myDBconx = myDBconx, isOldMSaccess = isItOldMSaccess,
+                isSQLlite = isItSQLite, DataProvider = DataProvider,
+                dbVersion = dBversion, RLockOption = RLockOption,
+                activeDBname = activeDBname, RemoteConx = RemoteConx,
+                myServerType = myServerType, myServerName = myServerName,
+                myUserID = myUserID
+            };
+
             tvfMyTreeForm.BuildCatTree();
   
             tvfMyTreeForm.tvCategories.Nodes[0].Expand();

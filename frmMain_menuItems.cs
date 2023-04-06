@@ -30,7 +30,25 @@ namespace orGenta_NNv
 
             if (!BuildAndValidateDBconx(false)) { return; }
 
+            RegistryKey ThisUser = Registry.CurrentUser;
+            string AOlocBack = getRegRegAOloc(ThisUser, activeDBname);
+            if (AOlocBack != "0") { alwaysOpenFlag = true; }
+
             DBshowTree();
+        }
+
+        public string getRegRegAOloc(RegistryKey ThisUser, string activeDBname)
+        {
+            string locBack = "0";
+            RegistryKey DBsettings = ThisUser.CreateSubKey("Software\\orGenta\\DBsettings");
+            int AOcount = Convert.ToInt32(DBsettings.GetValue("AOcount", 0));
+            for (int i = 1; i < AOcount + 1; i++)
+            {
+                locBack = i.ToString();
+                string testName = Convert.ToString(DBsettings.GetValue("DBname", ""));
+                if (testName == activeDBname) { return locBack; }
+            }
+            return "0";
         }
 
         private void DBshowTree()
@@ -54,7 +72,9 @@ namespace orGenta_NNv
             if (CloseResp == DialogResult.Cancel) { return; }
             ActiveTopForm.myDBconx.Close();
             ActiveTopForm.Close();
+            int KBloc = KBsOpen.IndexOf(DBtoClose);
             KBsOpen.Remove(DBtoClose);
+            KBalwaysOpen.RemoveAt(KBloc);
             if (KBsOpen.Count == 1) { menuCloseKB.Enabled = false; }
         }
 

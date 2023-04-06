@@ -43,10 +43,7 @@ namespace orGenta_NNv
         private void DBconxGet_Activated(object sender, EventArgs e)
         {
             if (restoredDBinfo)
-            { 
-                cbAlwaysOpen.Visible = true;
-                cbAlwaysOpen.Checked = true;
-            }
+                { cbAlwaysOpen.Visible = true; }
         }
 
         private void tbServer_Click(object sender, EventArgs e)
