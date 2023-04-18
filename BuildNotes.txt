@@ -81,3 +81,4 @@
 	Change window tiling logic on Items forms
 	Add menu option to Restack Item windows in MRU order
 	Add checkbox to Always Open a KB
+==	vsn 2.2.2.31  ==  Released as Open Source for Standalone Use

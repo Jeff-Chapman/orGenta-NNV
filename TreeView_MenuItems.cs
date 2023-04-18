@@ -164,6 +164,8 @@ namespace orGenta_NNv
             TreeNode mySisNode = myParent.Nodes[myOldSis];
             myParent.Nodes.Remove(thisNode);          
             mySisNode.Nodes.Add(thisNode);
+            tvCategories.SelectedNode = thisNode;
+            tvCategories.SelectedNode.EnsureVisible();
             TreeIsDirty(thisNode, false);
         }
 
@@ -611,10 +613,10 @@ namespace orGenta_NNv
             catch
                 { return; }
 
-            this.tvCategories.CollapseAll();
-            this.tvCategories.Nodes[0].Expand();
+            tvCategories.CollapseAll();
+            tvCategories.Nodes[0].Expand();
 
-            this.tvCategories.SelectedNode = SaveMyNode;
+            tvCategories.SelectedNode = SaveMyNode;
             SaveMyNode.EnsureVisible();
             SaveMyNode.Expand();
             Rectangle nodeLoc = tvCategories.SelectedNode.Bounds;
