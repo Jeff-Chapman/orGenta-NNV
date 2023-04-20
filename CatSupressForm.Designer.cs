@@ -29,6 +29,8 @@ namespace orGenta_NNv
             // 
             // ckListCategories
             // 
+            this.ckListCategories.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.ckListCategories.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.ckListCategories.CheckOnClick = true;
             this.ckListCategories.FormattingEnabled = true;
@@ -56,7 +58,7 @@ namespace orGenta_NNv
             this.lblListHeader.AutoSize = true;
             this.lblListHeader.Location = new System.Drawing.Point(12, 16);
             this.lblListHeader.Name = "lblListHeader";
-            this.lblListHeader.Size = new System.Drawing.Size(135, 20);
+            this.lblListHeader.Size = new System.Drawing.Size(190, 20);
             this.lblListHeader.TabIndex = 2;
             this.lblListHeader.Text = "Create These Categories:";
             // 
