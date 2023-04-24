@@ -249,6 +249,8 @@ namespace orGenta_NNv
         {
             if (userClickedControl) { return; }
 
+            if (e.KeyChar == '\v') { return; }
+
             if (e.KeyChar == '\b')
             {
                 // Handle backspace over a stop character
@@ -384,7 +386,7 @@ namespace orGenta_NNv
                 { myNewCatList.Items.Add(oneCat, false); }
 
             myNewCatListForm.Top = this.Top - (myNewCatList.Items.Count * 16) - 50;
-            myNewCatListForm.Height = (myNewCatList.Items.Count * 16) + 32;
+            myNewCatListForm.Height = (myNewCatList.Items.Count * 16) + 48;
 
             myNewCatListForm.ShowDialog();
 
@@ -405,7 +407,7 @@ namespace orGenta_NNv
                 { myNewCatList.Items.Add(oneCat, true); }
 
             myNewCatListForm.Top = this.Top - (newPotCats.Count * 16) - 50;
-            myNewCatListForm.Height = (newPotCats.Count * 16) + 32;
+            myNewCatListForm.Height = (newPotCats.Count * 16) + 48;
 
             myNewCatListForm.ShowDialog();
 

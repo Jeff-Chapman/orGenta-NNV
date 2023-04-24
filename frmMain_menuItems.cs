@@ -31,6 +31,12 @@ namespace orGenta_NNv
             if (!BuildAndValidateDBconx(false)) { return; }
 
             RegistryKey ThisUser = Registry.CurrentUser;
+            if (GetNewDB.cbAlwaysOpen.Checked)
+            {
+                SaveAlwaysOpenKBtoRegistry(ThisUser);
+                alwaysOpenFlag = true;
+            }
+
             string AOlocBack = getRegAOloc(ThisUser, activeDBname);
             if (AOlocBack != "0") { alwaysOpenFlag = true; }
 
@@ -536,6 +542,13 @@ namespace orGenta_NNv
             myKnowledgeDBname = FullKBpathName.Substring(KBnameStarts);
 
             if (!BuildAndValidateDBconx(false)) { return; }
+
+            if (GetNewDB.cbAlwaysOpen.Checked)
+            {
+                RegistryKey ThisUser = Registry.CurrentUser;
+                SaveAlwaysOpenKBtoRegistry(ThisUser);
+                alwaysOpenFlag = true;
+            }
 
             DBshowTree();
         }

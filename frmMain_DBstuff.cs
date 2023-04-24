@@ -86,14 +86,6 @@ namespace orGenta_NNv
             myPW = "";
             DataProvider = GetNewDB.DataProvider;
             RemoteConx = false;
-
-            if (GetNewDB.cbAlwaysOpen.Checked)
-            {
-                RegistryKey ThisUser = Registry.CurrentUser;
-                SaveAlwaysOpenKBtoRegistry(ThisUser);
-                alwaysOpenFlag = true;
-            }
-
         }
 
         private void RetrievDBsetupInfo()
@@ -171,7 +163,8 @@ namespace orGenta_NNv
                     myDBconx.Open();
                     dbIsConnected = true;
                     activeDBname = myKnowledgeDBname; 
-                    RLockOption = ""; 
+                    RLockOption = "";
+                    // Note: some remote DBs work better with RLockOption = "WITH (NOLOCK) "; 
                 }
                 catch (Exception ex)
                 {

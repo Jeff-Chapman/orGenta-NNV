@@ -145,7 +145,7 @@ namespace orGenta_NNv
                 mySideUtils.Show();
                 SetupKeyboardHooks();
                 this.Cursor = Cursors.Arrow;
-                return;
+                if (KBsOpen.Count > 0) { return; }
             }
 
             // Try to autoconnect first before popping up the user KB conx box
@@ -198,10 +198,17 @@ namespace orGenta_NNv
                 myServerType = DBsettings.GetValue("ServerType").ToString();
                 myServerName = DBsettings.GetValue("ServerName").ToString();
                 myKnowledgeDBname = DBsettings.GetValue("DBname").ToString();
+                if (myKnowledgeDBname == "") { continue; }
+
                 myUserID = DBsettings.GetValue("dbLoginID").ToString();
                 DataProvider = DBsettings.GetValue("dataProv").ToString();
                 RemoteConx = false;
-                if (!BuildAndValidateDBconx(true)) { getDBconnxInfo(); }
+                if (!BuildAndValidateDBconx(true)) 
+                {
+                    string cantOpen = myServerName + "\\" + myKnowledgeDBname;
+                    MessageBox.Show("Unable to open KB " + cantOpen, "Error!");
+                    DBsettings.SetValue("DBname", "");
+                }
                 if (!dbIsConnected) { continue; }
                 CreateNewTree(myDBconx);
                 KBsOpen.Add(activeDBname);
