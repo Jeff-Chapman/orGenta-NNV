@@ -8,7 +8,6 @@ namespace orGenta_NNv
     public partial class DBconxGet : Form
     {
         public bool restoredDBinfo;
-        public bool testing = false;
         public string DataProvider = "System.Data.OleDb";
         private string DBextensioins = ".mdb|.accdb|.sqlite";
 
@@ -44,17 +43,19 @@ namespace orGenta_NNv
         private void DBconxGet_Activated(object sender, EventArgs e)
         {
             if (restoredDBinfo)
-                { cbUseAsDefault.Visible = false; }
+                { cbAlwaysOpen.Visible = true; }
         }
 
         private void tbServer_Click(object sender, EventArgs e)
         {
-            cbUseAsDefault.Visible = true;
+            cbAlwaysOpen.Visible = true;
+            cbAlwaysOpen.Checked = false;
         }
 
         private void tbDatabase_Click(object sender, EventArgs e)
         {
-            cbUseAsDefault.Visible = true;
+            cbAlwaysOpen.Visible = true;
+            cbAlwaysOpen.Checked = false;
         }
 
         private void btnSelectDB_Click(object sender, EventArgs e)

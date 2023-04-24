@@ -5,6 +5,7 @@ using System.Data.Common;
 using System.IO;
 using Microsoft.Win32;
 using System.Security.Cryptography;
+using System.Windows.Forms;
 
 namespace orGenta_NNv
 {
@@ -55,6 +56,44 @@ namespace orGenta_NNv
             holdItem = holdItem.Replace("'", "<*");
             holdItem = holdItem.Replace("<*", "''");
             return holdItem;
+        }
+
+        public int DBinsert(bool optLongErrMessages, string myRoutineName, IDbConnection myDBconx, string insertCmd)
+        {
+            try
+            {
+                IDbCommand cmd = myDBconx.CreateCommand();
+                cmd.CommandText = insertCmd;
+                int rowsIns = cmd.ExecuteNonQuery();
+                return rowsIns;
+            }
+            catch (Exception ex)
+            {
+                if (Program.testing) { LogRTerror(myRoutineName, ex); }
+                MessageBox.Show(insertCmd, "DB Insert Error");
+                if (optLongErrMessages)
+                { ShowErrDetails(myRoutineName, ex, "DB Insert Error"); }
+                return 0;
+            }
+        }
+
+        public int DBupdate(bool optLongErrMessages, string myRoutineName, IDbConnection myDBconx, string updateCmd)
+        {
+            try
+            {
+                IDbCommand cmd = myDBconx.CreateCommand();
+                cmd.CommandText = updateCmd;
+                int rowsUpd = cmd.ExecuteNonQuery();
+                return rowsUpd;
+            }
+            catch (Exception ex)
+            {
+                if (Program.testing) { LogRTerror(myRoutineName, ex); }
+                MessageBox.Show(updateCmd, "DB Update Error");
+                if (optLongErrMessages)
+                { ShowErrDetails(myRoutineName, ex, "DB Update Error"); }
+                return 0;
+            }
         }
 
     }

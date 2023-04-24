@@ -4,6 +4,8 @@ using System.Collections;
 using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Linq;
+using Microsoft.Win32;
 
 namespace orGenta_NNv
 {
@@ -16,9 +18,10 @@ namespace orGenta_NNv
         private TreeNode formerParentNode;
         private bool expandingNodeFlag;
         private bool collapsingNodeFlag;
-        private SharedRoutines myErrHandler = new SharedRoutines();
         private bool catUpdatesActive;
+        private SharedRoutines myErrHandler = new SharedRoutines();
         private SharedRoutines myItemCleaner;
+        private SharedRoutines myDBupdater = new SharedRoutines();
         private ListBox sUtil;
         private ListBox sUtilCat;
         private bool DBdownFlag = false;
@@ -35,7 +38,6 @@ namespace orGenta_NNv
             public string isDeleted;
         }
 
-        public bool testing;
         public IDbConnection myDBconx;
         public bool isOldMSaccess;
         public bool isSQLlite;
@@ -48,6 +50,9 @@ namespace orGenta_NNv
         public System.Collections.ArrayList FullPathList = new System.Collections.ArrayList();
         public DataTable myCategoryTable = new DataTable();
         public ArrayList CategoriesToDelete = new ArrayList();
+        public string myServerType;
+        public string myServerName;
+        public string myUserID;
 
         public TreeViewForm(frmMain parent)
         {
@@ -86,10 +91,10 @@ namespace orGenta_NNv
             }
             catch (Exception ex)
             {
-                if (testing) { myErrHandler.LogRTerror("BuildCatTree", ex); }
+                if (Program.testing) { myErrHandler.LogRTerror("BuildCatTree", ex); }
                 MessageBox.Show("Unable to read Categories from DB", "DB Read Error");
                 if (myParentForm.optLongErrMessages)
-                { myErrHandler.ShowErrDetails("BuildCatTree", ex, "DB Read Error"); }
+                    { myErrHandler.ShowErrDetails("BuildCatTree", ex, "DB Read Error"); }
             }
 
             foreach (DataRow catRow in myCategoryTable.Rows)
@@ -97,7 +102,6 @@ namespace orGenta_NNv
 
             if (UnloadedNodes.Count > 0)
             {
-                
                 int nc = 0;
                 foreach (TreeNode ThisNode in UnloadedNodes)
                 { 
@@ -125,22 +129,14 @@ namespace orGenta_NNv
             TagStruct thisTag = new TagStruct();
             thisTag.CatID = catRow[0].ToString();
             string frozTF = catRow[4].ToString();
-            if (frozTF.ToLower() == "true")
-                { thisTag.isFrozen = "1"; }
-            else 
-                { thisTag.isFrozen = "0"; }
+            thisTag.isFrozen = frozTF.ToLower() == "true" ? "1" : "0";
             string manlTF = catRow[6].ToString();
-            if (manlTF.ToLower() == "true")
-                { thisTag.ManualAssign = "1"; }
-            else
-                { thisTag.ManualAssign = "0"; }
+            thisTag.ManualAssign = manlTF.ToLower() == "true" ? "1" : "0";
             thisTag.isDeleted = "0";
             LoadTreeNode.Tag = thisTag;
 
-            if (thisTag.isFrozen == "1")
-                { LoadTreeNode.ForeColor = FrozenColor; }
-            else
-                { LoadTreeNode.ForeColor = SystemColors.ControlText; }
+            LoadTreeNode.ForeColor = thisTag.isFrozen == "1" ? 
+                FrozenColor : SystemColors.ControlText;
 
             string parentID = catRow[3].ToString();
 
@@ -233,16 +229,10 @@ namespace orGenta_NNv
 
             if (myParentForm.KBsOpen.Count == 1) { copyToolStripMenuItem.Enabled = false; }
  
-            if (thisNode.Parent.Text == "Main")
-                { promoteToolStripMenuItem.Enabled = false; }
-            else
-                { promoteToolStripMenuItem.Enabled = true; }
+            promoteToolStripMenuItem.Enabled = thisNode.Parent.Text != "Main";
 
             TreeNode myParent = thisNode.Parent;
-            if (myParent.Nodes.IndexOf(thisNode) == 0)
-                { demoteToolStripMenuItem.Enabled = false; }
-            else
-                { demoteToolStripMenuItem.Enabled = true; }
+            demoteToolStripMenuItem.Enabled = myParent.Nodes.IndexOf(thisNode) != 0;
 
             if (myParentForm.copyingNode == null) 
             { 
@@ -255,10 +245,8 @@ namespace orGenta_NNv
                 pasteBelowToolStripMenuItem.Enabled = true;
             }
 
-            if (thisNode.ForeColor == FrozenColor)
-                { freezeClosedToolStripMenuItem.Text = "Unfreeze"; }
-            else
-                { freezeClosedToolStripMenuItem.Text = "Freeze Closed"; }
+            freezeClosedToolStripMenuItem.Text = thisNode.ForeColor == FrozenColor ? 
+                "Unfreeze" : "Freeze Closed";
 
             expandOnlyThisToolStripMenuItem.Enabled = true;
             myParentForm.menuExpandThis.Enabled = true;
@@ -314,20 +302,17 @@ namespace orGenta_NNv
 
             if (FoundOpenWindow(CatToShow)) { return; };
 
-            ItemsForm myItemForm = new ItemsForm(this);
-            myItemForm.MdiParent = myParentForm;
-            myItemForm.Top = myYloc + this.Top;
-            myItemForm.Left = myRightBorder + 6;
-            myItemForm.Text = activeDBname + " :: " + CatToShow;
-
             TagStruct myTag = (TagStruct)e.Node.Tag;
-
             string myCatID = myTag.CatID;
-            myItemForm.categoryID = myCatID;
-            myItemForm.myDBconx = myDBconx;
-            myItemForm.DataProvider = DataProvider;
-            myItemForm.RLockOption = RLockOption;
-            myItemForm.myNodeForTheseItems = e.Node;
+
+            ItemsForm myItemForm = new ItemsForm(this)
+            {
+                MdiParent = myParentForm, Top = setItemFormTop(myYloc, CatToShow),
+                Left = myRightBorder + 6, Text = activeDBname + " :: " + CatToShow,
+                categoryID = myCatID, myDBconx = myDBconx,
+                DataProvider = DataProvider, RLockOption = RLockOption,
+                myNodeForTheseItems = e.Node,
+            };
 
             myItemForm.Show();
             String thisItem = CatToShow;
@@ -342,6 +327,28 @@ namespace orGenta_NNv
             myItemForm.Focus();
             MouseOperations.MouseEvent(MouseOperations.MouseEventFlags.LeftDown);
             MouseOperations.MouseEvent(MouseOperations.MouseEventFlags.LeftUp);
+        }
+
+        private int setItemFormTop(int myYloc, string CatToShow)
+        {
+            // check if all spots already used
+            int totUsed = 0;
+            for (int i = 0; i < 7; i++) { totUsed += myParentForm.ItemWindowLocUsed[i, 0]; }
+            if (totUsed == 7) { return myYloc + this.Top; }
+
+            myParentForm.HighestMRUitem++;
+            for (int NextAvailSpot = 0; NextAvailSpot < 7; NextAvailSpot++)
+            {
+                if (myParentForm.ItemWindowLocUsed[NextAvailSpot,0] == 0)
+                {
+                    myParentForm.ItemWindowLocUsed[NextAvailSpot,0] = 1;
+                    myParentForm.ItemWindowLocUsed[NextAvailSpot, 1] = myParentForm.HighestMRUitem;
+                    myParentForm.OpenItemsWindows[NextAvailSpot] = activeDBname + " :: " + CatToShow;
+                    return 40 * NextAvailSpot;
+                }
+            }
+
+            return myYloc + this.Top;
         }
 
         private bool FoundOpenWindow(string CatToShow)
@@ -383,7 +390,8 @@ namespace orGenta_NNv
                 DataRowView myDGrowView = (DataRowView)myDGrow.DataBoundItem;
                 object[] rowValues = myDGrowView.Row.ItemArray;
                 string thisCatID = rowValues[4].ToString();
-                if (thisCatID == "") { thisCatID = myItemForm.SearchCats[myDGrow.Index].ToString(); }
+                if (thisCatID == "") 
+                    { thisCatID = myItemForm.SearchCats[myDGrow.Index].ToString(); }
 
                 // find the fullPath for thisCatID by matching offset in CatTable
                 int indexOfcat;
@@ -434,10 +442,7 @@ namespace orGenta_NNv
                 if (ExaminingNode == null) { return; }
                 RecursiveNodeUpdate(ExaminingNode.Nodes);                
                 TagStruct checkTag = (TagStruct)ExaminingNode.Tag;
-                if (checkTag.isDirty == "1")
-                {
-                    PersistThisNode(ExaminingNode);
-                }
+                if (checkTag.isDirty == "1") { PersistThisNode(ExaminingNode); }
             }
         }
 
@@ -511,9 +516,7 @@ namespace orGenta_NNv
             string myCatID = myTag.CatID;
             updCmdSQL += " WHERE [CategoryID] = " + myCatID;
 
-            IDbCommand cmd = myDBconx.CreateCommand();
-            cmd.CommandText = updCmdSQL;
-            int rowsUpd = cmd.ExecuteNonQuery();
+            int rowsUpd = myDBupdater.DBupdate(myParentForm.optLongErrMessages, "TreeViewForm:UpdateExistingCat", myDBconx, updCmdSQL);
 
             if (deleteBit == "1") { CategoriesToDelete.Add(ExaminingNode); }
          }
@@ -539,14 +542,12 @@ namespace orGenta_NNv
             string manlAssignbit = myTag.ManualAssign;            
             insCmdSQL += frozBit + "," + deleteBit + "," + manlAssignbit + ")";
 
-            IDbCommand cmd = myDBconx.CreateCommand();
-            cmd.CommandText = insCmdSQL;
-            int rowsIns = cmd.ExecuteNonQuery();
+            int rowsIns = myDBupdater.DBinsert(myParentForm.optLongErrMessages, "TreeViewForm:PersistNewCat", myDBconx, insCmdSQL);
 
-            if (myDBconx.Database != "")
-                { cmd.CommandText = "SELECT @@IDENTITY AS NEWROWID"; }
-            else
-                { cmd.CommandText = "SELECT MAX(CategoryID) AS NEWROWID FROM Categories"; }
+            IDbCommand cmd = myDBconx.CreateCommand();
+            cmd.CommandText = myDBconx.Database != "" ? 
+                "SELECT @@IDENTITY AS NEWROWID" : 
+                "SELECT MAX(CategoryID) AS NEWROWID FROM Categories";
             string newIDback = cmd.ExecuteScalar().ToString();
 
             if (manlAssignbit == "0")
@@ -554,7 +555,7 @@ namespace orGenta_NNv
                 try { AssignItemsToCat(catName, newIDback, true); }
                 catch (Exception ex)
                 {
-                    if (testing) { myErrHandler.LogRTerror("PersistNewCat:AssignItemsToCat", ex); }
+                    if (Program.testing) { myErrHandler.LogRTerror("PersistNewCat:AssignItemsToCat", ex); }
                 }
             }
             this.Cursor = Cursors.Arrow;
@@ -590,15 +591,12 @@ namespace orGenta_NNv
             string insCmdSQL = "INSERT INTO [Rels] ([CategoryID],[ItemID]) VALUES (";
             insCmdSQL += newIDback +  ", " + myItemID + ")";
 
-            IDbCommand cmd = myDBconx.CreateCommand();
-            cmd.CommandText = insCmdSQL;
-            int rowsIns = cmd.ExecuteNonQuery();
+            int rowsIns = myDBupdater.DBinsert(myParentForm.optLongErrMessages, "TreeViewForm:BuildRelation", myDBconx, insCmdSQL);
 
             // Remove items from "Unassigned" or "TrashCan" category if it's there. 
             string delRelCmd = "UPDATE [Rels] SET isDeleted = 1 WHERE [CategoryID] IN (2,3) ";
             delRelCmd += "AND [ItemID] = " + myItemID;
-            cmd.CommandText = delRelCmd;
-            int countBack = (int)cmd.ExecuteNonQuery();
+            int countBack = myDBupdater.DBupdate(myParentForm.optLongErrMessages, "TreeViewForm:BuildRelation", myDBconx, delRelCmd);
         }
 
         private void tvCategories_BeforeExpand(object sender, TreeViewCancelEventArgs e)
@@ -624,7 +622,40 @@ namespace orGenta_NNv
             string KBinfo = DataProvider + "\n\r";
             KBinfo += myDBconx.ConnectionString + "\n\r";
             KBinfo += "Database Version: " + dbVersion.ToString();
-            MessageBox.Show(KBinfo, KBnameTitle);
+            frmKBinfo myKBinfoForm = new frmKBinfo();
+            myKBinfoForm.Text = KBnameTitle;
+            myKBinfoForm.tbAboutTheKB.Text = KBinfo;
+            int KBloc = myParentForm.KBsOpen.IndexOf(activeDBname);
+            myKBinfoForm.cbAlwaysOpen.Checked = myParentForm.KBalwaysOpen[KBloc];
+            bool saveAO = myKBinfoForm.cbAlwaysOpen.Checked;
+            myKBinfoForm.ShowDialog();
+            if (saveAO != myKBinfoForm.cbAlwaysOpen.Checked)
+            {
+                myParentForm.KBalwaysOpen[KBloc] = myKBinfoForm.cbAlwaysOpen.Checked;
+                RegistryKey ThisUser = Registry.CurrentUser;
+                if (myKBinfoForm.cbAlwaysOpen.Checked)
+                {
+                    RegistryKey DBsettings = ThisUser.CreateSubKey("Software\\orGenta\\DBsettings");
+                    int AOcount = Convert.ToInt32(DBsettings.GetValue("AOcount", 0));
+                    AOcount++;
+                    DBsettings.SetValue("AOcount", AOcount);
+                    string AOcountStr = AOcount.ToString();
+
+                    DBsettings = ThisUser.CreateSubKey("Software\\orGenta\\DBsettings\\AO" + AOcountStr); 
+                    DBsettings.SetValue("RemoteConx", "0");
+                    DBsettings.SetValue("ServerType", myServerType);
+                    DBsettings.SetValue("ServerName", myServerName);
+                    DBsettings.SetValue("DBname", activeDBname);
+                    DBsettings.SetValue("dbLoginID", myUserID);
+                    DBsettings.SetValue("dataProv", DataProvider);
+                }
+                else
+                {
+                    string RegAOloc = myParentForm.getRegAOloc(ThisUser, activeDBname);
+                    RegistryKey DBsettings = ThisUser.CreateSubKey("Software\\orGenta\\DBsettings\\AO" + RegAOloc);
+                    DBsettings.SetValue("DBname", "");
+                }
+            }
         }
 
         private void TreeViewForm_MouseEnter(object sender, EventArgs e)

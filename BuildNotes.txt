@@ -26,7 +26,7 @@
 	Created eMail template for Share menu item
 	Created Settings form and logic
 	Added localCache.mdb database for cached storage
-==	vsn 2.0.3.19  ==  Released for Alpha Testing
+==	vsn 2.0.3.19  ==  Released for Alpha testing
 20	Add "include item children" button functionality
 	Fix Item Note bugs
 	Refactored search functions to separate form
@@ -75,3 +75,10 @@
 30	Click on minimal interface KB name allows choosing KB
 	Add support for use of a single SQLite database
 ==	vsn 2.2.1.30  ==  Released as Open Source for Standalone Use
+31	Add system hook to Ctrl-k for minimal interface
+	Refactor testing flag to global static
+	Add error trapping on KB inserts and updates
+	Change window tiling logic on Items forms
+	Add menu option to Restack Item windows in MRU order
+	Add checkbox to Always Open a KB
+==	vsn 2.2.2.31  ==  Released as Open Source for Standalone Use

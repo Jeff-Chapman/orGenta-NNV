@@ -62,14 +62,9 @@ namespace orGenta_NNv
 
 		protected override void Dispose( bool disposing )
 		{
-			if( disposing )
-			{
-				if(components != null)
-				{
-					components.Dispose();
-				}
-			}
-			base.Dispose( disposing );
+            if (disposing && components != null)
+                { components.Dispose(); }
+            base.Dispose( disposing );
 		}
 
 		#region Windows Form Designer generated code
@@ -222,7 +217,7 @@ namespace orGenta_NNv
             this.Visible = false;
 		}
 
-		private void btnRestore_Click(object sender, System.EventArgs e)
+		public void btnRestore_Click(object sender, System.EventArgs e)
 		{
 			this.txtDataEntered.Focus();
             userClickedControl = false;
@@ -253,6 +248,8 @@ namespace orGenta_NNv
         private void txtDataEntered_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (userClickedControl) { return; }
+
+            if (e.KeyChar == '\v') { return; }
 
             if (e.KeyChar == '\b')
             {
@@ -389,7 +386,7 @@ namespace orGenta_NNv
                 { myNewCatList.Items.Add(oneCat, false); }
 
             myNewCatListForm.Top = this.Top - (myNewCatList.Items.Count * 16) - 50;
-            myNewCatListForm.Height = (myNewCatList.Items.Count * 16) + 32;
+            myNewCatListForm.Height = (myNewCatList.Items.Count * 16) + 48;
 
             myNewCatListForm.ShowDialog();
 
@@ -410,7 +407,7 @@ namespace orGenta_NNv
                 { myNewCatList.Items.Add(oneCat, true); }
 
             myNewCatListForm.Top = this.Top - (newPotCats.Count * 16) - 50;
-            myNewCatListForm.Height = (newPotCats.Count * 16) + 32;
+            myNewCatListForm.Height = (newPotCats.Count * 16) + 48;
 
             myNewCatListForm.ShowDialog();
 

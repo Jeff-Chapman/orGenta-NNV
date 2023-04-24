@@ -51,6 +51,7 @@
             this.menuItem19 = new System.Windows.Forms.MenuItem();
             this.menuZoomItem = new System.Windows.Forms.MenuItem();
             this.menuItem21 = new System.Windows.Forms.MenuItem();
+            this.menuRestackItems = new System.Windows.Forms.MenuItem();
             this.menuCloseItems = new System.Windows.Forms.MenuItem();
             this.menuItem25 = new System.Windows.Forms.MenuItem();
             this.menuExpandNode = new System.Windows.Forms.MenuItem();
@@ -74,7 +75,7 @@
             this.menuAbout = new System.Windows.Forms.MenuItem();
             this.menuShare = new System.Windows.Forms.MenuItem();
             this.menuFeedback = new System.Windows.Forms.MenuItem();
-            this.cbTesting = new System.Windows.Forms.CheckBox();
+            this.cbtesting = new System.Windows.Forms.CheckBox();
             this.trayIconTrayed = new System.Windows.Forms.NotifyIcon(this.components);
             this.tBarQuickBtns = new System.Windows.Forms.ToolBar();
             this.tBBtrayed = new System.Windows.Forms.ToolBarButton();
@@ -162,6 +163,7 @@
             // menuTrayed
             // 
             this.menuTrayed.Index = 7;
+            this.menuTrayed.Shortcut = System.Windows.Forms.Shortcut.CtrlK;
             this.menuTrayed.Text = "Trayed Mode";
             this.menuTrayed.Click += new System.EventHandler(this.menuTrayed_Click);
             // 
@@ -226,6 +228,7 @@
             this.menuItem19.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.menuZoomItem,
             this.menuItem21,
+            this.menuRestackItems,
             this.menuCloseItems,
             this.menuItem25,
             this.menuExpandNode,
@@ -249,52 +252,59 @@
             this.menuItem21.Index = 1;
             this.menuItem21.Text = "-";
             // 
+            // menuRestackItems
+            // 
+            this.menuRestackItems.Index = 2;
+            this.menuRestackItems.Shortcut = System.Windows.Forms.Shortcut.CtrlR;
+            this.menuRestackItems.Text = "Restack Items";
+            this.menuRestackItems.Click += new System.EventHandler(this.menuRestackItems_Click);
+            // 
             // menuCloseItems
             // 
-            this.menuCloseItems.Index = 2;
+            this.menuCloseItems.Index = 3;
             this.menuCloseItems.Shortcut = System.Windows.Forms.Shortcut.CtrlI;
             this.menuCloseItems.Text = "Close Items";
             this.menuCloseItems.Click += new System.EventHandler(this.menuCloseItems_Click);
             // 
             // menuItem25
             // 
-            this.menuItem25.Index = 3;
+            this.menuItem25.Index = 4;
             this.menuItem25.Text = "-";
             // 
             // menuExpandNode
             // 
-            this.menuExpandNode.Index = 4;
+            this.menuExpandNode.Index = 5;
             this.menuExpandNode.Shortcut = System.Windows.Forms.Shortcut.CtrlE;
             this.menuExpandNode.Text = "Expand Category";
             this.menuExpandNode.Click += new System.EventHandler(this.menuExpandNode_Click);
             // 
             // menuCollapseNode
             // 
-            this.menuCollapseNode.Index = 5;
+            this.menuCollapseNode.Index = 6;
             this.menuCollapseNode.Shortcut = System.Windows.Forms.Shortcut.CtrlW;
             this.menuCollapseNode.Text = "Collapse Category";
             this.menuCollapseNode.Click += new System.EventHandler(this.menuCollapseNode_Click);
             // 
             // menuExpandThis
             // 
-            this.menuExpandThis.Index = 6;
+            this.menuExpandThis.Index = 7;
             this.menuExpandThis.Text = "Expand Only This";
             this.menuExpandThis.Click += new System.EventHandler(this.menuExpandThis_Click);
             // 
             // menuItem3
             // 
-            this.menuItem3.Index = 7;
+            this.menuItem3.Index = 8;
             this.menuItem3.Text = "-";
             // 
             // menuExpandAll
             // 
-            this.menuExpandAll.Index = 8;
+            this.menuExpandAll.Index = 9;
             this.menuExpandAll.Text = "Expand All";
             this.menuExpandAll.Click += new System.EventHandler(this.menuExpandAll_Click);
             // 
             // menuCollapseAll
             // 
-            this.menuCollapseAll.Index = 9;
+            this.menuCollapseAll.Index = 10;
             this.menuCollapseAll.Text = "Collapse All";
             this.menuCollapseAll.Click += new System.EventHandler(this.menuCollapseAll_Click);
             // 
@@ -317,7 +327,7 @@
             // 
             this.menuImportItems.Enabled = false;
             this.menuImportItems.Index = 0;
-            this.menuImportItems.Text = "Import Items";
+            this.menuImportItems.Text = "Import Items...";
             this.menuImportItems.Click += new System.EventHandler(this.menuImportItems_Click);
             // 
             // menuExportCSV
@@ -403,19 +413,19 @@
             this.menuFeedback.Text = "Feedback...";
             this.menuFeedback.Click += new System.EventHandler(this.menuFeedback_Click);
             // 
-            // cbTesting
+            // cbtesting
             // 
-            this.cbTesting.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbTesting.AutoSize = true;
-            this.cbTesting.Checked = true;
-            this.cbTesting.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbTesting.Location = new System.Drawing.Point(1144, 12);
-            this.cbTesting.Name = "cbTesting";
-            this.cbTesting.Size = new System.Drawing.Size(22, 21);
-            this.cbTesting.TabIndex = 1;
-            this.cbTesting.UseVisualStyleBackColor = true;
-            this.cbTesting.Visible = false;
-            this.cbTesting.Click += new System.EventHandler(this.cbTesting_Click);
+            this.cbtesting.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbtesting.AutoSize = true;
+            this.cbtesting.Checked = true;
+            this.cbtesting.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbtesting.Location = new System.Drawing.Point(1144, 12);
+            this.cbtesting.Name = "cbtesting";
+            this.cbtesting.Size = new System.Drawing.Size(22, 21);
+            this.cbtesting.TabIndex = 1;
+            this.cbtesting.UseVisualStyleBackColor = true;
+            this.cbtesting.Visible = false;
+            this.cbtesting.Click += new System.EventHandler(this.cbtesting_Click);
             // 
             // trayIconTrayed
             // 
@@ -529,7 +539,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1178, 594);
             this.Controls.Add(this.lblDebugging);
-            this.Controls.Add(this.cbTesting);
+            this.Controls.Add(this.cbtesting);
             this.Controls.Add(this.tBarQuickBtns);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.IsMdiContainer = true;
@@ -574,7 +584,7 @@
         private System.Windows.Forms.MenuItem menuCloseKB;
         private System.Windows.Forms.MenuItem menuItem41;
         private System.Windows.Forms.MenuItem menuSettings;
-        private System.Windows.Forms.CheckBox cbTesting;
+        private System.Windows.Forms.CheckBox cbtesting;
         private System.Windows.Forms.NotifyIcon trayIconTrayed;
         private System.Windows.Forms.ToolBar tBarQuickBtns;
         private System.Windows.Forms.ImageList iListTbarBtns;
@@ -608,6 +618,7 @@
         public System.Windows.Forms.MenuItem menuItems2email;
         private System.Windows.Forms.MenuItem menuNewKDB;
         private System.Windows.Forms.MenuItem menuItem2;
+        private System.Windows.Forms.MenuItem menuRestackItems;
     }
 }
 

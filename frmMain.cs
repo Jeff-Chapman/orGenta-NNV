@@ -16,6 +16,7 @@ namespace orGenta_NNv
         private TreeViewForm tvfMyTreeForm;
         private string LogfileName = "ErrorLog.txt";
         private SharedRoutines myErrHandler = new SharedRoutines();
+        private SharedRoutines myDBupdater = new SharedRoutines();
         private bool restoredDBinfo;
         private MinimalIntface GetTextLineForm;    
         private bool FoundMatchNode;
@@ -27,9 +28,12 @@ namespace orGenta_NNv
         private System.Collections.ArrayList myCatXrefArray = new System.Collections.ArrayList();
         private System.Collections.ArrayList itemIDstoPrint = new System.Collections.ArrayList();
         private string FirstKBdate = "";
+        private bool isItOldMSaccess;
+        private bool isItSQLite;
+        private GlobalKeyboardHook _globalKeyboardHook;
+        private bool hasAlt = false;
         #endregion
-        private bool testing = false;
-
+        
         #region userOptions
         public bool optLongErrMessages = true;
         public int optTVupdateInterval = 10000;
@@ -49,14 +53,16 @@ namespace orGenta_NNv
         public TreeNode copyingNode;
         public string copyingSourceDB;
         public List<string> KBsOpen = new List<string>();
+        public List<bool> KBalwaysOpen = new List<bool>();
         public TreeViewForm ActiveTopForm;
         public ItemsForm ActiveTopItems;
         public List<List<string>> TempCatSuppress = new List<List<string>> { };
         public List<string> AutoCreateCats = new List<string> { };
         public IDbConnection localCacheDBconx;
         public bool endOfUserSearch = false;
-        private bool isItOldMSaccess;
-        private bool isItSQLite;
+        public int HighestMRUitem = 0;
+        public string[] OpenItemsWindows = new string[] {"","","","","","",""};
+        public int[,] ItemWindowLocUsed = new int[7,2]; // element [,0] is used flag [,1] is MRU#
 
         // NOTICE: This software is Copyright (c) 2006, 2021 by Jeff D. Chapman
         // Non-networked version licensed as Open Source under GNU Lesser General Public License v3.0
@@ -77,12 +83,12 @@ namespace orGenta_NNv
 
             if (Control.ModifierKeys == Keys.Shift)
             { 
-                testing = true;
-                cbTesting.Visible = true;
+                Program.testing = true;
+                cbtesting.Visible = true;
                 lblDebugging.Visible = true;
             }
 
-            if (testing)
+            if (Program.testing)
             {
                 using (StreamWriter sw = File.AppendText(LogfileName))
                 {
@@ -132,20 +138,26 @@ namespace orGenta_NNv
             }
             catch { firstTimeKB = true; }
 
-            if (!firstTimeKB)
-                { restoreDefaultDBsettings();}
-            else
-                { setupBuiltinDBsettings(); }
+            if (firstTimeKB) { setupBuiltinDBsettings(); }
+            else 
+            { 
+                openTheAOkbs();
+                mySideUtils.Show();
+                SetupKeyboardHooks();
+                this.Cursor = Cursors.Arrow;
+                if (KBsOpen.Count > 0) { return; }
+            }
 
             // Try to autoconnect first before popping up the user KB conx box
-            if (testing) { getDBconnxInfo(); }
+            if (Program.testing) { getDBconnxInfo(); }
             if (!BuildAndValidateDBconx(true))
                 { getDBconnxInfo(); }
             else
             {
                 if (firstTimeKB) 
-                { 
-                    SaveDefaultDBtoRegistry(ThisUser);
+                {
+                    SaveAlwaysOpenKBtoRegistry(ThisUser);
+                    alwaysOpenFlag = true;
                     RegistryKey DBsettings = ThisUser.CreateSubKey("Software\\orGenta\\1stLogin");
                     DBsettings.SetValue("ConxDate", DateTime.Now.ToShortDateString());
                     FirstKBdate = DateTime.Now.ToShortDateString();
@@ -165,9 +177,99 @@ namespace orGenta_NNv
             this.Text = "Orgenta :: " + activeDBname;
             CreateNewTree(myDBconx);
             KBsOpen.Add(activeDBname);
+            KBalwaysOpen.Add(alwaysOpenFlag);
             dbCleanupRoutines();
-            mySideUtils.Show();       
+
+            mySideUtils.Show();
+            SetupKeyboardHooks();
             this.Cursor = Cursors.Arrow;
+        }
+
+        private void openTheAOkbs()
+        {
+            alwaysOpenFlag = true;
+            RegistryKey ThisUser = Registry.CurrentUser;
+            RegistryKey DBsettings = ThisUser.CreateSubKey("Software\\orGenta\\DBsettings");
+            int AOcount = Convert.ToInt32(DBsettings.GetValue("AOcount", 0));
+            for (int i = 1; i < AOcount + 1; i++)
+            {
+                string locBack = i.ToString();
+                DBsettings = ThisUser.CreateSubKey("Software\\orGenta\\DBsettings\\AO" + locBack.ToString());
+                myServerType = DBsettings.GetValue("ServerType").ToString();
+                myServerName = DBsettings.GetValue("ServerName").ToString();
+                myKnowledgeDBname = DBsettings.GetValue("DBname").ToString();
+                if (myKnowledgeDBname == "") { continue; }
+
+                myUserID = DBsettings.GetValue("dbLoginID").ToString();
+                DataProvider = DBsettings.GetValue("dataProv").ToString();
+                RemoteConx = false;
+                if (!BuildAndValidateDBconx(true)) 
+                {
+                    string cantOpen = myServerName + "\\" + myKnowledgeDBname;
+                    MessageBox.Show("Unable to open KB " + cantOpen, "Error!");
+                    DBsettings.SetValue("DBname", "");
+                }
+                if (!dbIsConnected) { continue; }
+                CreateNewTree(myDBconx);
+                KBsOpen.Add(activeDBname);
+                KBalwaysOpen.Add(alwaysOpenFlag);
+                dbCleanupRoutines();
+            }
+            this.Text = "Orgenta :: " + activeDBname;
+            alwaysOpenFlag = false;
+        }
+
+        public void SetupKeyboardHooks()
+        {
+            _globalKeyboardHook = new GlobalKeyboardHook();
+            _globalKeyboardHook.KeyboardPressed += OnKeyPressed;
+        }
+
+        private void OnKeyPressed(object sender, GlobalKeyboardHookEventArgs e)
+        {
+            if (e.KeyboardState != GlobalKeyboardHook.KeyboardState.KeyDown) { return; }
+
+            //Console.WriteLine(e.KeyboardData.VirtualCode);
+            //Console.WriteLine(e.KeyboardData.Flags);
+            //Console.WriteLine("-----");
+
+            if (e.KeyboardData.VirtualCode == GlobalKeyboardHook.VkControl)
+            // 162 is the code for the Ctrl key
+            {
+                hasAlt = true;
+                return;
+            }
+
+            if (e.KeyboardData.VirtualCode != GlobalKeyboardHook.VkSnapshot)
+            // 75 is the code for k
+            {
+                hasAlt = false;
+                return;
+            }
+
+            if (hasAlt)
+            {
+                HandleKhotKey();
+                e.Handled = true;
+            }
+        }
+
+        private void HandleKhotKey()
+        {
+            this.Opacity = 0;
+            mySideUtils.Opacity = 0;
+            this.WindowState = FormWindowState.Normal;
+            if (!RunningMinimal) { menuTrayed_Click(this, null); }
+            this.Opacity = 1;
+            mySideUtils.Opacity = 1;
+            if (GetTextLineForm.txtDataEntered.Visible) 
+            {
+                GetTextLineForm.btnRestore_Click(this, null);
+                trayIconTrayed_DoubleClick(this, null);
+                Application.DoEvents();
+                return;
+            }
+            trayIconTrayed_Click(this, null);
         }
 
         private void RestoreUserOptions()
@@ -199,15 +301,13 @@ namespace orGenta_NNv
             try
             {
                 RegistryKey ScreenLoc = ThisUser.OpenSubKey("Software\\orGenta\\ScreenLocation", true);
-                this.Top = Convert.ToInt32(ScreenLoc.GetValue("Top", 1));
-                this.Left = Convert.ToInt32(ScreenLoc.GetValue("Left", 1));
+                Top = Convert.ToInt32(ScreenLoc.GetValue("Top", 1));
+                Left = Convert.ToInt32(ScreenLoc.GetValue("Left", 1));
                 RegistryKey ScreenSize = ThisUser.OpenSubKey("Software\\orGenta\\ScreenSize", true);
-                this.Height = Convert.ToInt32(ScreenSize.GetValue("Height", 532));
-                if (this.Height < 100)
-                    { this.Height = 100; }
-                this.Width = Convert.ToInt32(ScreenSize.GetValue("Width", 728));
-                if (this.Width < 100)
-                    { this.Width = 100; }
+                Height = Convert.ToInt32(ScreenSize.GetValue("Height", 532));
+                if (Height < 300) { Height = 300; }
+                Width = Convert.ToInt32(ScreenSize.GetValue("Width", 728));
+                if (Width < 300) { Width = 300; }
             }
             catch {}
         }
@@ -245,15 +345,16 @@ namespace orGenta_NNv
 
         private void CreateNewTree(IDbConnection myDBconx)
         {
-            tvfMyTreeForm = new TreeViewForm(this);
-            tvfMyTreeForm.myDBconx = myDBconx;
-            tvfMyTreeForm.isOldMSaccess = isItOldMSaccess;
-            tvfMyTreeForm.isSQLlite = isItSQLite;
-            tvfMyTreeForm.DataProvider = DataProvider;
-            tvfMyTreeForm.dbVersion = dBversion;
-            tvfMyTreeForm.RLockOption = RLockOption;
-            tvfMyTreeForm.activeDBname = activeDBname;
-            tvfMyTreeForm.RemoteConx = RemoteConx;
+            tvfMyTreeForm = new TreeViewForm(this)
+            {
+                myDBconx = myDBconx, isOldMSaccess = isItOldMSaccess,
+                isSQLlite = isItSQLite, DataProvider = DataProvider,
+                dbVersion = dBversion, RLockOption = RLockOption,
+                activeDBname = activeDBname, RemoteConx = RemoteConx,
+                myServerType = myServerType, myServerName = myServerName,
+                myUserID = myUserID
+            };
+
             tvfMyTreeForm.BuildCatTree();
   
             tvfMyTreeForm.tvCategories.Nodes[0].Expand();
@@ -265,32 +366,8 @@ namespace orGenta_NNv
             if (pathLen > 1)
                 { tvfMyTreeForm.Text = dbParts[pathLen - 2] + "\\" + dbParts[pathLen - 1];}
 
-            tvfMyTreeForm.testing = testing;
-            // if (testing) { tvfMyTreeForm.tmrTVdirty.Interval = 50000; }
+            // if (Program.testing) { tvfMyTreeForm.tmrTVdirty.Interval = 50000; }
             tvfMyTreeForm.Show();
-        }
- 
-        private void restoreDefaultDBsettings()
-        {
-            restoredDBinfo = false;
-            RegistryKey ThisUser = Registry.CurrentUser;
-            try
-            {
-                RegistryKey DBsettings = ThisUser.OpenSubKey("Software\\orGenta\\DBsettings", true);
-                myServerType = DBsettings.GetValue("ServerType").ToString();
-                myServerName = DBsettings.GetValue("ServerName").ToString();
-                myKnowledgeDBname = DBsettings.GetValue("DBname").ToString();
-                myUserID = DBsettings.GetValue("dbLoginID").ToString();
-                DataProvider = DBsettings.GetValue("dataProv").ToString();
-                RemoteConx = false; 
-                restoredDBinfo = true;
-            }
-            catch
-            {
-                // Defaults to the oem MS Access DB
-                setupBuiltinDBsettings();
-            }
-            myPW = "";
         }
 
         public TreeNode FindNodeInTV(string PathToFind, string TagToMatch, bool PartialMatch, string PreviousFoundNode)
@@ -311,7 +388,7 @@ namespace orGenta_NNv
 
         private TreeNode Match1Node(TreeNode MatchNode, string PathToFind, string TagToMatch, bool PartialMatch, string PreviousFoundNode)
         {
-            if ((MatchNode.FullPath == PathToFind) || ((PartialMatch) &&
+            if ((MatchNode.FullPath.ToLower() == PathToFind.ToLower()) || (PartialMatch &&
                 (MatchNode.Text.ToLower().IndexOf(PathToFind.ToLower()) >= 0)))
             {
                 FoundMatchNode = true; 
@@ -337,8 +414,7 @@ namespace orGenta_NNv
             foreach (TreeNode ChildNode in MatchNode.Nodes)
             {
                 NodeThatMatches = Match1Node(ChildNode, PathToFind, TagToMatch, PartialMatch, PreviousFoundNode);
-                if (FoundMatchNode)
-                { return NodeThatMatches; }
+                if (FoundMatchNode) { return NodeThatMatches; }
             }
             return NodeThatMatches;
         }
@@ -420,8 +496,6 @@ namespace orGenta_NNv
 
         private void AddCatsForItem(string ItemNumber, CatAssignForm GetCatsForm)
         {
-            IDbCommand cmd = ActiveTopForm.myDBconx.CreateCommand();
-
             for (int j = 0; j < GetCatsForm.chkListAssignedCats.CheckedItems.Count; j++)
             {
                 // Find matching treenode to retrieve its category ID
@@ -433,7 +507,7 @@ namespace orGenta_NNv
                 // Don't assign the item if it's already there though
                 string chkText = "SELECT count(*) FROM Rels WHERE ItemID = ";
                 chkText += ItemNumber + " AND CategoryID = " + AssigningCatID + " AND isDeleted = 0";
-                cmd = ActiveTopForm.myDBconx.CreateCommand();
+                IDbCommand cmd = ActiveTopForm.myDBconx.CreateCommand();
                 cmd.CommandText = chkText;
                 int rowsMatch = (int)cmd.ExecuteScalar();
                 if (rowsMatch > 0) { continue; }
@@ -441,16 +515,14 @@ namespace orGenta_NNv
                 //  Add the Rels record for this item and category
                 string insRelCmd = "INSERT INTO [Rels] ([CategoryID],[ItemID],[isDeleted]) VALUES (";
                 insRelCmd += AssigningCatID + "," + ItemNumber + ",0)";
-                cmd.CommandText = insRelCmd;
-                int rowsIns = cmd.ExecuteNonQuery();
+
+                int rowsIns = myDBupdater.DBinsert(optLongErrMessages, "frmMain:AddCatsForItem", ActiveTopForm.myDBconx, insRelCmd);
             }
 
             // Remove item from trash if it's there
             string TrashRem = "UPDATE Rels SET isDeleted = 1 WHERE (Rels.ItemID = "; 
             TrashRem += ItemNumber + ") AND (Rels.CategoryID = 3)";
-            cmd.CommandText = TrashRem;
-            int Trashed = cmd.ExecuteNonQuery();
-        
+            int Trashed = myDBupdater.DBupdate(optLongErrMessages, "frmMain:AddCatsForItem", ActiveTopForm.myDBconx, TrashRem);
         }
 
         private void AddToAssignCats(TreeNode scanNode, CheckedListBox boxTarget)
@@ -462,12 +534,9 @@ namespace orGenta_NNv
                 { AddToAssignCats(childNode, boxTarget); }
         }
 
-        private void cbTesting_Click(object sender, EventArgs e)
+        private void cbtesting_Click(object sender, EventArgs e)
         {
-            if (testing)
-                { testing = false; }
-            else
-                { testing = true; }
+            Program.testing = !Program.testing;
         }
 
         private void frmMain_Paint(object sender, PaintEventArgs e)
@@ -488,6 +557,14 @@ namespace orGenta_NNv
 
         private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
         {
+            if ( this.WindowState == FormWindowState.Minimized )
+            {
+                this.Opacity = 0;
+                mySideUtils.Opacity = 0;
+                this.WindowState = FormWindowState.Normal;
+                Application.DoEvents();
+            }
+
             RegistryKey ThisUser = Registry.CurrentUser;
             RegistryKey ScreenLoc = ThisUser.CreateSubKey("Software\\orGenta\\ScreenLocation");
             ScreenLoc.SetValue("Top", this.Top);
@@ -504,6 +581,8 @@ namespace orGenta_NNv
             UserOptions.SetValue("AdjustItemsToParent", optAdjustItemsToParent);
             UserOptions.SetValue("CreateCategories", optCreateCategories);
             UserOptions.SetValue("HighlightCats", optHighlightCats);
+
+            Application.Exit();
         }
 
     }

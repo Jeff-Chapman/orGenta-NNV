@@ -126,7 +126,7 @@ namespace orGenta_NNv
             try { myDS = DataGrabber.GetDataFor(DataProvider, myDBconx, myLoadSQL); }
             catch (Exception ex)
             {
-                if (testing) { myErrHandler.LogRTerror("ScanForItemsToAssign", ex); }
+                if (Program.testing) { myErrHandler.LogRTerror("ScanForItemsToAssign", ex); }
                 MessageBox.Show("Unable to read matching Items from DB", "DB Read Error");
                 if (myParentForm.optLongErrMessages)
                 { myErrHandler.ShowErrDetails("ScanForItemsToAssign", ex, "DB Read Error"); }
@@ -164,6 +164,8 @@ namespace orGenta_NNv
             TreeNode mySisNode = myParent.Nodes[myOldSis];
             myParent.Nodes.Remove(thisNode);          
             mySisNode.Nodes.Add(thisNode);
+            tvCategories.SelectedNode = thisNode;
+            tvCategories.SelectedNode.EnsureVisible();
             TreeIsDirty(thisNode, false);
         }
 
@@ -417,12 +419,12 @@ namespace orGenta_NNv
         private void PasteChildDrill(TreeNode CopyingNode, TreeNode newTarget)
         {
             // On a cross DB copy all of the child nodes of this node also get copied 
-            if (testing) { Console.WriteLine("PCD: Looping over " + CopyingNode.Text); }
+            if (Program.testing) { Console.WriteLine("PCD: Looping over " + CopyingNode.Text); }
             foreach (TreeNode childNode in CopyingNode.Nodes)
             {
-                if (testing) { Console.WriteLine("PCD: Calling PCaI to insert " + childNode.Text + " targeting " + newTarget.Text); }
+                if (Program.testing) { Console.WriteLine("PCD: Calling PCaI to insert " + childNode.Text + " targeting " + newTarget.Text); }
                 TreeNode TargetPasted = PasteCatAndItems(childNode, newTarget);
-                if (testing) { Console.WriteLine("PCD: Returned from PCaI with TargetPasted = " + TargetPasted.Text); }
+                if (Program.testing) { Console.WriteLine("PCD: Returned from PCaI with TargetPasted = " + TargetPasted.Text); }
                 if (TargetPasted != null)
                     { PasteChildDrill(childNode, TargetPasted); }
             }
@@ -440,7 +442,7 @@ namespace orGenta_NNv
                 tempCatID++;
                 newNode.Tag = thisTag;
                 TargetForPaste.Nodes.Add(newNode);
-                if (testing) { Console.WriteLine("PCaI: Created " + newNode.Text + " under " + TargetForPaste.Text ); }
+                if (Program.testing) { Console.WriteLine("PCaI: Created " + newNode.Text + " under " + TargetForPaste.Text ); }
                 catForIncomingItems = newNode;
                 TreeIsDirty(newNode, true);
             }
@@ -471,7 +473,7 @@ namespace orGenta_NNv
             try { myDS = DataGrabber.GetDataFor(sourceDataProv, sourceDataConx, myLoadSQL); }
             catch (Exception ex)
             {
-                if (testing) { myErrHandler.LogRTerror("PasteCatAndItems", ex); }
+                if (Program.testing) { myErrHandler.LogRTerror("PasteCatAndItems", ex); }
                 MessageBox.Show("Unable to read source Items from DB", "DB Read Error");
                 if (myParentForm.optLongErrMessages)
                 { myErrHandler.ShowErrDetails("PasteCatAndItems", ex, "DB Read Error"); }
@@ -481,7 +483,7 @@ namespace orGenta_NNv
             DataRowCollection IncomingItems = myDS.Tables[0].Rows;
             foreach (DataRow newItemRow in IncomingItems)
             {
-                if (testing) { Console.WriteLine("PCaI: Calling AddnewI for catID: " + parentCatForItems + " with: " + newItemRow.ItemArray[1].ToString()); }
+                if (Program.testing) { Console.WriteLine("PCaI: Calling AddnewI for catID: " + parentCatForItems + " with: " + newItemRow.ItemArray[1].ToString()); }
                 AddnewItemFor(newItemRow, parentCatForItems, sourceDataConx, sourceRlock);
             }
             return catForIncomingItems;
@@ -543,10 +545,10 @@ namespace orGenta_NNv
 
             cmd = myDBconx.CreateCommand();
             cmd.CommandText = insItemCmd;
-            if (testing) { Console.WriteLine("ANIf: " + insItemCmd); }
+            if (Program.testing) { Console.WriteLine("ANIf: " + insItemCmd); }
 
             rowsIns = cmd.ExecuteNonQuery();
-            if (testing) { Console.WriteLine("ANIf: " + rowsIns.ToString() + " rows inserted"); }
+            if (Program.testing) { Console.WriteLine("ANIf: " + rowsIns.ToString() + " rows inserted"); }
 
             if (myDBconx.Database != "")
             { cmd.CommandText = "SELECT @@IDENTITY AS NEWROWID"; }
@@ -611,10 +613,10 @@ namespace orGenta_NNv
             catch
                 { return; }
 
-            this.tvCategories.CollapseAll();
-            this.tvCategories.Nodes[0].Expand();
+            tvCategories.CollapseAll();
+            tvCategories.Nodes[0].Expand();
 
-            this.tvCategories.SelectedNode = SaveMyNode;
+            tvCategories.SelectedNode = SaveMyNode;
             SaveMyNode.EnsureVisible();
             SaveMyNode.Expand();
             Rectangle nodeLoc = tvCategories.SelectedNode.Bounds;

@@ -33,7 +33,7 @@
             this.btnOK = new System.Windows.Forms.Button();
             this.tbServer = new System.Windows.Forms.TextBox();
             this.tbDatabase = new System.Windows.Forms.TextBox();
-            this.cbUseAsDefault = new System.Windows.Forms.CheckBox();
+            this.cbAlwaysOpen = new System.Windows.Forms.CheckBox();
             this.btnSelectDB = new System.Windows.Forms.Button();
             this.openDBdialog = new System.Windows.Forms.OpenFileDialog();
             this.SuspendLayout();
@@ -88,15 +88,15 @@
             this.tbDatabase.TabIndex = 6;
             this.tbDatabase.Click += new System.EventHandler(this.tbDatabase_Click);
             // 
-            // cbUseAsDefault
+            // cbAlwaysOpen
             // 
-            this.cbUseAsDefault.AutoSize = true;
-            this.cbUseAsDefault.Location = new System.Drawing.Point(138, 141);
-            this.cbUseAsDefault.Name = "cbUseAsDefault";
-            this.cbUseAsDefault.Size = new System.Drawing.Size(143, 24);
-            this.cbUseAsDefault.TabIndex = 12;
-            this.cbUseAsDefault.Text = "Use As Default";
-            this.cbUseAsDefault.UseVisualStyleBackColor = true;
+            this.cbAlwaysOpen.AutoSize = true;
+            this.cbAlwaysOpen.Location = new System.Drawing.Point(138, 141);
+            this.cbAlwaysOpen.Name = "cbAlwaysOpen";
+            this.cbAlwaysOpen.Size = new System.Drawing.Size(152, 24);
+            this.cbAlwaysOpen.TabIndex = 12;
+            this.cbAlwaysOpen.Text = "Always Open KB";
+            this.cbAlwaysOpen.UseVisualStyleBackColor = true;
             // 
             // btnSelectDB
             // 
@@ -118,7 +118,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(475, 197);
             this.Controls.Add(this.btnSelectDB);
-            this.Controls.Add(this.cbUseAsDefault);
+            this.Controls.Add(this.cbAlwaysOpen);
             this.Controls.Add(this.tbDatabase);
             this.Controls.Add(this.tbServer);
             this.Controls.Add(this.btnOK);
@@ -140,7 +140,7 @@
         private System.Windows.Forms.Button btnOK;
         public System.Windows.Forms.TextBox tbServer;
         public System.Windows.Forms.TextBox tbDatabase;
-        public System.Windows.Forms.CheckBox cbUseAsDefault;
+        public System.Windows.Forms.CheckBox cbAlwaysOpen;
         private System.Windows.Forms.Button btnSelectDB;
         public System.Windows.Forms.OpenFileDialog openDBdialog;
     }

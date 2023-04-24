@@ -22,6 +22,7 @@ namespace orGenta_NNv
         private bool dbIsConnected;
         private string activeDBname;
         private bool DBversionIsOk;
+        private bool alwaysOpenFlag = false;
         private Version softwareVersion;
         private Version dBversion;
         private DBconxGet GetNewDB;
@@ -39,7 +40,7 @@ namespace orGenta_NNv
             }
             catch (Exception ex)
             {
-                if (testing) { myErrHandler.LogRTerror("connectTolocalCache", ex); }
+                if (Program.testing) { myErrHandler.LogRTerror("connectTolocalCache", ex); }
                 MessageBox.Show("Unable to connect to cache DB", "Connect Error");
                 if (optLongErrMessages)
                 { myErrHandler.ShowErrDetails("connectTolocalCache", ex, "DB Connection Error"); }
@@ -67,10 +68,12 @@ namespace orGenta_NNv
             RetrievDBsetupInfo();
             GetNewDB.openDBdialog.CheckFileExists = true;
             GetNewDB.Text = "Connect to KB";
+            GetNewDB.cbAlwaysOpen.Checked = false;
             if (newFlag) 
             {
                 GetNewDB.openDBdialog.CheckFileExists = false;
                 GetNewDB.tbDatabase.Text = "";
+                GetNewDB.cbAlwaysOpen.Checked = true;
                 GetNewDB.Text = "Create New KB";
             }
             
@@ -83,13 +86,6 @@ namespace orGenta_NNv
             myPW = "";
             DataProvider = GetNewDB.DataProvider;
             RemoteConx = false;
-
-            if (GetNewDB.cbUseAsDefault.Checked)
-            {
-                RegistryKey ThisUser = Registry.CurrentUser;
-                SaveDefaultDBtoRegistry(ThisUser);
-            }
-
         }
 
         private void RetrievDBsetupInfo()
@@ -97,14 +93,18 @@ namespace orGenta_NNv
             GetNewDB = new DBconxGet();
             GetNewDB.tbServer.Text = myServerName;
             GetNewDB.tbDatabase.Text = myKnowledgeDBname;
-            GetNewDB.testing = testing;
             GetNewDB.restoredDBinfo = restoredDBinfo;
         }
 
-        private void SaveDefaultDBtoRegistry(RegistryKey ThisUser)
+        private void SaveAlwaysOpenKBtoRegistry(RegistryKey ThisUser)
         {
             RegistryKey DBsettings = ThisUser.CreateSubKey("Software\\orGenta\\DBsettings");
+            int AOcount = Convert.ToInt32(DBsettings.GetValue("AOcount", 0));
+            AOcount++;
+            DBsettings.SetValue("AOcount", AOcount);
+            string AOcountStr = AOcount.ToString();
 
+            DBsettings = ThisUser.CreateSubKey("Software\\orGenta\\DBsettings\\AO" + AOcountStr); ;
             DBsettings.SetValue("RemoteConx", "0");
             DBsettings.SetValue("ServerType", myServerType);
             DBsettings.SetValue("ServerName", myServerName);
@@ -144,7 +144,7 @@ namespace orGenta_NNv
 
             // Try to connect to the DB 
 
-            if (testing)
+            if (Program.testing)
             {
                 using (StreamWriter sw = File.AppendText(LogfileName))
                 { sw.WriteLine("Using Conx String: " + myConxString); }
@@ -163,13 +163,14 @@ namespace orGenta_NNv
                     myDBconx.Open();
                     dbIsConnected = true;
                     activeDBname = myKnowledgeDBname; 
-                    RLockOption = ""; 
+                    RLockOption = "";
+                    // Note: some remote DBs work better with RLockOption = "WITH (NOLOCK) "; 
                 }
                 catch (Exception ex)
                 {
                     dbIsConnected = false;
                     this.Cursor = Cursors.Arrow;
-                    if (testing) { myErrHandler.LogRTerror("BuildAndValidateDBconx", ex); }
+                    if (Program.testing) { myErrHandler.LogRTerror("BuildAndValidateDBconx", ex); }
                     if (!isSilent)
                     {
                         MessageBox.Show("Unable to connect to Database", "Connect Error");
@@ -201,7 +202,7 @@ namespace orGenta_NNv
             }
             catch (Exception ex)
             {
-                if (testing) { myErrHandler.LogRTerror(myRoutineName, ex); }
+                if (Program.testing) { myErrHandler.LogRTerror(myRoutineName, ex); }
                 MessageBox.Show(guideErrRecovery, "DB Read Error");
                 if (optLongErrMessages)
                 { myErrHandler.ShowErrDetails(myRoutineName, ex, "DB Read Error"); }
@@ -209,7 +210,7 @@ namespace orGenta_NNv
 
             if (RowsInError.Rows.Count == 0) { return; }
 
-            if (testing)
+            if (Program.testing)
             {
                 using (StreamWriter sw = File.AppendText(LogfileName))
                 { sw.WriteLine(foundDBfixErrs); }
@@ -221,7 +222,7 @@ namespace orGenta_NNv
                 string updCmdSQL = magicFixitCommand;
                 updCmdSQL += dbErrorRowID + ")";
 
-                if (testing)
+                if (Program.testing)
                 {
                     using (StreamWriter sw = File.AppendText(LogfileName))
                     { sw.Write(dbErrorRowID + " "); }
@@ -232,7 +233,7 @@ namespace orGenta_NNv
                 int rowsUpd = cmd.ExecuteNonQuery();
             }
 
-            if (testing)
+            if (Program.testing)
             {
                 using (StreamWriter sw = File.AppendText(LogfileName))
                 { sw.WriteLine(""); }
@@ -242,7 +243,7 @@ namespace orGenta_NNv
         private void CheckDBversion()
         {
             softwareVersion = Assembly.GetExecutingAssembly().GetName().Version;
-            if (testing)
+            if (Program.testing)
             {
                 using (StreamWriter sw = File.AppendText(LogfileName))
                 { sw.WriteLine("Software Version: {0}", softwareVersion.ToString()); }
@@ -266,7 +267,7 @@ namespace orGenta_NNv
             }
 
 
-            if (testing)
+            if (Program.testing)
             {
                 using (StreamWriter sw = File.AppendText(LogfileName))
                 {
